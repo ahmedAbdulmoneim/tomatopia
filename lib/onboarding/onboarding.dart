@@ -1,87 +1,180 @@
 import 'package:flutter/material.dart';
-import 'package:intro_views_flutter/intro_views_flutter.dart';
-
-import '../auth/login.dart';
+import 'package:flutter_overboard/flutter_overboard.dart';
+import 'package:tomatopia/auth/login.dart';
 
 class OnBoarding extends StatelessWidget {
   OnBoarding({Key? key}) : super(key: key);
   final pages = [
-    PageViewModel(
-      pageColor: Colors.green,
-      mainImage: Image.asset('assets/img_1.png'),
-      bubble: Image.asset('assets/tm.png'),
-      title: const Text('Take a photo'),
-      body: const Text(
-          'Receive instant identification and treatment suggestions'),
-      bodyTextStyle: const TextStyle(color: Colors.black),
-      titleTextStyle: const TextStyle(color: Colors.black),
-    ),
-    PageViewModel(
-      mainImage: Image.asset('assets/intro3.png'),
-      bubble: Image.asset('assets/tm.png'),
-      pageColor: Colors.lightGreenAccent,
-      title: const Text('Predict problems'),
-      body: const Text(
-        'Receive alerts and apply preventative measures ',
-        style: TextStyle(color: Colors.black),
-      ),
-      bodyTextStyle: const TextStyle(color: Colors.black),
-      titleTextStyle: const TextStyle(color: Colors.black),
-    ),
-    PageViewModel(
-      mainImage: Image.asset('assets/intro2.png'),
-      pageColor: Colors.greenAccent,
-      bubble: Image.asset('assets/tm.png'),
-      title: const Text('Community'),
-      body: const Text('Exchange insights with colleagues and experts'),
-      bodyTextStyle: const TextStyle(color: Colors.black),
-      titleTextStyle: const TextStyle(color: Colors.black),
-    ),
+    PageModel.withChild(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Take a photo',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    decoration: TextDecoration.none,
+                    color: Colors.black),
+              ),
+              Image.asset('assets/scan.png', width: 300.0, height: 300.0),
+              const Text(
+                'Receive instant identifications and treatment suggestions',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                    fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        color: Colors.white,
+        doAnimateChild: true),
+    PageModel.withChild(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Search',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    decoration: TextDecoration.none,
+                    color: Colors.black),
+              ),
+              Image.asset('assets/search.png', width: 300.0, height: 300.0),
+              const Text(
+                'Search for what you need',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                    fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        color: Colors.white,
+        doAnimateChild: true),
+    PageModel.withChild(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Predict problems',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    decoration: TextDecoration.none,
+                    color: Colors.black),
+              ),
+              Image.asset('assets/alert.png', width: 300.0, height: 300.0),
+              const Text(
+                'Receive alerts and apply preventative measures',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                    fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        color: Colors.white,
+        doAnimateChild: true),
+    PageModel.withChild(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Treatment',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    decoration: TextDecoration.none,
+                    color: Colors.black),
+              ),
+              Image.asset('assets/treatment.jpg', width: 300.0, height: 300.0),
+              const Text(
+                'Get the best treatment for your plant',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                    fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        color: Colors.white,
+        doAnimateChild: true),
+    PageModel.withChild(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0, left: 15, right: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Community',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    decoration: TextDecoration.none,
+                    color: Colors.black),
+              ),
+              Image.asset('assets/cmmunity.png', width: 300.0, height: 300.0),
+              const Text(
+                'Supportive Farming Community',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                    fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        color: Colors.white,
+        doAnimateChild: true),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Builder(
-        builder: (context) => IntroViewsFlutter(
-          pages,
-          background: Colors.white,
-          showBackButton: true,
-          showNextButton: true,
-          showSkipButton: true,
-          skipText: const Text(
-            'SKIP',
-            style: TextStyle(color: Colors.black),
+    return OverBoard(
+      pages: pages,
+      allowScroll: true,
+      inactiveBulletColor: Colors.grey,
+      activeBulletColor: Colors.greenAccent,
+      finishCallback: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
           ),
-          doneText: const Text(
-            'DONE',
-            style: TextStyle(color: Colors.black),
+        );
+      },
+      showBullets: true,
+      skipCallback: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
           ),
-          backText: const Text(
-            'BACK',
-            style: TextStyle(color: Colors.black),
-          ),
-          nextText: const Text(
-            'NEXT',
-            style: TextStyle(color: Colors.black),
-          ),
-          onTapDoneButton: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ));
-          },
-          onTapSkipButton: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
-            );
-          },
-        ),
-      ),
+        );
+      },
+      skipText: 'SKIP',
+      finishText: 'DONE',
+      nextText: 'NEXT',
+      buttonColor: Colors.black,
     );
   }
 }
