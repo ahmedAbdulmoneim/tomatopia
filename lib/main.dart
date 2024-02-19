@@ -13,6 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplachScreen(),
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+              elevation: .8, shadowColor: Colors.white, color: Colors.white)),
       debugShowCheckedModeBanner: false,
     );
   }
