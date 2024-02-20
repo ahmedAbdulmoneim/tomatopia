@@ -75,8 +75,9 @@ class RegisterPage extends StatelessWidget {
                       },
                       onSaved: (value) {},
                       prefix: Icons.password,
-                      suffix: Icons.remove_red_eye,
+                      suffix: Icons.visibility_off_outlined,
                       label: 'Password ',
+                      obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                     ),
                     const SizedBox(
@@ -90,8 +91,9 @@ class RegisterPage extends StatelessWidget {
                       },
                       onSaved: (value) {},
                       prefix: Icons.password,
-                      suffix: Icons.remove_red_eye,
+                      suffix: Icons.visibility_off_outlined,
                       label: 'Confirm Password',
+                      obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                     ),
                     const SizedBox(

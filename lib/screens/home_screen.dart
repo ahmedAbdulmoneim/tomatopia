@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:tomatopia/auth/carousal_items.dart';
+import 'package:tomatopia/constant/carousal_items.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -76,28 +76,59 @@ class HomeScreen extends StatelessWidget {
           'TOMATOPIA',
         ),
       ),
-      body: Column(
-        children: [
-          CarouselSlider(
-              items: carousalItems,
-              options: CarouselOptions(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+                'popular disease',
+              style: TextStyle(
+                fontSize: 20
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            CarouselSlider(
+                items: carousalItems,
+                options: CarouselOptions(
 
-                height: 200,
-                aspectRatio: 16 / 9,
-                viewportFraction: 0.8,
-                initialPage: 0,
-                enableInfiniteScroll: true,
-                reverse: false,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration:
-                const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.easeInBack,
-                enlargeCenterPage: true,
-                enlargeFactor: 0.3,
-                scrollDirection: Axis.horizontal,
-              ),)
-        ],
+                  height: 200,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.8,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration:
+                  const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.easeInBack,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.3,
+                  scrollDirection: Axis.horizontal,
+                ),),
+            // const SizedBox(
+            //   height: 25,
+            // ),
+            // Container(
+            //   height: 200,
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     color: Colors.grey[200],
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       Image.asset('assets/scan.jpg',)
+            //     ],
+            //   ),
+            // )
+
+
+          ],
+        ),
       ),
     );
   }

@@ -7,9 +7,12 @@ Widget textFormField({
   onSaved,
   validate,
   TextInputType? keyboardType,
+  bool obscureText = false,
 }) =>
     TextFormField(
+      cursorColor: Colors.green,
       onSaved: onSaved,
+      obscureText: obscureText,
       validator: validate,
       keyboardType: keyboardType,
       decoration: InputDecoration(
@@ -39,5 +42,6 @@ Widget textFormField({
           color: Colors.grey,
         ),
         focusColor: Colors.greenAccent,
+
       ),
     );

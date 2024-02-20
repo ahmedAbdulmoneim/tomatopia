@@ -58,9 +58,10 @@ class LoginPage extends StatelessWidget {
                     textFormField(
                         onSaved: (value) {},
                         label: 'Password',
+                        obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
                         prefix: Icons.password,
-                        suffix: Icons.remove_red_eye,
+                        suffix: Icons.visibility_off_outlined,
                         validate: (password) {
                           if (password.toString().isEmpty) {
                             return "password can't be empty";
