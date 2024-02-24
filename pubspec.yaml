@@ -39,6 +39,8 @@ dependencies:
   curved_navigation_bar:
   bottom_navy_bar:
   carousel_slider:
+  image_picker:
+  awesome_dialog:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -71,7 +73,7 @@ flutter:
   assets:
    - assets/
    - assets/tomato_leaf/
-
+   - assets/home_images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
