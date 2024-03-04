@@ -21,64 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: ClipPath(
-        child: Drawer(
-          child: Container(
-            padding: const EdgeInsets.only(left: 16, right: 40),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black)],
-            ),
-            width: 300,
-            child: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.power_settings_new),
-                      ),
-                    ),
-                    Container(
-                      height: 90,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(colors: [
-                            Colors.orange,
-                            Colors.deepOrange,
-                          ])),
-                      child: const CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/ahmed.png'),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const Text(
-                      'Ahmed Abdelmoneim',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      'Ahmed ',
-                      style: TextStyle(
-                        color: Colors.grey.shade800,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -139,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: Image.asset(
-                              'assets/home_images/take_pic(1).jpg',
+                              'assets/home_images/take_pic.png',
                               height: 100,
                               width: 100,
                               fit: BoxFit.cover,

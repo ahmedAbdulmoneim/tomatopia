@@ -8,8 +8,10 @@ Widget textFormField({
   validate,
   TextInputType? keyboardType,
   bool obscureText = false,
+  TextEditingController? controller,
 }) =>
     TextFormField(
+      controller: controller,
       cursorColor: Colors.green,
       onSaved: onSaved,
       obscureText: obscureText,

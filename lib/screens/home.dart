@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tomatopia/screens/alerts_screen.dart';
 import 'package:tomatopia/screens/community.dart';
 import 'package:tomatopia/screens/home_screen.dart';
+import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
-import 'package:tomatopia/screens/settings_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
     Search(),
     Community(),
     Alerts(),
-    Settings()
+    Profile()
   ];
 
   @override
@@ -32,16 +32,18 @@ class _HomeState extends State<Home> {
         curve: Curves.easeInBack,
         items: [
           BottomNavyBarItem(
-              icon: const Icon(Icons.home),
-              title: const Text(
-                'Home',
-              ),
-              activeColor: Colors.green,
-          inactiveColor: Colors.black,),
+            icon: const Icon(Icons.home),
+            title: const Text(
+              'Home',
+            ),
+            activeColor: Colors.green,
+            inactiveColor: Colors.black,
+          ),
           BottomNavyBarItem(
               activeColor: Colors.lightBlueAccent,
               inactiveColor: Colors.black,
-              icon: const Icon(Icons.search), title: const Text('Search')),
+              icon: const Icon(Icons.search),
+              title: const Text('Search')),
           BottomNavyBarItem(
               activeColor: Colors.deepOrange,
               inactiveColor: Colors.black,
@@ -50,11 +52,13 @@ class _HomeState extends State<Home> {
           BottomNavyBarItem(
               activeColor: Colors.red,
               inactiveColor: Colors.black,
-              icon: const Icon(Icons.crisis_alert), title: const Text('Alert')),
+              icon: const Icon(Icons.crisis_alert),
+              title: const Text('Alert')),
           BottomNavyBarItem(
               activeColor: Colors.blue,
               inactiveColor: Colors.black,
-              icon: const Icon(Icons.settings), title: const Text('Settings')),
+              icon: const Icon(Icons.person),
+              title: const Text('Profile')),
         ],
         onItemSelected: (value) {
           setState(() {
