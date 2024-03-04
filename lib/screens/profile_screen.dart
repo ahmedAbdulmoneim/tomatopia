@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
@@ -11,8 +14,9 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   GlobalKey<FormState> formKey = GlobalKey();
-
   TextEditingController? textEditingController;
+  File? selectedImage;
+  String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +33,60 @@ class _ProfileState extends State<Profile> {
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      const CircleAvatar(
-                          radius: 90,
-                          backgroundImage:
-                              AssetImage('assets/no_profile_image.png')),
+                      selectedImage != null
+                          ? CircleAvatar(
+                              radius: 90,
+                              backgroundImage: FileImage(selectedImage!))
+                          : const CircleAvatar(
+                              radius: 90,
+                              backgroundImage:
+                                  AssetImage('assets/no_profile_image.png')),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => SizedBox(
+                              height: 100,
+                              child: Row(
+                                children: [
+                                  const Spacer(),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () async {
+                                          await takeProfileImage();
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(
+                                          Icons.camera_alt_outlined,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                      const Text('camera')
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () async {
+                                          await loadProfileImage();
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(
+                                          Icons.image,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                      const Text('camera')
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.add_a_photo_sharp),
                         color: Colors.black,
                       )
@@ -43,9 +95,9 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    'Name',
-                    style: TextStyle(
+                  Text(
+                    name != null ? '$name' : 'name',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -56,6 +108,11 @@ class _ProfileState extends State<Profile> {
                   textFormField(
                     prefix: Icons.person,
                     label: 'change name',
+                    onSaved: (value) {
+                      setState(() {
+                        name = value;
+                      });
+                    },
                     validate: (value) {
                       if (value.toString().isEmpty) {
                         return 'please enter valid name ';
@@ -70,7 +127,7 @@ class _ProfileState extends State<Profile> {
                       text: 'Save changes',
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          setState(() {});
+                          formKey.currentState!.save();
                         }
                       },
                       width: double.infinity),
@@ -81,5 +138,21 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  Future takeProfileImage() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    setState(() {
+      selectedImage = File(returnedImage!.path);
+    });
+  }
+
+  Future loadProfileImage() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = File(returnedImage!.path);
+    });
   }
 }
