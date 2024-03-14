@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
-import 'package:tomatopia/screens/forecast_wather.dart';
+import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/treatment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -153,16 +153,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ForecastWeather(),
-                      ),
-                    );
-                  },
-                  child: dailyWeather(),
-                ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForecastWeather(),
+                          ));
+                    },
+                    child: dailyWeather()),
                 const SizedBox(
                   height: 20,
                 ),

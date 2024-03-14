@@ -45,6 +45,7 @@ dependencies:
   dio:
   bloc:
   flutter_bloc:
+  intl:
 
 
   # The following adds the Cupertino Icons font to your application.
