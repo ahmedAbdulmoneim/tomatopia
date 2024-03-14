@@ -1,93 +1,73 @@
 class WeatherModel {
-  Location? location;
-  Forecast? forecast;
+  final double currentTemp;
+  final String currentImage;
+  final String currentCondition;
+  final String cityName;
+  final String cityPronunciation;
+  final List<String> dates;
+  final List<double> temps;
+  final List<double> maxTemps;
+  final List<dynamic> rains;
+  final List<double> winds;
+  final List<double> minTemps;
+  final List<String> weatherConditions;
+  final List<String> images;
 
-  WeatherModel({this.location, this.forecast});
-
-  WeatherModel.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null
-        ?  Location.fromJson(json['location'])
-        : null;
-  }
-}
-
-class Location {
-  String? region;
-
-  Location({
-    this.region,
+  WeatherModel({
+    required this.cityPronunciation,
+    required this.currentCondition,
+    required this.currentImage,
+    required this.currentTemp,
+    required this.cityName,
+    required this.winds,
+    required this.rains,
+    required this.dates,
+    required this.temps,
+    required this.maxTemps,
+    required this.minTemps,
+    required this.weatherConditions,
+    required this.images,
   });
 
-  Location.fromJson(Map<String, dynamic> json) {
-    region = json['region'];
-  }
-}
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    List<String> dates = [];
+    List<dynamic> rains = [];
+    List<double> winds = [];
+    List<double> temps = [];
+    List<double> maxTemps = [];
+    List<double> minTemps = [];
+    List<String> weatherConditions = [];
+    List<String> images = [];
 
-class Condition {
-  String? text;
-  String? icon;
-
-  Condition({this.text, this.icon});
-
-  Condition.fromJson(Map<String, dynamic> json) {
-    text = json['text'];
-    icon = json['icon'];
-  }
-}
-
-class Forecast {
-  List<Forecastday>? forecastday;
-
-  Forecast({this.forecastday});
-
-  Forecast.fromJson(Map<String, dynamic> json) {
-    if (json['forecastday'] != null) {
-      forecastday = <Forecastday>[];
-      json['forecastday'].forEach((v) {
-        forecastday!.add(Forecastday.fromJson(v));
-      });
+    // Assuming 'forecastday' contains data for 3 days
+    for (int i = 0; i < 3; i++) {
+      dates.add(json['forecast']['forecastday'][i]['date']);
+      rains.add(
+          json['forecast']['forecastday'][i]['day']['daily_chance_of_rain']);
+      winds.add(json['forecast']['forecastday'][i]['day']['maxwind_kph']);
+      temps.add(json['forecast']['forecastday'][i]['day']['avgtemp_c']);
+      maxTemps.add(json['forecast']['forecastday'][i]['day']['maxtemp_c']);
+      minTemps.add(json['forecast']['forecastday'][i]['day']['mintemp_c']);
+      weatherConditions
+          .add(json['forecast']['forecastday'][i]['day']['condition']['text']);
+      images
+          .add(json['forecast']['forecastday'][i]['day']['condition']['icon']);
     }
-  }
-}
 
-class Forecastday {
-  Day? day;
-
-  Forecastday({this.day});
-
-  Forecastday.fromJson(Map<String, dynamic> json) {
-    day = json['day'] != null ? Day.fromJson(json['day']) : null;
-  }
-}
-
-class Day {
-  double? maxtempC;
-  double? mintempC;
-
-  double? maxwindKph;
-
-  int? dailyChanceOfRain;
-
-  Condition? condition;
-
-  Day({
-    this.maxtempC,
-    this.mintempC,
-    this.maxwindKph,
-    this.dailyChanceOfRain,
-    this.condition,
-  });
-
-  Day.fromJson(Map<String, dynamic> json) {
-    maxtempC = json['maxtemp_c'];
-    mintempC = json['mintemp_c'];
-
-    maxwindKph = json['maxwind_kph'];
-
-    dailyChanceOfRain = json['daily_chance_of_rain'];
-
-    condition = json['condition'] != null
-        ? Condition.fromJson(json['condition'])
-        : null;
+    return WeatherModel(
+      cityName: json['location']['name'],
+      cityPronunciation: json['location']['region'],
+      currentCondition: json['current']['condition']['text'],
+      currentImage: json['current']['condition']['icon'],
+      currentTemp: json['current']['temp_c'],
+      dates: dates,
+      rains: rains,
+      winds: winds,
+      temps: temps,
+      maxTemps: maxTemps,
+      minTemps: minTemps,
+      weatherConditions: weatherConditions,
+      images: images,
+    );
   }
 }
