@@ -2,11 +2,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/auth/sign_up.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_cubit.dart';
 
+import '../constant/validate_password.dart';
 import '../cubit/auth_cubit/login/login_states.dart';
 import '../custom_widget/custom_button.dart';
 import '../custom_widget/text_form_filed.dart';
@@ -26,11 +28,32 @@ class LoginPage extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if(state is LoginSuccessState){
+            Fluttertoast.showToast(msg: 'logging successfully',
+                toastLength: Toast.LENGTH_LONG,
+                backgroundColor: Colors.green,
+                timeInSecForIosWeb: 5,
+                textColor: Colors.white,
+                fontSize: 16.5,
+                gravity: ToastGravity.CENTER
+
+            );
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Home(),
                 ));
+
+
+          }
+          if(state is LoginFailureState){
+            Fluttertoast.showToast(msg: 'Please verify the information entered',
+                toastLength: Toast.LENGTH_LONG,
+                backgroundColor: Colors.red,
+                timeInSecForIosWeb: 5,
+                textColor: Colors.white,
+                fontSize: 16.5,
+                gravity: ToastGravity.CENTER
+            );
           }
         },
         builder: (context, state) {
@@ -90,14 +113,16 @@ class LoginPage extends StatelessWidget {
                                 }
                               },
                               label: 'Password',
-                              obscureText: true,
+                              obscureText: BlocProvider.of<LoginCubit>(context).isSecure,
                               keyboardType: TextInputType.visiblePassword,
                               prefix: Icons.password,
-                              suffix: Icons.visibility_off_outlined,
+                              suffix: BlocProvider.of<LoginCubit>(context).suffix,
+                              suffixFunc: BlocProvider.of<LoginCubit>(context).changePasswordVisibility,
                               validate: (password) {
                                 if (password.toString().isEmpty) {
                                   return "password can't be empty";
                                 }
+                               return validatePassword(password);
                               }),
                           TextButton(
                             onPressed: () {},

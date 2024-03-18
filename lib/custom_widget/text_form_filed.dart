@@ -6,6 +6,7 @@ Widget textFormField({
   String? label,
   onSaved,
   validate,
+  suffixFunc,
   TextInputType? keyboardType,
   bool obscureText = false,
   TextEditingController? controller,
@@ -37,13 +38,17 @@ Widget textFormField({
         errorStyle: const TextStyle(
           color: Colors.red,
         ),
-        suffixIcon: Icon(suffix),
+        suffixIcon: suffix != null
+            ? IconButton(
+                onPressed: suffixFunc,
+                icon: Icon(suffix),
+              )
+            : null,
         prefixIcon: Icon(prefix),
         labelText: label,
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.grey,
         ),
         focusColor: Colors.greenAccent,
-
       ),
     );
