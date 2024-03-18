@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tomatopia/screens/alerts_screen.dart';
 import 'package:tomatopia/screens/community.dart';
 import 'package:tomatopia/screens/home_screen.dart';
-import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
+import 'package:tomatopia/screens/tips.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
     Search(),
     Community(),
     Alerts(),
-    Profile()
+    Tips()
   ];
 
   @override
@@ -57,8 +57,8 @@ class _HomeState extends State<Home> {
           BottomNavyBarItem(
               activeColor: Colors.blue,
               inactiveColor: Colors.black,
-              icon: const Icon(Icons.person),
-              title: const Text('Profile')),
+              icon: const Icon(Icons.tips_and_updates_outlined),
+              title: const Text('Tips')),
         ],
         onItemSelected: (value) {
           setState(() {

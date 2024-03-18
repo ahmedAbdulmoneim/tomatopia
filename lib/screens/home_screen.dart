@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
+import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
+import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/treatment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,6 +30,75 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: const Text(
           'TOMATOPIA',
+        ),
+      ),
+      drawer: Drawer(
+        width: 250,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF9CECBF)),
+              accountName: Text(
+                "Ahmed Mohammad",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+              accountEmail: Text(
+                "Ahmed@gmail.com",
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/ahmed.png'),
+              ),
+              currentAccountPictureSize: Size.fromRadius(40),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.person,
+              ),
+              title: const Text('Profile'),
+              onTap: () async {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Profile(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.settings,
+              ),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.contacts_outlined,
+              ),
+              title: const Text('Contact & Social'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactUs(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                FontAwesomeIcons.circleInfo,
+              ),
+              title: const Text('About us'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
       ),
       body: Padding(

@@ -47,6 +47,8 @@ dependencies:
   flutter_bloc:
   intl:
   conditional_builder_null_safety:
+  font_awesome_icon_class:
+  fluttertoast:
 
 
   # The following adds the Cupertino Icons font to your application.

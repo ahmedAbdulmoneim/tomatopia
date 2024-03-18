@@ -67,7 +67,7 @@ Widget dailyWeather() => Container(
             );
           }
           if (state is GetWeatherFailureState) {
-            BlocProvider.of<WeatherCubit>(context).getWeatherData('cairo');
+            BlocProvider.of<WeatherCubit>(context).getWeatherData('beni suef');
             return const Row(
               children: [
                 Text(
