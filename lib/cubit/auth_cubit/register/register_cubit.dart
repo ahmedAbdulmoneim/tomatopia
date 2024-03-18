@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:tomatopia/api_models/auth_models/login_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/auth_cubit/register/register_states.dart';
@@ -22,5 +23,15 @@ class RegisterCubit extends Cubit<RegisterStates> {
       print('catch error her : $onError');
       emit(RegisterFailureState());
     });
+  }
+
+  bool isSecure = true;
+  IconData suffix = Icons.visibility_off_outlined;
+
+  void changePasswordVisibility() {
+    isSecure = !isSecure;
+    suffix =
+        isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined;
+    emit(ChangeRegisterPasswordVisibility());
   }
 }

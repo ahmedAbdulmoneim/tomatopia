@@ -2,8 +2,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
+import 'package:tomatopia/constant/validate_password.dart';
 import 'package:tomatopia/cubit/auth_cubit/register/register_cubit.dart';
 
 import '../cubit/auth_cubit/register/register_states.dart';
@@ -27,11 +29,29 @@ class RegisterPage extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is RegisterSuccessState) {
+            Fluttertoast.showToast(
+                msg: 'account created successfully',
+                toastLength: Toast.LENGTH_LONG,
+                backgroundColor: Colors.green,
+                timeInSecForIosWeb: 5,
+                textColor: Colors.white,
+                fontSize: 16.5,
+                gravity: ToastGravity.CENTER);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Home(),
                 ));
+          }
+          if (state is RegisterFailureState) {
+            Fluttertoast.showToast(
+                msg: 'Oops! Something went wrong while creating your account. Please try again',
+                toastLength: Toast.LENGTH_LONG,
+                backgroundColor: Colors.red,
+                timeInSecForIosWeb: 5,
+                textColor: Colors.white,
+                fontSize: 16.5,
+                gravity: ToastGravity.CENTER);
           }
         },
         builder: (context, state) {
@@ -97,14 +117,16 @@ class RegisterPage extends StatelessWidget {
                             controller: passwordController,
                             validate: (value) {
                               if (value.isEmpty) {
-                                return "Password is required";
+                                return "password can't be empty";
                               }
+                              return validatePassword(value);
                             },
                             onSaved: (value) {},
                             prefix: Icons.password,
-                            suffix: Icons.visibility_off_outlined,
+                            suffix:  BlocProvider.of<RegisterCubit>(context).suffix,
                             label: 'Password ',
-                            obscureText: true,
+                            obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
+                            suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
                             keyboardType: TextInputType.visiblePassword,
                           ),
                           const SizedBox(
@@ -116,6 +138,7 @@ class RegisterPage extends StatelessWidget {
                               if (value.isEmpty) {
                                 return "Password is required";
                               }
+                              return validatePassword(value);
                             },
                             onSaved: (value) {
                               if (formKey.currentState!.validate()) {
@@ -132,9 +155,10 @@ class RegisterPage extends StatelessWidget {
                               }
                             },
                             prefix: Icons.password,
-                            suffix: Icons.visibility_off_outlined,
+                            suffix: BlocProvider.of<RegisterCubit>(context).suffix,
                             label: 'Confirm Password',
-                            obscureText: true,
+                            obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
+                            suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
                             keyboardType: TextInputType.visiblePassword,
                           ),
                           const SizedBox(
