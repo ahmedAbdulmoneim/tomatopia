@@ -13,6 +13,7 @@ import '../cubit/auth_cubit/login/login_states.dart';
 import '../custom_widget/custom_button.dart';
 import '../custom_widget/text_form_filed.dart';
 import '../screens/home.dart';
+import 'forget_password/email_checking.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -125,7 +126,9 @@ class LoginPage extends StatelessWidget {
                                return validatePassword(password);
                               }),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EmailChecking(),));
+                            },
                             child: const Text(
                               'Forget Password',
                               style: TextStyle(color: Colors.green),
