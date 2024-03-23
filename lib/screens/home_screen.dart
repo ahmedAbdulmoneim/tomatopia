@@ -5,7 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
+import 'package:tomatopia/constant/constant.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
 import 'package:tomatopia/screens/contact_us.dart';
@@ -34,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: Drawer(
         width: 250,
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
+
           children: [
             const UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF9CECBF)),
@@ -96,6 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('About us'),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            const Spacer(),
+            ListTile(
+              leading: const Icon(
+                FontAwesomeIcons.powerOff,
+              ),
+              title: const Text('Logout'),
+              onTap: () {
+                token = '';
+                userName = '';
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
               },
             ),
           ],
