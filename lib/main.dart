@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
+import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
+import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 import 'cubit/weather/weather_states.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreference.init();
   runApp(const MyApp());
 }
 

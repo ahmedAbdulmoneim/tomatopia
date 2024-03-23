@@ -1,3 +1,3 @@
-const String loginEndpoint  = 'Account/longin';
+const String loginEndpoint  = 'Account/LogIn';
 const String registerEndpoint  = 'Account/register';
-const String changePassword = 'Account/CheangePassword';
+const String changePasswordEndPoint = 'Account/ChangePassword';

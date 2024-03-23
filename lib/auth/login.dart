@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/auth/sign_up.dart';
+import 'package:tomatopia/constant/constant.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_cubit.dart';
+import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 import '../constant/validate_password.dart';
 import '../cubit/auth_cubit/login/login_states.dart';
@@ -28,33 +30,44 @@ class LoginPage extends StatelessWidget {
       create: (context) => LoginCubit(TomatopiaServices(Dio())),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
-          if(state is LoginSuccessState){
-            Fluttertoast.showToast(msg: 'logging successfully',
+          if (state is LoginSuccessState) {
+            Fluttertoast.showToast(
+                msg: 'logging successfully',
                 toastLength: Toast.LENGTH_LONG,
                 backgroundColor: Colors.green,
                 timeInSecForIosWeb: 5,
                 textColor: Colors.white,
                 fontSize: 16.5,
-                gravity: ToastGravity.CENTER
-
-            );
+                gravity: ToastGravity.CENTER);
+            SharedPreference.saveData(
+                    key: 'token',
+                    value:
+                        BlocProvider.of<LoginCubit>(context).loginModel!.token)
+                .then((value) {
+              token = BlocProvider.of<LoginCubit>(context).loginModel!.token;
+            });
+            SharedPreference.saveData(
+                    key: 'userName',
+                    value:
+                        BlocProvider.of<LoginCubit>(context).loginModel!.name)
+                .then((value) {
+              userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
+            });
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Home(),
                 ));
-
-
           }
-          if(state is LoginFailureState){
-            Fluttertoast.showToast(msg: 'Please verify the information entered',
+          if (state is LoginFailureState) {
+            Fluttertoast.showToast(
+                msg: 'Please verify the information entered',
                 toastLength: Toast.LENGTH_LONG,
                 backgroundColor: Colors.red,
                 timeInSecForIosWeb: 5,
                 textColor: Colors.white,
                 fontSize: 16.5,
-                gravity: ToastGravity.CENTER
-            );
+                gravity: ToastGravity.CENTER);
           }
         },
         builder: (context, state) {
@@ -114,20 +127,27 @@ class LoginPage extends StatelessWidget {
                                 }
                               },
                               label: 'Password',
-                              obscureText: BlocProvider.of<LoginCubit>(context).isSecure,
+                              obscureText:
+                                  BlocProvider.of<LoginCubit>(context).isSecure,
                               keyboardType: TextInputType.visiblePassword,
                               prefix: Icons.password,
-                              suffix: BlocProvider.of<LoginCubit>(context).suffix,
-                              suffixFunc: BlocProvider.of<LoginCubit>(context).changePasswordVisibility,
+                              suffix:
+                                  BlocProvider.of<LoginCubit>(context).suffix,
+                              suffixFunc: BlocProvider.of<LoginCubit>(context)
+                                  .changePasswordVisibility,
                               validate: (password) {
                                 if (password.toString().isEmpty) {
                                   return "password can't be empty";
                                 }
-                               return validatePassword(password);
+                                return validatePassword(password);
                               }),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EmailChecking(),));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EmailChecking(),
+                                  ));
                             },
                             child: const Text(
                               'Forget Password',
@@ -142,18 +162,18 @@ class LoginPage extends StatelessWidget {
                             builder: (context) => customButton(
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await BlocProvider.of<LoginCubit>(context).login(
-                                        endPoint: loginEndpoint,
-                                        data: {
-                                          'email': emailController.text,
-                                          'password': passwordController.text
-                                        });
-
+                                    await BlocProvider.of<LoginCubit>(context)
+                                        .login(endPoint: loginEndpoint, data: {
+                                      'email': emailController.text,
+                                      'password': passwordController.text
+                                    });
                                   }
                                 },
                                 text: 'LOGIN'),
                             fallback: (context) => const Center(
-                                child: CircularProgressIndicator(color: Colors.green,)),
+                                child: CircularProgressIndicator(
+                              color: Colors.green,
+                            )),
                           ),
                           Row(
                             children: [

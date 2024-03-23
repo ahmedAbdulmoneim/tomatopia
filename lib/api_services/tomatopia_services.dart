@@ -12,8 +12,9 @@ class TomatopiaServices {
     required Map<String,dynamic> data,
     String? token,
   }) async {
-
-      Response response = await dio.post('$baseUrl$endPoint', data: data);
+      dio.options.headers = { 'Authorization': 'Bearer $token',
+      };
+    Response response = await dio.post('$baseUrl$endPoint', data: data);
       print(response.data);
       return response;
 

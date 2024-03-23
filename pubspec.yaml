@@ -51,6 +51,7 @@ dependencies:
   fluttertoast:
   otp_text_field:
   flutter_otp_text_field:
+  shared_preferences: 
 
 
   # The following adds the Cupertino Icons font to your application.

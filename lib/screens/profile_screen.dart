@@ -1,10 +1,18 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tomatopia/constant/constant.dart';
 import 'package:tomatopia/constant/validate_password.dart';
+import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_cubit.dart';
+import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_states.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
+
+import '../api_services/tomatopia_services.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,7 +24,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   GlobalKey<FormState> formKey = GlobalKey();
   GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
-  TextEditingController? textEditingController;
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   File? selectedImage;
   String? name;
 
@@ -104,7 +114,7 @@ class _ProfileState extends State<Profile> {
                       height: 10,
                     ),
                     Text(
-                      name != null ? '$name' : 'name',
+                      userName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -148,105 +158,164 @@ class _ProfileState extends State<Profile> {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             context: context,
-                            builder: (context) => Form(
-                              key: bottomSheetFormKey,
-                              child: Container(
-                                height: 350,
-                                margin: EdgeInsets.only(
-                                    bottom:
-                                        MediaQuery.of(context).viewInsets.bottom,
-                                    top: 20,
-                                    left: 10,
-                                    right: 10),
-                                child: Column(
-                                  children: [
-                                    textFormField(
-                                      validate: (value) {
-                                        if (value.toString().isEmpty) {
-                                          return "this filed can't be null";
-                                        }
-                                        return validatePassword(value);
-                                      },
-                                      keyboardType: TextInputType.visiblePassword,
-                                      obscureText: true,
-                                      prefix: Icons.password,
-                                      suffix: Icons.remove_red_eye,
-                                      label: 'enter old password',
-                                      onSaved: (value) {},
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    textFormField(
-                                      validate: (value) {
-                                        if (value.toString().isEmpty) {
-                                          return "this filed can't be null";
-                                        }
-                                        return validatePassword(value);
-                                      },
-                                      keyboardType: TextInputType.visiblePassword,
-                                      obscureText: true,
-                                      prefix: Icons.password,
-                                      suffix: Icons.remove_red_eye,
-                                      label: 'enter new password',
-                                      onSaved: (value) {},
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    textFormField(
-                                      validate: (value) {
-                                        if (value.toString().isEmpty) {
-                                          return "this filed can't be null";
-                                        }
-                                        return validatePassword(value);
-                                      },
-                                      keyboardType: TextInputType.visiblePassword,
-                                      obscureText: true,
-                                      prefix: Icons.password,
-                                      suffix: Icons.remove_red_eye,
-                                      label: 'confirm new password',
-                                      onSaved: (value) {
-
-                                      },
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Spacer(),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
+                            builder: (context) => BlocProvider(
+                              create: (context) =>
+                                  ChangePasswordCubit(TomatopiaServices(Dio())),
+                              child: BlocConsumer<ChangePasswordCubit,
+                                  ChangePasswordStates>(
+                                listener: (context, state) {
+                                  if (state is ChangePasswordSuccessState) {
+                                    Fluttertoast.showToast(
+                                        msg: 'password changed successfully',
+                                        toastLength: Toast.LENGTH_LONG,
+                                        backgroundColor: Colors.green,
+                                        timeInSecForIosWeb: 5,
+                                        textColor: Colors.white,
+                                        fontSize: 16.5,
+                                        gravity: ToastGravity.CENTER);
+                                    oldPasswordController.text = '';
+                                    newPasswordController.text = '';
+                                    confirmPasswordController.text = '';
+                                    Navigator.pop(context);
+                                  }
+                                  if (state is ChangePasswordFailuerState) {
+                                    Fluttertoast.showToast(
+                                        msg: 'we cant change password',
+                                        toastLength: Toast.LENGTH_LONG,
+                                        backgroundColor: Colors.red,
+                                        timeInSecForIosWeb: 5,
+                                        textColor: Colors.white,
+                                        fontSize: 16.5,
+                                        gravity: ToastGravity.CENTER);
+                                  }
+                                },
+                                builder: (context, state) {
+                                  var cubit =
+                                      BlocProvider.of<ChangePasswordCubit>(
+                                          context);
+                                  return Form(
+                                    key: bottomSheetFormKey,
+                                    child: Container(
+                                      height: 350,
+                                      margin: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                                          top: 20,
+                                          left: 10,
+                                          right: 10),
+                                      child: Column(
+                                        children: [
+                                          textFormField(
+                                            validate: (value) {
+                                              if (value.toString().isEmpty) {
+                                                return "this filed can't be null";
+                                              }
+                                              return validatePassword(value);
                                             },
-                                            child: const Text(
-                                              'cancel',
-                                              style: TextStyle(
-                                                  color: Colors.black54),
-                                            )),
-                                        TextButton(
-                                          onPressed: () {
-                                            if (bottomSheetFormKey.currentState!
-                                                .validate()) {
-                                              print('object');
-                                            }
-                                          },
-                                          child: const Text(
-                                            'save',
-                                            style: TextStyle(
-                                                color: Colors.green,
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                decorationStyle:
-                                                    TextDecorationStyle.solid,
-                                                decorationColor: Colors.green,
-                                                textBaseline:
-                                                    TextBaseline.alphabetic,
-                                                fontSize: 18),
+                                            keyboardType:
+                                                TextInputType.visiblePassword,
+                                            obscureText: cubit.isSecure,
+                                            prefix: Icons.password,
+                                            suffix: cubit.suffixIcon,
+                                            suffixFunc: cubit.suffixFunction,
+                                            label: 'enter old password',
+                                            controller: oldPasswordController,
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          textFormField(
+                                            validate: (value) {
+                                              if (value.toString().isEmpty) {
+                                                return "this filed can't be null";
+                                              }
+                                              return validatePassword(value);
+                                            },
+                                            keyboardType:
+                                                TextInputType.visiblePassword,
+                                            prefix: Icons.password,
+                                            obscureText: cubit.isSecure,
+                                            label: 'enter new password',
+                                            controller: newPasswordController,
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          textFormField(
+                                            validate: (value) {
+                                              if (value.toString().isEmpty) {
+                                                return "this filed can't be null";
+                                              }
+                                              return validatePassword(value);
+                                            },
+                                            keyboardType:
+                                                TextInputType.visiblePassword,
+                                            prefix: Icons.password,
+                                            obscureText: cubit.isSecure,
+                                            suffixFunc: cubit.suffixFunction,
+                                            label: 'confirm new password',
+                                            controller:
+                                                confirmPasswordController,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Spacer(),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    oldPasswordController.text =
+                                                        '';
+                                                    newPasswordController.text =
+                                                        '';
+                                                    confirmPasswordController
+                                                        .text = '';
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text(
+                                                    'cancel',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                    ),
+                                                  )),
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (bottomSheetFormKey
+                                                      .currentState!
+                                                      .validate()) {
+                                                    cubit.changePassword(data: {
+                                                      "oldPassword":
+                                                          oldPasswordController
+                                                              .text,
+                                                      "newPassword":
+                                                          newPasswordController
+                                                              .text,
+                                                      "confirmPassword":
+                                                          confirmPasswordController
+                                                              .text,
+                                                    });
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  'save',
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      decorationStyle:
+                                                          TextDecorationStyle
+                                                              .solid,
+                                                      decorationColor:
+                                                          Colors.green,
+                                                      textBaseline: TextBaseline
+                                                          .alphabetic,
+                                                      fontSize: 18),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           );
