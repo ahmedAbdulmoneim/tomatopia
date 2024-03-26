@@ -5,7 +5,7 @@ import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_states.dart';
 
-import '../../../constant/constant.dart';
+import '../../../constant/variables.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordStates> {
   ChangePasswordCubit(this.tomatopiaServices)
