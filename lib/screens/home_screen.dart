@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
 import 'package:tomatopia/constant/variables.dart';
+import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
 import 'package:tomatopia/screens/contact_us.dart';
@@ -15,6 +17,8 @@ import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/treatment_screen.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
+
+import '../cubit/profile/profile_states.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,86 +39,91 @@ class _HomeScreenState extends State<HomeScreen> {
           'TOMATOPIA',
         ),
       ),
-      drawer: Drawer(
-        width: 250,
-        child: Column(
+      drawer: BlocBuilder<ProfileCubit,ProfileStates>(
+        builder: (context, state) {
+          return  Drawer(
+            width: 250,
+            child: Column(
 
-          children: [
-             UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(color: Color(0xFF9CECBF)),
-              accountName: Text(
-                userName,
-                style:
+              children: [
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(color: Color(0xFF9CECBF)),
+                  accountName: Text(
+                    BlocProvider.of<ProfileCubit>(context).newName == null ?  userName: BlocProvider.of<ProfileCubit>(context).newName!,
+                    style:
                     const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              accountEmail: Text(
-                userEmail,
-                style:
+                  ),
+                  accountEmail: Text(
+                    userEmail,
+                    style:
                     const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage: AssetImage('assets/ahmed.png'),
-              ),
-              currentAccountPictureSize: const Size.fromRadius(40),
+                  ),
+                  currentAccountPicture: const CircleAvatar(
+                    backgroundImage: AssetImage('assets/ahmed.png'),
+                  ),
+                  currentAccountPictureSize: const Size.fromRadius(40),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.person,
+                  ),
+                  title: const Text('Profile'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Profile(),
+                        ));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.settings,
+                  ),
+                  title: const Text('Settings'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.contacts_outlined,
+                  ),
+                  title: const Text('Contact & Social'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ContactUs(),
+                        ));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    FontAwesomeIcons.circleInfo,
+                  ),
+                  title: const Text('About us'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const Spacer(),
+                ListTile(
+                  leading: const Icon(
+                    FontAwesomeIcons.powerOff,
+                  ),
+                  title: const Text('Logout'),
+                  onTap: () {
+                    SharedPreference.removeData(key: 'token').then((value) {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                    });
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(
-                Icons.person,
-              ),
-              title: const Text('Profile'),
-              onTap: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Profile(),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.settings,
-              ),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.contacts_outlined,
-              ),
-              title: const Text('Contact & Social'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ContactUs(),
-                    ));
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                FontAwesomeIcons.circleInfo,
-              ),
-              title: const Text('About us'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            const Spacer(),
-            ListTile(
-              leading: const Icon(
-                FontAwesomeIcons.powerOff,
-              ),
-              title: const Text('Logout'),
-              onTap: () {
-                SharedPreference.removeData(key: 'token').then((value) {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-                });
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

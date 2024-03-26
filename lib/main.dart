@@ -5,6 +5,7 @@ import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/endpints.dart';
+import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
@@ -21,8 +22,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => WeatherCubit(WeatherServices(Dio())),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<WeatherCubit>(
+        create: (context) => WeatherCubit(WeatherServices(Dio())),
+        ),
+          BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(TomatopiaServices(Dio())),
+          ),
+
+        ],
       child: BlocConsumer<WeatherCubit, WeatherStates>(
         builder: (context, state) {
           if (state is GetWeatherInitialState) {

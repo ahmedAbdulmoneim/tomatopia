@@ -19,11 +19,11 @@ class ProfileCubit extends Cubit<ProfileStates> {
       print(profileModel!.email);
       emit(ProfileSuccessState());
     }).catchError((onError) {
-      print('profile error $onError');
       emit(ProfileFailureState());
     });
   }
 
+  String? newName ;
   changeUserName({required String newName}) {
     emit(ChangeNameLoadingState());
     tomatopiaServices.update(
@@ -31,7 +31,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
         token: token,
         query: {"NewName": newName}).then((value) {
       profileModel = ProfileModel.fromJson(value.data);
-      print(profileModel!.name);
+      userName = profileModel!.name;
+      newName = profileModel!.name;
       emit(ChangeNameSuccessState());
     }).catchError((onError) {
       print('change name error $onError');
