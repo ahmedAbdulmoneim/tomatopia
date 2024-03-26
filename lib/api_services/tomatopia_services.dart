@@ -29,4 +29,17 @@ class TomatopiaServices {
     print(response.data);
     return response;
   }
+
+  Future<Response> update({
+    required String endPoint,
+    required Map<String,dynamic> query,
+    String? token,
+  }) async {
+    dio.options.headers = { 'Authorization': 'Bearer $token',
+    };
+    Response response = await dio.put('$baseUrl$endPoint', queryParameters: query);
+    print(response.data);
+    return response;
+
+  }
 }
