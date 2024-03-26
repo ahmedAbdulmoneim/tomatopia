@@ -19,4 +19,14 @@ class TomatopiaServices {
       return response;
 
   }
+
+  Future<Response>getData({
+    required String endPoint,
+    String? token,
+})async{
+    dio.options.headers = {'Authorization': 'Bearer $token'};
+    Response response = await dio.get('$baseUrl$endPoint');
+    print(response.data);
+    return response;
+  }
 }
