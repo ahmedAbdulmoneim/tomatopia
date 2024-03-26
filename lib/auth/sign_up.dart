@@ -8,7 +8,7 @@ import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/validate_password.dart';
 import 'package:tomatopia/cubit/auth_cubit/register/register_cubit.dart';
 
-import '../constant/constant.dart';
+import '../constant/variables.dart';
 import '../cubit/auth_cubit/register/register_states.dart';
 import '../custom_widget/custom_button.dart';
 import '../custom_widget/text_form_filed.dart';
@@ -42,10 +42,8 @@ class RegisterPage extends StatelessWidget {
             SharedPreference.saveData(key: 'token', value: BlocProvider.of<RegisterCubit>(context).loginModel!.token).then((value) {
               token = BlocProvider.of<RegisterCubit>(context).loginModel!.token;
             });
-            SharedPreference.saveData(key: 'userName', value: BlocProvider.of<RegisterCubit>(context).loginModel!.name).then((value) {
-              userName = BlocProvider.of<RegisterCubit>(context).loginModel!.name;
-
-            });
+            userName = BlocProvider.of<RegisterCubit>(context).loginModel!.name;
+            userEmail = BlocProvider.of<RegisterCubit>(context).loginModel!.email;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

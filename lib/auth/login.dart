@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/auth/sign_up.dart';
-import 'package:tomatopia/constant/constant.dart';
+import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_cubit.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
@@ -46,13 +46,8 @@ class LoginPage extends StatelessWidget {
                 .then((value) {
               token = BlocProvider.of<LoginCubit>(context).loginModel!.token;
             });
-            SharedPreference.saveData(
-                    key: 'userName',
-                    value:
-                        BlocProvider.of<LoginCubit>(context).loginModel!.name)
-                .then((value) {
-              userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
-            });
+            userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
+            userEmail = BlocProvider.of<LoginCubit>(context).loginModel!.email;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

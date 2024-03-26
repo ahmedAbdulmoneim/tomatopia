@@ -7,13 +7,14 @@ import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
-import 'package:tomatopia/constant/constant.dart';
+import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/treatment_screen.dart';
+import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,22 +40,22 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
 
           children: [
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF9CECBF)),
+             UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Color(0xFF9CECBF)),
               accountName: Text(
-                "Ahmed Mohammad",
+                userName,
                 style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),
               accountEmail: Text(
-                "Ahmed@gmail.com",
+                userEmail,
                 style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),
-              currentAccountPicture: CircleAvatar(
+              currentAccountPicture: const CircleAvatar(
                 backgroundImage: AssetImage('assets/ahmed.png'),
               ),
-              currentAccountPictureSize: Size.fromRadius(40),
+              currentAccountPictureSize: const Size.fromRadius(40),
             ),
             ListTile(
               leading: const Icon(
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Profile(),
+                      builder: (context) => const Profile(),
                     ));
               },
             ),
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ContactUs(),
+                      builder: (context) => const ContactUs(),
                     ));
               },
             ),
@@ -107,9 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title: const Text('Logout'),
               onTap: () {
-                token = '';
-                userName = '';
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                SharedPreference.removeData(key: 'token').then((value) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                });
               },
             ),
           ],
