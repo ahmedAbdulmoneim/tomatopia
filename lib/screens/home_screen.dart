@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tomatopia/admin/admin_panel.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
 import 'package:tomatopia/constant/variables.dart';
@@ -108,6 +109,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pop(context);
                   },
                 ),
+                userEmail == 'Admin@gmail.com' ?
+                ListTile(
+                  leading: const Icon(
+                     Icons.admin_panel_settings_sharp,
+                    color: Colors.blue,
+                  ),
+                  title: const Text('Admin Panel'),
+                  onTap: () async{
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AdminPanel(),));
+
+                  },
+                ):
+                const SizedBox(),
                 const Spacer(),
                 ListTile(
                   leading: const Icon(
