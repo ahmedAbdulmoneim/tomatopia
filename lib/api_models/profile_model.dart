@@ -1,5 +1,5 @@
 class ProfileModel{
-  final String id ;
+   String id ;
    String name ;
    String email;
   ProfileModel({required this.name,required this.email,required this.id});

@@ -9,37 +9,55 @@ class TomatopiaServices {
 
   Future<Response> postData({
     required String endPoint,
-    required Map<String,dynamic> data,
+    required Map<String, dynamic> data,
     String? token,
   }) async {
-      dio.options.headers = { 'Authorization': 'Bearer $token',
-      };
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+    };
     Response response = await dio.post('$baseUrl$endPoint', data: data);
-      print(response.data);
-      return response;
-
+    print(response.data);
+    return response;
   }
 
-  Future<Response>getData({
+  Future<Response> getData({
     required String endPoint,
     String? token,
-})async{
+    Map<String, dynamic>? query,
+  }) async {
     dio.options.headers = {'Authorization': 'Bearer $token'};
-    Response response = await dio.get('$baseUrl$endPoint');
-    print(response.data);
+    Response response =
+        await dio.get('$baseUrl$endPoint', queryParameters: query);
     return response;
   }
 
   Future<Response> update({
     required String endPoint,
-    required Map<String,dynamic> query,
+    required Map<String, dynamic> query,
     String? token,
   }) async {
-    dio.options.headers = { 'Authorization': 'Bearer $token',
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
     };
-    Response response = await dio.put('$baseUrl$endPoint', queryParameters: query);
+    Response response =
+        await dio.put('$baseUrl$endPoint', queryParameters: query);
     print(response.data);
     return response;
+  }
 
+  Future<Response> deleteRequest({
+    required String token,
+    required String endpoint,
+    Map<String, dynamic>? query,
+  }) async {
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+    };
+    Response response = await dio.delete(
+      "$baseUrl$endpoint",
+      queryParameters: query,
+    );
+    print(response.data);
+    return response;
   }
 }

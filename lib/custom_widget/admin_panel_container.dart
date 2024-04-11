@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 Widget containerPanel(context, Widget widget, text) => GestureDetector(
       onTap: () {
+
         Navigator.push(
             context,
             MaterialPageRoute(
