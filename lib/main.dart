@@ -5,6 +5,8 @@ import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/endpints.dart';
+import 'package:tomatopia/constant/variables.dart';
+import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
@@ -29,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(TomatopiaServices(Dio())),
+          ),
+          BlocProvider<CategoryCubit>(
+            create: (context) => CategoryCubit(TomatopiaServices(Dio())),
           ),
 
         ],

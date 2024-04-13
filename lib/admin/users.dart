@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
-import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 
-import '../cubit/admin_cubit/admin_states.dart';
+import '../cubit/admin_cubit/users_cubit/users_states.dart';
 
 class Users extends StatelessWidget {
   Users({Key? key}) : super(key: key);

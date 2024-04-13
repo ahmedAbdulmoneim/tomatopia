@@ -16,7 +16,7 @@ class Category extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
             children: [
               CupertinoSearchTextField(

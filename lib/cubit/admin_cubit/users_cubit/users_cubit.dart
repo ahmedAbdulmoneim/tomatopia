@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:tomatopia/api_models/delete_model.dart';
+import 'package:tomatopia/api_models/admin_models/delete_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
-import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
+import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_states.dart';
 
 class AdminCubit extends Cubit<AdminStates> {
   AdminCubit(this.tomatopiaServices) : super(GetAllUsersInitialState());
