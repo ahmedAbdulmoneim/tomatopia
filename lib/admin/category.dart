@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
 import 'package:tomatopia/custom_widget/delete_category.dart';
 import 'package:tomatopia/custom_widget/edit_category.dart';
@@ -65,6 +66,9 @@ class Category extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = BlocProvider.of<CategoryCubit>(context);
+          if(state is GetAllCategoryLoadingState || state is GetAllCategoryFailureState){
+            return Center(child: LoadingAnimationWidget.fourRotatingDots(color: Colors.green, size: 50));
+          }
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(children: [
