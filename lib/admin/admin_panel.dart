@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatopia/admin/category.dart';
 import 'package:tomatopia/admin/disease.dart';
 import 'package:tomatopia/admin/tips.dart';
 import 'package:tomatopia/admin/users.dart';
@@ -39,6 +40,7 @@ class AdminPanel extends StatelessWidget {
                     onTap: () {
                       BlocProvider.of<CategoryCubit>(context)
                           .getAllCategories();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Category(),));
                     },
                     child: containerPanel('categories'));
               },

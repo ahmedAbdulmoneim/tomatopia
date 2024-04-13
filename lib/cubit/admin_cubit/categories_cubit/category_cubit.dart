@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:tomatopia/api_models/admin_models/category_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
