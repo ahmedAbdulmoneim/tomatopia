@@ -16,7 +16,6 @@ class TomatopiaServices {
       'Authorization': 'Bearer $token',
     };
     Response response = await dio.post('$baseUrl$endPoint', data: data);
-    print(response.data);
     return response;
   }
 
@@ -33,15 +32,15 @@ class TomatopiaServices {
 
   Future<Response> update({
     required String endPoint,
-    required Map<String, dynamic> query,
+    Map<String, dynamic>? query,
+    Map<String, dynamic>? data,
     String? token,
   }) async {
     dio.options.headers = {
       'Authorization': 'Bearer $token',
     };
     Response response =
-        await dio.put('$baseUrl$endPoint', queryParameters: query);
-    print(response.data);
+        await dio.put('$baseUrl$endPoint', queryParameters: query, data: data);
     return response;
   }
 
@@ -57,7 +56,6 @@ class TomatopiaServices {
       "$baseUrl$endpoint",
       queryParameters: query,
     );
-    print(response.data);
     return response;
   }
 }

@@ -13,3 +13,9 @@ class DeleteCategoryLoadingState extends CategoryStates {}
 class DeleteCategorySuccessState extends CategoryStates {}
 
 class DeleteCategoryFailureState extends CategoryStates {}
+
+class EditeCategoryLoadingState extends CategoryStates {}
+
+class EditeCategorySuccessState extends CategoryStates {}
+
+class EditeCategoryFailureState extends CategoryStates {}

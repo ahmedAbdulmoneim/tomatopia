@@ -16,10 +16,8 @@ class CategoryCubit extends Cubit<CategoryStates> {
     emit(GetAllCategoryLoadingState());
     tomatopiaServices.getData(endPoint: getAllCat, token: token).then((value) {
       categoryList = value.data;
-      print(categoryList![0]['name']);
       emit(GetAllCategorySuccessState());
     }).catchError((onError) {
-      print('get all category error : $onError');
       emit(GetAllCategoryFailureState());
     });
   }
@@ -34,6 +32,22 @@ class CategoryCubit extends Cubit<CategoryStates> {
       emit(DeleteCategorySuccessState());
     }).catchError((onError) {
       emit(DeleteCategoryFailureState());
+    });
+  }
+
+  DeleteModel? editModel;
+
+  editeCategory({required int id, required String newCategory}) {
+    emit(EditeCategoryLoadingState());
+    tomatopiaServices.update(
+      endPoint: 'Category/EditCategory',
+      token: token,
+      data: {"id": id, "name": newCategory},
+    ).then((value) {
+      editModel = DeleteModel.fromJson(value.data);
+      emit(EditeCategorySuccessState());
+    }).catchError((onError) {
+      emit(EditeCategoryFailureState());
     });
   }
 }
