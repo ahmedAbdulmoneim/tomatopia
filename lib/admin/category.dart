@@ -2,10 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
-import 'package:tomatopia/custom_widget/custom_button.dart';
-
 import '../cubit/admin_cubit/categories_cubit/category_states.dart';
 
 class Category extends StatelessWidget {
@@ -21,7 +20,27 @@ class Category extends StatelessWidget {
       ),
       body: BlocConsumer<CategoryCubit,CategoryStates>(
         listener: (context, state) {
-
+         if(state is DeleteCategorySuccessState){
+           BlocProvider.of<CategoryCubit>(context).getAllCategories();
+           Fluttertoast.showToast(
+               msg: 'category deleted successfully',
+               toastLength: Toast.LENGTH_LONG,
+               backgroundColor: Colors.green,
+               timeInSecForIosWeb: 5,
+               textColor: Colors.white,
+               fontSize: 16.5,
+               gravity: ToastGravity.CENTER);
+         }
+         if (state is DeleteCategoryFailureState) {
+           Fluttertoast.showToast(
+               msg: 'Delete category failed',
+               toastLength: Toast.LENGTH_LONG,
+               backgroundColor: Colors.red,
+               timeInSecForIosWeb: 5,
+               textColor: Colors.white,
+               fontSize: 16.5,
+               gravity: ToastGravity.CENTER);
+         }
         },
         builder: (context, state) {
           var cubit  = BlocProvider.of<CategoryCubit>(context);
@@ -51,26 +70,13 @@ class Category extends StatelessWidget {
                                 '${cubit.categoryList![index]['id']}. ${cubit.categoryList![index]['name']}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 20, fontStyle: FontStyle.italic),
                               ),
                             ),
                             IconButton(
                               onPressed: () {
-                                AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.warning,
-                                  btnOkOnPress: () async {
 
-                                  },
-                                  btnCancelOnPress: () {},
-                                  btnCancelText: 'Cancel',
-                                  btnOkText: 'Delete',
-                                  btnCancelColor: Colors.green,
-                                  btnOkColor: Colors.red,
-                                  title: 'Are You Sure You Want To Delete This User .',
-                                  animType: AnimType.leftSlide,
-                                ).show();
                               },
                               icon: const Icon(
                                 FontAwesomeIcons.penToSquare,
@@ -79,6 +85,23 @@ class Category extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: () {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.warning,
+                                  btnOkOnPress: ()  async{
+                                    await cubit.deleteCategory(id: cubit.categoryList![index]['id']);
+                                    if(state is GetAllCategorySuccessState || state is DeleteCategorySuccessState){
+                                      cubit.getAllCategories();
+                                    }
+                                    },
+                                  btnCancelOnPress: () {},
+                                  btnCancelText: 'Cancel',
+                                  btnOkText: 'Delete',
+                                  btnCancelColor: Colors.green,
+                                  btnOkColor: Colors.red,
+                                  title: 'Are You Sure You Want To Delete This User .',
+                                  animType: AnimType.leftSlide,
+                                ).show();
 
                               },
                               icon: const Icon(

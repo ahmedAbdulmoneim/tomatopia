@@ -6,3 +6,4 @@ const String changeName = 'Account/ChangeName';
 const String getAllUsers = 'Account/GetAllUsers';
 const String deleteUser = 'Account/DeleteUser';
 const String getAllCat = 'Category/GetAll';
+const String deleteCat = 'Category/DeleteCategory';
