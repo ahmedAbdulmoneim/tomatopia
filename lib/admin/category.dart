@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
+import 'package:tomatopia/custom_widget/add_category.dart';
 import 'package:tomatopia/custom_widget/delete_category.dart';
 import 'package:tomatopia/custom_widget/edit_category.dart';
 import '../cubit/admin_cubit/categories_cubit/category_states.dart';
@@ -12,12 +13,29 @@ class Category extends StatelessWidget {
   Category({Key? key}) : super(key: key);
   final GlobalKey<FormState> formKey = GlobalKey();
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController newCategory = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Category'),
+        title: const Text(
+            'Category',
+        ),
+        actions: [
+          BlocConsumer<CategoryCubit,CategoryStates>(
+            listener: (context, state) {
+              if(state is AddCategorySuccessState){
+                BlocProvider.of<CategoryCubit>(context).getAllCategories();
+              }
+
+            },
+            builder: (context, state) {
+              var addCat = BlocProvider.of<CategoryCubit>(context);
+              return  addCategory(context, formKey, newCategory, addCat);
+            },
+          ),
+        ],
       ),
       body: BlocConsumer<CategoryCubit, CategoryStates>(
         listener: (context, state) {
@@ -103,8 +121,7 @@ class Category extends StatelessWidget {
                         deleteCategory(context, cubit, index, state)
                       ],
                     ),
-                    separatorBuilder: (context, index) =>
-                        const Divider(height: 30),
+                    separatorBuilder: (context, index) => const Divider(height: 30),
                     itemCount: cubit.categoryList!.length,
                   ),
                 ),

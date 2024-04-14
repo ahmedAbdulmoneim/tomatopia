@@ -50,4 +50,20 @@ class CategoryCubit extends Cubit<CategoryStates> {
       emit(EditeCategoryFailureState());
     });
   }
+
+  DeleteModel? addModel;
+
+  addCategory({required String newCategory})
+  {
+    emit(AddCategoryLoadingState());
+    tomatopiaServices
+        .postData(endPoint: addCat, data: {"name": newCategory}, token: token)
+        .then((value) {
+      addModel = DeleteModel.fromJson(value.data);
+      emit(AddCategorySuccessState());
+    }).catchError((onError) {
+      print('add category error : $onError');
+      emit(AddCategoryFailureState());
+    });
+  }
 }

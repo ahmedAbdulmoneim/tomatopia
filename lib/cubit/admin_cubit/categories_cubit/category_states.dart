@@ -19,3 +19,9 @@ class EditeCategoryLoadingState extends CategoryStates {}
 class EditeCategorySuccessState extends CategoryStates {}
 
 class EditeCategoryFailureState extends CategoryStates {}
+
+class AddCategoryLoadingState extends CategoryStates {}
+
+class AddCategorySuccessState extends CategoryStates {}
+
+class AddCategoryFailureState extends CategoryStates {}
