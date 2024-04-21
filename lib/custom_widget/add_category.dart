@@ -78,10 +78,10 @@ Widget addCategory(context,key,newCat,addCat) => TextButton(
         color: Colors.green,
       ),
       SizedBox(
-        width: 3,
+        width: 8,
       ),
       Text(
-        'new category',
+        'Add new category',
         style: TextStyle(
           color: Colors.green,
         ),),

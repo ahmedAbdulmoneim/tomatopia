@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
-Widget editCategory(context,name,key,cubit,index) => IconButton(
+Widget editCategory({context, name, key, cubit, index}) => IconButton(
   onPressed: () {
     showModalBottomSheet(
       isScrollControlled: true,

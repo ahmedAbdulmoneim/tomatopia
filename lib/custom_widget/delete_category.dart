@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../cubit/admin_cubit/categories_cubit/category_states.dart';
 
-Widget deleteCategory(context,cubit,index,state) => IconButton(
+Widget deleteCategory({context, cubit, index, state}) => IconButton(
   onPressed: () {
     AwesomeDialog(
       context: context,
