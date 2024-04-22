@@ -1,9 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
-import 'package:tomatopia/custom_widget/delete_category.dart';
 import '../cubit/admin_cubit/users_cubit/users_states.dart';
 
 class Users extends StatelessWidget {
@@ -18,7 +19,21 @@ class Users extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Users'),
       ),
-      body: BlocBuilder<AdminCubit, AdminStates>(
+      body: BlocConsumer<AdminCubit, AdminStates>(
+        listener: (context, state) {
+          if(state is DeleteUsersSuccessState){
+            BlocProvider.of<AdminCubit>(context).showAllUsers(pageSize: 10, pageNumber:  BlocProvider.of<AdminCubit>(context).currentPage+1);
+            Fluttertoast.showToast(
+              msg: 'user deleted successfully',
+              toastLength: Toast.LENGTH_LONG,
+              backgroundColor: Colors.green,
+              timeInSecForIosWeb: 5,
+              textColor: Colors.white,
+              fontSize: 16.5,
+              gravity: ToastGravity.SNACKBAR, // Center gravity
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = BlocProvider.of<AdminCubit>(context);
           return Stack(
@@ -47,11 +62,31 @@ class Users extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              deleteCategory(
-                                  cubit: cubit,
-                                  index: index,
-                                  state: state,
-                                  context: context)
+                              TextButton(onPressed: (){
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.warning,
+                                  btnOkOnPress: ()  async{
+                                    await cubit.deleteUser(email: cubit.userModel![index]['email']);
+                                    if(state is GetAllUsersSuccessState || state is DeleteUsersSuccessState){
+                                      cubit.showAllUsers(pageSize: 10, pageNumber: cubit.currentPage + 1);                                    }
+                                  },
+                                  btnCancelOnPress: () {},
+                                  btnCancelText: 'Cancel',
+                                  btnOkText: 'Delete',
+                                  btnCancelColor: Colors.green,
+                                  btnOkColor: Colors.red,
+                                  title: 'Are you sure you want to delete this user ${cubit.userModel![index]['email']} .',
+                                  animType: AnimType.leftSlide,
+                                ).show();
+
+                              },
+                                  child: const Text(
+                                'Delete',
+                                style: TextStyle(
+                                  color: Colors.red
+                                ),
+                              ))
                             ],
                           ),
                           separatorBuilder: (context, index) =>
