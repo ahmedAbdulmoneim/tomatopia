@@ -12,12 +12,6 @@ class AdminCubit extends Cubit<AdminStates> {
   List<dynamic>? userModel;
   DeleteModel? deleteModel;
 
-  int pageSize = 1;
-
-  changePageSize({value}) {
-    pageSize = value;
-    emit(ChangePageSize());
-  }
 
   showAllUsers({
     required dynamic pageSize,
@@ -52,5 +46,11 @@ class AdminCubit extends Cubit<AdminStates> {
       print('delete user error : $onError');
       emit(DeleteUsersFailuerState());
     });
+  }
+
+  int currentPage = 0 ;
+  onPageChange(int index){
+ currentPage = index;
+ emit(OnPageChange());
   }
 }

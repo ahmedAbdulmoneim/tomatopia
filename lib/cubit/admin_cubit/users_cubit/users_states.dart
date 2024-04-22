@@ -8,7 +8,7 @@ class GetAllUsersSuccessState extends AdminStates {}
 
 class GetAllUsersFailuerState extends AdminStates {}
 
-class ChangePageSize extends AdminStates{}
+class OnPageChange extends AdminStates{}
 
 class DeleteUsersLoadingState extends AdminStates {}
 

@@ -1,12 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/admin/category.dart';
 import 'package:tomatopia/admin/disease.dart';
 import 'package:tomatopia/admin/tips.dart';
 import 'package:tomatopia/admin/users.dart';
+import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_states.dart';
+import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
 import 'package:tomatopia/custom_widget/admin_panel_container.dart';
+
+import '../cubit/admin_cubit/users_cubit/users_states.dart';
 
 class AdminPanel extends StatelessWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -22,15 +27,21 @@ class AdminPanel extends StatelessWidget {
         child: ListView(
           children: [
             Image.asset('assets/admin.png'),
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Users(),
-                      ));
-                },
-                child: containerPanel('users')),
+            BlocBuilder<AdminCubit,AdminStates>(
+              builder: (context, state) {
+                return  GestureDetector(
+                    onTap: () async{
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Users(),
+                          ));
+                      await BlocProvider.of<AdminCubit>(context).showAllUsers(pageSize: 10, pageNumber: 1);
+
+                    },
+                    child: containerPanel('users'));
+              },
+            ),
             const SizedBox(
               height: 15,
             ),
