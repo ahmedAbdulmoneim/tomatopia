@@ -53,7 +53,7 @@ class Users extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  '${cubit.userModel![index]['email']}',
+                                  '${cubit.userModel!.users![index].email}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -67,7 +67,7 @@ class Users extends StatelessWidget {
                                   context: context,
                                   dialogType: DialogType.warning,
                                   btnOkOnPress: ()  async{
-                                    await cubit.deleteUser(email: cubit.userModel![index]['email']);
+                                    await cubit.deleteUser(email: cubit.userModel!.users![index].email!);
                                     if(state is GetAllUsersSuccessState || state is DeleteUsersSuccessState){
                                       cubit.showAllUsers(pageSize: 10, pageNumber: cubit.currentPage + 1);                                    }
                                   },
@@ -76,7 +76,7 @@ class Users extends StatelessWidget {
                                   btnOkText: 'Delete',
                                   btnCancelColor: Colors.green,
                                   btnOkColor: Colors.red,
-                                  title: 'Are you sure you want to delete this user ${cubit.userModel![index]['email']} .',
+                                  title: 'Are you sure you want to delete this user ${cubit.userModel!.users![index].email} .',
                                   animType: AnimType.leftSlide,
                                 ).show();
 
@@ -93,8 +93,8 @@ class Users extends StatelessWidget {
                           const Divider(
                             height: 20,
                           ),
-                          itemCount: cubit.userModel!.length <= 10
-                              ? cubit.userModel!.length
+                          itemCount: cubit.userModel!.users!.length <= 10
+                              ? cubit.userModel!.users!.length
                               : 10),
                     ),
                     const SizedBox(

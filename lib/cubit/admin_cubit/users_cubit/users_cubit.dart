@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:tomatopia/api_models/admin_models/delete_model.dart';
+import 'package:tomatopia/api_models/admin_models/get_users_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
@@ -9,7 +10,7 @@ class AdminCubit extends Cubit<AdminStates> {
   AdminCubit(this.tomatopiaServices) : super(GetAllUsersInitialState());
 
   TomatopiaServices tomatopiaServices;
-  List<dynamic>? userModel;
+  AllUsersModel? userModel;
   DeleteModel? deleteModel;
 
 
@@ -22,7 +23,9 @@ class AdminCubit extends Cubit<AdminStates> {
       'pageSize': pageSize,
       'pageNumber': pageNumber,
     }).then((value) {
-      userModel = value.data;
+      userModel = AllUsersModel.fromJson(value.data);
+      print(userModel!.allUserNumber);
+      print(userModel!.users![0].email);
       emit(GetAllUsersSuccessState());
     }).catchError((onError) {
       print('get all users error : $onError');
