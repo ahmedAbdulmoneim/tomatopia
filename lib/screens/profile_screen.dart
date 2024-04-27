@@ -277,14 +277,16 @@ class _ProfileState extends State<Profile> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(
-                            profile.profileModel?.email == null
-                                ? userEmail
-                                : profile.profileModel!.email,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                          Expanded(
+                            child: Text(
+                              profile.profileModel?.email == null
+                                  ? userEmail
+                                  : profile.profileModel!.email,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ],
