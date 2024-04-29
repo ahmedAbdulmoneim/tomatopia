@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                userEmail == 'Admin@gmail.com' ?
+                userEmail == 'Admin@gamil.com' ?
                 ListTile(
                   leading: const Icon(
                      Icons.admin_panel_settings_sharp,

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/admin_models/delete_model.dart';
 import 'package:tomatopia/api_models/admin_models/get_users_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
@@ -24,11 +25,9 @@ class AdminCubit extends Cubit<AdminStates> {
       'pageNumber': pageNumber,
     }).then((value) {
       userModel = AllUsersModel.fromJson(value.data);
-      print(userModel!.allUserNumber);
-      print(userModel!.users![0].email);
       emit(GetAllUsersSuccessState());
     }).catchError((onError) {
-      print('get all users error : $onError');
+      debugPrint('get all users error : $onError');
       emit(GetAllUsersFailuerState());
     });
   }
@@ -46,7 +45,7 @@ class AdminCubit extends Cubit<AdminStates> {
       emit(DeleteUsersSuccessState());
       emit(GetAllUsersSuccessState());
     }).catchError((onError) {
-      print('delete user error : $onError');
+      debugPrint('delete user error : $onError');
       emit(DeleteUsersFailuerState());
     });
   }

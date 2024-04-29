@@ -1,12 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/admin/category.dart';
-import 'package:tomatopia/admin/disease/add_disease.dart';
 import 'package:tomatopia/admin/disease/diseases.dart';
 import 'package:tomatopia/admin/tips.dart';
 import 'package:tomatopia/admin/users.dart';
-import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_states.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
@@ -29,18 +26,25 @@ class AdminPanel extends StatelessWidget {
         padding: const EdgeInsets.only(left: 25.0, right: 25),
         child: ListView(
           children: [
-            Image.asset('assets/admin.png',height: 170,),
-            BlocBuilder<AdminCubit,AdminStates>(
+            Image.asset(
+              'assets/admin.png',
+              height: 170,
+            ),
+            BlocBuilder<AdminCubit, AdminStates>(
               builder: (context, state) {
-                return  GestureDetector(
-                    onTap: () async{
+                int pageNumber =
+                    BlocProvider.of<AdminCubit>(context).currentPage;
+                return GestureDetector(
+                    onTap: () async {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Users(),
                           ));
-                      await BlocProvider.of<AdminCubit>(context).showAllUsers(pageSize: 10, pageNumber: 1);
-
+                      await BlocProvider.of<AdminCubit>(context).showAllUsers(
+                        pageSize: 10,
+                        pageNumber: pageNumber + 1,
+                      );
                     },
                     child: containerPanel('users'));
               },
@@ -54,7 +58,11 @@ class AdminPanel extends StatelessWidget {
                     onTap: () {
                       BlocProvider.of<CategoryCubit>(context)
                           .getAllCategories();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Category(),));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Category(),
+                          ));
                     },
                     child: containerPanel('categories'));
               },
@@ -67,37 +75,36 @@ class AdminPanel extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Tips(),
+                        builder: (context) => const Tips(),
                       ));
                 },
                 child: containerPanel('tips')),
             const SizedBox(
               height: 15,
             ),
-            BlocBuilder<DiseaseCubit,DiseaseStates>(
-              builder: (context, state) {
-                return GestureDetector(
-                    onTap: () async{
-                      if(BlocProvider.of<DiseaseCubit>(context).allDisease.isNotEmpty){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllDiseases(),
-                            ));
-                      }else{
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AllDiseases(),
-                            ));
-                        await BlocProvider.of<DiseaseCubit>(context).getAllDisease();
-
-                      }
-
-                    },
-                    child: containerPanel('disease'));
-              }
-            ),
+            BlocBuilder<DiseaseCubit, DiseaseStates>(builder: (context, state) {
+              return GestureDetector(
+                  onTap: () async {
+                    if (BlocProvider.of<DiseaseCubit>(context)
+                        .allDisease
+                        .isNotEmpty) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AllDiseases(),
+                          ));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AllDiseases(),
+                          ));
+                      await BlocProvider.of<DiseaseCubit>(context)
+                          .getAllDisease();
+                    }
+                  },
+                  child: containerPanel('disease'));
+            }),
           ],
         ),
       ),
