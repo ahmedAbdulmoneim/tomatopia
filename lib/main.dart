@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
-import 'package:tomatopia/constant/endpints.dart';
-import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
+import 'package:tomatopia/cubit/auth_cubit/forget_password/forget_password_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
@@ -38,6 +38,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<AdminCubit>(
             create: (context) => AdminCubit(TomatopiaServices(Dio())),
+          ),
+          BlocProvider<DiseaseCubit>(
+            create: (context) => DiseaseCubit(TomatopiaServices(Dio())),
+          ),
+          BlocProvider<ForgetPasswordCubit>(
+            create: (context) => ForgetPasswordCubit(TomatopiaServices(Dio())),
           ),
 
         ],

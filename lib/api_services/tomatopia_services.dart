@@ -5,17 +5,18 @@ class TomatopiaServices {
 
   TomatopiaServices(this.dio);
 
-  String baseUrl = 'http://graduationproject.somee.com/api/';
+  String baseUrl = 'http://graduationprojec.runasp.net/api/';
 
   Future<Response> postData({
     required String endPoint,
-    required Map<String, dynamic> data,
+    required dynamic data,
     String? token,
+    Map<String,dynamic>? parameters ,
   }) async {
     dio.options.headers = {
       'Authorization': 'Bearer $token',
     };
-    Response response = await dio.post('$baseUrl$endPoint', data: data);
+    Response response = await dio.post('$baseUrl$endPoint', data: data,queryParameters: parameters);
     return response;
   }
 
