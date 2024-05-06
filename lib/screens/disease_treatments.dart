@@ -16,9 +16,9 @@ class Treatments extends StatelessWidget {
         ),
       ),
       body: PlantDiseaseTreatmentWidget(
-          diseaseName: searchedDisease[index].treatments![1].name!,
+          diseaseName: searchedDisease[index].treatments![0].name!,
           treatments: [
-            searchedDisease[index].treatments![1].description!,
+            searchedDisease[index].treatments![0].description!,
           ]),
     );
   }

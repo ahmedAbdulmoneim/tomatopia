@@ -4,7 +4,7 @@ class ScaleTransition1 extends PageRouteBuilder{
   final Widget page ;
   ScaleTransition1(this.page):super(
     pageBuilder: (context,animation,anotherAnimation) =>page,
-    transitionDuration: const Duration(milliseconds: 1000),
+    transitionDuration: const Duration(milliseconds: 800),
     reverseTransitionDuration: const Duration(milliseconds: 200),
     transitionsBuilder: (context,animation,anotherAnimation,child){
       animation = CurvedAnimation(
@@ -18,4 +18,29 @@ class ScaleTransition1 extends PageRouteBuilder{
   );
 
 
+}
+
+class SizeTransition1 extends PageRouteBuilder{
+  final Widget page ;
+  SizeTransition1(this.page):super(
+    pageBuilder: (context,animation,anotherAnimation) =>page,
+    transitionDuration: const Duration(milliseconds: 800),
+    reverseTransitionDuration: const Duration(milliseconds: 200),
+    transitionsBuilder: (context,animation,anotherAnimation,child){
+      animation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.fastOutSlowIn,
+          reverseCurve: Curves.fastOutSlowIn
+      );
+      return Align(
+        alignment: Alignment.center,
+        child: SizeTransition(
+          sizeFactor: animation,
+          axisAlignment: 0,
+          child: page,
+        ),
+      );
+    },
+
+  );
 }
