@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/api_models/admin_models/disease_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
