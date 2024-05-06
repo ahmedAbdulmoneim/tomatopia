@@ -5,7 +5,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:tomatopia/api_models/admin_models/disease_model.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
 import 'about_disease.dart';
