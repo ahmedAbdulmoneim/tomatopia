@@ -34,8 +34,8 @@ class DiseaseDetails extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => Treatments(
+                      SizeTransition1(
+                        Treatments(
                           searchedDisease: cubit.searchedDisease,
                           index: index,
                         ),
@@ -60,8 +60,9 @@ class DiseaseDetails extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
-                      context, ScaleTransition1(FullScreenImage(imageUrl: cubit.searchedDisease[index].image!))
-                    );
+                        context,
+                        ScaleTransition1(FullScreenImage(
+                            imageUrl: cubit.searchedDisease[index].image!)));
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
