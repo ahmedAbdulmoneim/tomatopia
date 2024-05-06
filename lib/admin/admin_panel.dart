@@ -45,8 +45,9 @@ class AdminPanel extends StatelessWidget {
                         pageSize: 10,
                         pageNumber: pageNumber + 1,
                       );
-                    },
-                    child: containerPanel('users'));
+                     },
+                    child: containerPanel('users')
+    );
               },
             ),
             const SizedBox(

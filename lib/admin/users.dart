@@ -41,7 +41,7 @@ class Users extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = BlocProvider.of<AdminCubit>(context);
-          double number = cubit.userModel!.allUserNumber! / 10;
+          double number = cubit.userModel!.usersNumber! / 10;
           int numberOfPages = number.ceil();
           return Stack(
             children: [

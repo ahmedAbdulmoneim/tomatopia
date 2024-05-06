@@ -11,7 +11,7 @@ class AdminCubit extends Cubit<AdminStates> {
   AdminCubit(this.tomatopiaServices) : super(GetAllUsersInitialState());
 
   TomatopiaServices tomatopiaServices;
-  AllUsersModel? userModel;
+  AllUserModel? userModel;
   DeleteModel? deleteModel;
 
 
@@ -24,7 +24,7 @@ class AdminCubit extends Cubit<AdminStates> {
       'pageSize': pageSize,
       'pageNumber': pageNumber,
     }).then((value) {
-      userModel = AllUsersModel.fromJson(value.data);
+      userModel = AllUserModel.fromJson(value.data);
       emit(GetAllUsersSuccessState());
     }).catchError((onError) {
       debugPrint('get all users error : $onError');
