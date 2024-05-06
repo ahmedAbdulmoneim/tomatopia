@@ -31,7 +31,7 @@ class DiseaseCubit extends Cubit<DiseaseStates>{
       emit(GetAllDiseaseSuccessState());
     }).catchError((onError){
       print("get disease error her : $onError");
-      emit(GetAllDiseaseFailuerState());
+      emit(GetAllDiseaseFailureState());
     });
   }
 
@@ -62,8 +62,34 @@ class DiseaseCubit extends Cubit<DiseaseStates>{
       emit(AddDiseaseSuccessState());
     }).catchError((onError) {
       print('add disease error : $onError');
-      emit(AddDiseaseFailuerState());
+      emit(AddDiseaseFailureState());
     });
+  }
+
+  List<dynamic> searchData = [];
+  List<DiseaseModel> searchedDisease = [];
+  getDiseaseByName(
+  {
+    required String name ,
+}
+      ){
+    emit(GetDiseaseByNameLoadingState());
+    tomatopiaServices.getData(endPoint: getDiseaseByNameEndpoint,token: token,query: {'name' : name}).then((value) {
+      searchData = value.data ;
+      for (int i = 0; i < searchData.length; i++) {
+        searchedDisease.add(DiseaseModel.fromJson(searchData[i]));
+      }
+      debugPrint('treatments : ${value.data[0]['category']}');
+      emit(GetDiseaseByNameSuccessState());
+    }).catchError((onError){
+      debugPrint('get disease by name error : $onError');
+      emit(GetDiseaseByNameFailureState());
+    });
+    
+  }
+  clearSearchedDisease(){
+    searchedDisease.clear();
+    emit(ClearSearchedDisease());
   }
 
 

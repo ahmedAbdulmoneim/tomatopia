@@ -13,3 +13,4 @@ const String editecat = 'Category/EditCategory';
 const String addCat = 'Category/AddCategory';
 const String getAllDiseaseEndpoint = 'Disease/GetAllDisease';
 const String addDiseaseEndpoint = 'Disease/AddDisease';
+const String getDiseaseByNameEndpoint = 'Disease/SearchByName';
