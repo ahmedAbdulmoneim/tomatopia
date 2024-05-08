@@ -23,3 +23,9 @@ class GetDiseaseByNameFailureState extends DiseaseStates {}
 
 class ChooseImage extends DiseaseStates{}
 class ClearSearchedDisease extends DiseaseStates{}
+
+class DeleteDiseaseLoadingState extends DiseaseStates {}
+
+class DeleteDiseaseSuccessState extends DiseaseStates {}
+
+class DeleteDiseaseFailureState extends DiseaseStates {}

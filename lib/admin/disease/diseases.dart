@@ -1,8 +1,13 @@
 import 'dart:convert';
+import 'package:achievement_view/achievement_view.dart';
+import 'package:achievement_view/achievement_widget.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:tomatopia/admin/disease/about_disease.dart';
+import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/screens/about_disease.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
 
@@ -12,7 +17,12 @@ class AllDiseases extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DiseaseCubit, DiseaseStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is DeleteDiseaseSuccessState){
+          show(context, 'Done', 'Disease deleted successfully!', Colors.green);
+          BlocProvider.of<DiseaseCubit>(context).getAllDisease();
+        }
+      },
       builder: (context, state) {
         var cubit = BlocProvider.of<DiseaseCubit>(context);
         return Scaffold(
@@ -27,85 +37,106 @@ class AllDiseases extends StatelessWidget {
               ),
             ],
           ),
-          body: state is GetAllDiseaseLoadingState ||
-                  state is GetAllDiseaseFailuerState
-              ? Center(
+          body: ConditionalBuilder(
+            condition: state is GetAllDiseaseLoadingState || state is GetAllDiseaseFailureState,
+            builder: (context) => Center(
                   child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: Colors.blue, size: 50))
-              : ListView.builder(
-                  itemBuilder: (context, index) => Card(
-                    elevation: 6,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    margin: const EdgeInsets.only(
-                        left: 15, right: 15, top: 8, bottom: 8),
-                    child: InkWell(
-                      onLongPress: (){},
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DiseaseDetails(
-                                    index: index,
-                                  )),
-                        );
-                      },
-                      child: Container(
-                        height: 100,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
+                      color: Colors.blue, size: 50)),
+            fallback: (context) => ListView.builder(
+              itemBuilder: (context, index) => Card(
+                elevation: 6,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                margin: const EdgeInsets.only(
+                    left: 15, right: 15, top: 8, bottom: 8),
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.memory(
+                            base64Decode(cubit.allDisease[index].image!),
+                            fit: BoxFit.fill,
+                            width: 70,
+                            height: 70,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.memory(
-                                  base64Decode(cubit.allDisease[index].image!),
-                                  fit: BoxFit.fill,
-                                  width: 70,
-                                  height: 70,
-                                ),
+                              Text(
+                                cubit.allDisease[index].name!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w300),
                               ),
-                              const SizedBox(
-                                width: 10,
+                              Text(
+                                cubit.allDisease[index].category!.name!,
+                                style: const TextStyle(
+                                    color: Colors.black54,
+                                    overflow: TextOverflow.ellipsis),
                               ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      cubit.allDisease[index].name!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    Text(
-                                      cubit.allDisease[index].category!.name!,
-                                      style: const TextStyle(
-                                          color: Colors.black54,
-                                          overflow: TextOverflow.ellipsis),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.arrow_forward_ios),
                             ],
                           ),
                         ),
-                      ),
+                         IconButton(
+                            onPressed: (){
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.warning,
+                                btnOkOnPress: () async {
+                                  await cubit.deleteDiseases(
+                                      id: cubit.allDisease[index].id!
+                                  );
+                                  if (state
+                                  is GetAllDiseaseSuccessState ||
+                                      state
+                                      is DeleteDiseaseSuccessState) {
+                                    cubit.getAllDisease();
+                                  }
+                                },
+                                btnCancelOnPress: () {},
+                                btnCancelText: 'Cancel',
+                                btnOkText: 'Delete',
+                                btnCancelColor: Colors.green,
+                                btnOkColor: Colors.red,
+                                title:
+                                'Are you sure you want to delete this disease ${cubit.allDisease[index].name} .',
+                                animType: AnimType.leftSlide,
+                              ).show();
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),),
+                      ],
                     ),
                   ),
-                  itemCount: cubit.allDisease.length,
                 ),
+              ),
+              itemCount: cubit.allDisease.length,
+            ),
+          ),
         );
       },
     );
   }
 }
+
+
+
