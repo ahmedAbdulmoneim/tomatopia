@@ -6,6 +6,7 @@ import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart
 import 'package:tomatopia/custom_widget/add_category.dart';
 import 'package:tomatopia/custom_widget/category_list_item.dart';
 import '../cubit/admin_cubit/categories_cubit/category_states.dart';
+import '../custom_widget/toasts.dart';
 
 class Category extends StatelessWidget {
   Category({Key? key}) : super(key: key);
@@ -19,51 +20,24 @@ class Category extends StatelessWidget {
       listener: (context, state) {
         if (state is AddCategorySuccessState) {
           BlocProvider.of<CategoryCubit>(context).getAllCategories();
+          show(context, 'Done', 'Category added successfully!', Colors.green);
         }
         if (state is DeleteCategorySuccessState) {
           BlocProvider.of<CategoryCubit>(context).getAllCategories();
-          Fluttertoast.showToast(
-              msg: 'category deleted successfully',
-              toastLength: Toast.LENGTH_LONG,
-              backgroundColor: Colors.green,
-              timeInSecForIosWeb: 5,
-              textColor: Colors.white,
-              fontSize: 16.5,
-              gravity: ToastGravity.CENTER);
+          show(context, 'Done', 'Category deleted successfully!', Colors.green);
         }
         if (state is EditeCategorySuccessState) {
           BlocProvider.of<CategoryCubit>(context).getAllCategories();
-          Fluttertoast.showToast(
-              msg: 'category edited successfully',
-              toastLength: Toast.LENGTH_LONG,
-              backgroundColor: Colors.green,
-              timeInSecForIosWeb: 5,
-              textColor: Colors.white,
-              fontSize: 16.5,
-              gravity: ToastGravity.CENTER);
+          show(context, 'Done', 'Category updated successfully!', Colors.green);
         }
         if (state is AddCategorySuccessState) {
           BlocProvider.of<CategoryCubit>(context).getAllCategories();
         }
         if (state is DeleteCategoryFailureState) {
-          Fluttertoast.showToast(
-              msg: 'Delete category failed',
-              toastLength: Toast.LENGTH_LONG,
-              backgroundColor: Colors.red,
-              timeInSecForIosWeb: 5,
-              textColor: Colors.white,
-              fontSize: 16.5,
-              gravity: ToastGravity.CENTER);
+          show(context, 'Error', 'Delete failed!', Colors.red);
         }
         if (state is EditeCategoryFailureState) {
-          Fluttertoast.showToast(
-              msg: 'edite category failed',
-              toastLength: Toast.LENGTH_LONG,
-              backgroundColor: Colors.red,
-              timeInSecForIosWeb: 5,
-              textColor: Colors.white,
-              fontSize: 16.5,
-              gravity: ToastGravity.CENTER);
+          show(context, 'Error', 'Edit category failed!', Colors.red);
         }
       },
       builder: (context, state) {

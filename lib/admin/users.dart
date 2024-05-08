@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:number_paginator/number_paginator.dart';
+import 'package:tomatopia/admin/disease/diseases.dart';
 import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
 import '../cubit/admin_cubit/users_cubit/users_states.dart';
+import '../custom_widget/toasts.dart';
 
 class Users extends StatelessWidget {
   Users({Key? key}) : super(key: key);
@@ -28,20 +30,12 @@ class Users extends StatelessWidget {
                 pageSize: 10,
                 pageNumber:
                     BlocProvider.of<AdminCubit>(context).currentPage + 1);
-            Fluttertoast.showToast(
-              msg: 'user deleted successfully',
-              toastLength: Toast.LENGTH_LONG,
-              backgroundColor: Colors.green,
-              timeInSecForIosWeb: 5,
-              textColor: Colors.white,
-              fontSize: 16.5,
-              gravity: ToastGravity.SNACKBAR, // Center gravity
-            );
+            show(context, 'Done', 'User deleted successfully!', Colors.green);
           }
         },
         builder: (context, state) {
           var cubit = BlocProvider.of<AdminCubit>(context);
-          double number = cubit.userModel!.usersNumber! / 10;
+          double number = cubit.numberOfPages / 10;
           int numberOfPages = number.ceil();
           return Stack(
             children: [
@@ -95,7 +89,7 @@ class Users extends StatelessWidget {
                                               btnCancelColor: Colors.green,
                                               btnOkColor: Colors.red,
                                               title:
-                                                  'Are you sure you want to delete this user ${cubit.userModel!.users![index].email} .',
+                                                  'Are you sure you want to delete this user : ${cubit.userModel!.users![index].email} .',
                                               animType: AnimType.leftSlide,
                                             ).show();
                                           },

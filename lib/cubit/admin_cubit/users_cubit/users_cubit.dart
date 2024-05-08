@@ -14,7 +14,7 @@ class AdminCubit extends Cubit<AdminStates> {
   AllUserModel? userModel;
   DeleteModel? deleteModel;
 
-
+ int numberOfPages = 1 ;
   showAllUsers({
     required dynamic pageSize,
     required dynamic pageNumber,
@@ -25,6 +25,7 @@ class AdminCubit extends Cubit<AdminStates> {
       'pageNumber': pageNumber,
     }).then((value) {
       userModel = AllUserModel.fromJson(value.data);
+      numberOfPages = userModel!.usersNumber!;
       emit(GetAllUsersSuccessState());
     }).catchError((onError) {
       debugPrint('get all users error : $onError');

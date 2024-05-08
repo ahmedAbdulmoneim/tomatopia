@@ -86,23 +86,13 @@ class AdminPanel extends StatelessWidget {
             BlocBuilder<DiseaseCubit, DiseaseStates>(builder: (context, state) {
               return GestureDetector(
                   onTap: () async {
-                    if (BlocProvider.of<DiseaseCubit>(context)
-                        .allDisease
-                        .isNotEmpty) {
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const AllDiseases(),
                           ));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AllDiseases(),
-                          ));
-                      await BlocProvider.of<DiseaseCubit>(context)
-                          .getAllDisease();
-                    }
+                      await BlocProvider.of<DiseaseCubit>(context).getAllDisease();
                   },
                   child: containerPanel('disease'));
             }),
