@@ -6,7 +6,9 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:tomatopia/admin/disease/add_disease.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/about_disease.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
@@ -22,6 +24,9 @@ class AllDiseases extends StatelessWidget {
           show(context, 'Done', 'Disease deleted successfully!', Colors.green);
           BlocProvider.of<DiseaseCubit>(context).getAllDisease();
         }
+        if(state is DeleteDiseaseFailureState){
+          show(context, 'Error', 'Failed to delete disease', Colors.red);
+        }
       },
       builder: (context, state) {
         var cubit = BlocProvider.of<DiseaseCubit>(context);
@@ -32,8 +37,17 @@ class AllDiseases extends StatelessWidget {
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.search),
+                onPressed: () {
+                  Navigator.push(context,
+                  SizeTransition1(AddDisease()));
+                },
+                icon: Container(
+                  padding: const EdgeInsets.all(5),
+                    decoration:  BoxDecoration(
+                      color: Colors.grey[300],
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.add)),
               ),
             ],
           ),
