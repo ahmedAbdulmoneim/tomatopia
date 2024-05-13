@@ -1,16 +1,13 @@
-// Import the package
-import 'dart:convert';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
+import '../custom_widget/custom_card.dart';
 import 'about_disease.dart';
 import '../cubit/admin_cubit/disease/disease_cubit.dart';
 import '../cubit/admin_cubit/disease/disease_states.dart';
-
 
 class Search extends StatelessWidget {
   Search({Key? key}) : super(key: key);
@@ -79,80 +76,27 @@ class Search extends StatelessWidget {
               fallback: (context) => ConditionalBuilder(
                 condition: state is GetAllDiseaseInitialState ||
                     cubit.searchedDisease.isEmpty,
-                builder: (context) =>  Center(
-                  child: Image.asset(
-                    'assets/search.jpg'
-                  ),
+                builder: (context) => Center(
+                  child: Image.asset('assets/search.jpg'),
                 ),
                 fallback: (context) => ListView.builder(
                   itemCount: cubit.searchedDisease.length,
-                  itemBuilder: (context, index) => Card(
-                    elevation: 6,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    margin: const EdgeInsets.only(
-                        left: 15, right: 15, top: 8, bottom: 8),
-                    child: InkWell(
-                      onLongPress: (){},
+                  itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         Navigator.push(
-                          context,ScaleTransition1(DiseaseDetails(
-                          index: index,
-                        ))
+                          context,
+                          ScaleTransition1(
+                            DiseaseDetails(index: index),
+                          ),
                         );
                       },
-                      child: Container(
-                        height: 100,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.memory(
-                                  base64Decode(cubit.searchedDisease[index].image!),
-                                  fit: BoxFit.fill,
-                                  width: 70,
-                                  height: 70,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      cubit.searchedDisease[index].name!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    Text(
-                                      cubit.searchedDisease[index].category!.name!,
-                                      style: const TextStyle(
-                                          color: Colors.black54,
-                                          overflow: TextOverflow.ellipsis),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.arrow_forward_ios),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      child: card(
+                        image: cubit.searchedDisease[index].image!,
+                        index: index,
+                        context: context,
+                        mainTitle: cubit.searchedDisease[index].name!,
+                        subtitle: cubit.searchedDisease[index].category!.name!,
+                      )),
                 ),
               ),
             ),

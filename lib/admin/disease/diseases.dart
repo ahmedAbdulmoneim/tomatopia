@@ -13,6 +13,8 @@ import 'package:tomatopia/screens/about_disease.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
 
+import '../../custom_widget/custom_card.dart';
+
 class AllDiseases extends StatelessWidget {
   const AllDiseases({Key? key}) : super(key: key);
 
@@ -57,92 +59,24 @@ class AllDiseases extends StatelessWidget {
                   child: LoadingAnimationWidget.staggeredDotsWave(
                       color: Colors.blue, size: 50)),
             fallback: (context) => ListView.builder(
-              itemBuilder: (context, index) => Card(
-                elevation: 6,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                margin: const EdgeInsets.only(
-                    left: 15, right: 15, top: 8, bottom: 8),
-                child: Container(
-                  height: 100,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.memory(
-                            base64Decode(cubit.allDisease[index].image!),
-                            fit: BoxFit.fill,
-                            width: 70,
-                            height: 70,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.allDisease[index].name!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                cubit.allDisease[index].category!.name!,
-                                style: const TextStyle(
-                                    color: Colors.black54,
-                                    overflow: TextOverflow.ellipsis),
-                              ),
-                            ],
-                          ),
-                        ),
-                         IconButton(
-                            onPressed: (){
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.warning,
-                                btnOkOnPress: () async {
-                                  await cubit.deleteDiseases(
-                                      id: cubit.allDisease[index].id!
-                                  );
-                                  if (state
-                                  is GetAllDiseaseSuccessState ||
-                                      state
-                                      is DeleteDiseaseSuccessState) {
-                                    cubit.getAllDisease();
-                                  }
-                                },
-                                btnCancelOnPress: () {},
-                                btnCancelText: 'Cancel',
-                                btnOkText: 'Delete',
-                                btnCancelColor: Colors.green,
-                                btnOkColor: Colors.red,
-                                title:
-                                'Are you sure you want to delete this disease ${cubit.allDisease[index].name} .',
-                                animType: AnimType.leftSlide,
-                              ).show();
-                            },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              itemBuilder: (context, index) => card(
+                  image: cubit.allDisease[index].image!,
+                  index: index,
+                  context: context,
+                  dialogTitle: 'Are you sure you want to delete this disease:  ${cubit.allDisease[index].name} .',
+                  mainTitle: cubit.allDisease[index].name!,
+                  subtitle: cubit.allDisease[index].category!.name!,
+                  onPressed: () async {
+                    await cubit.deleteDiseases(
+                        id: cubit.allDisease[index].id!
+                    );
+                    if (state
+                    is GetAllDiseaseSuccessState ||
+                        state
+                        is DeleteDiseaseSuccessState) {
+                      cubit.getAllDisease();
+                    }
+                  }),
               itemCount: cubit.allDisease.length,
             ),
           ),
