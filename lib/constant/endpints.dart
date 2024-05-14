@@ -15,3 +15,5 @@ const String getAllDiseaseEndpoint = 'Disease/GetAllDisease';
 const String addDiseaseEndpoint = 'Disease/AddDisease';
 const String getDiseaseByNameEndpoint = 'Disease/SearchByName';
 const String deleteDisease = 'Disease/DeleteDisease';
+const String getPosts = 'Post/GetAllPosts';
+

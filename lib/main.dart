@@ -1,17 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatopia/api_services/model_services.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
+import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
 import 'package:tomatopia/cubit/auth_cubit/forget_password/forget_password_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
+import 'cubit/home_cubit/home_cubit.dart';
 import 'cubit/weather/weather_states.dart';
 
 void main() async{
@@ -45,7 +48,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<ForgetPasswordCubit>(
             create: (context) => ForgetPasswordCubit(TomatopiaServices(Dio())),
           ),
-
+          BlocProvider<AiCubit>(
+            create: (context) => AiCubit(AIModelServices(Dio())),
+          ),
+          BlocProvider<HomeCubit>(
+            create: (context) => HomeCubit(TomatopiaServices(Dio())),
+          ),
         ],
       child: BlocConsumer<WeatherCubit, WeatherStates>(
         builder: (context, state) {

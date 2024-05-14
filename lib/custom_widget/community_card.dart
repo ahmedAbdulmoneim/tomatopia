@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tomatopia/custom_widget/custom_row.dart';
 
-Widget communityCard() => Card(
+Widget communityCard({
+  required String postImage ,
+  required String content ,
+  required int likes,
+  required int dislikes,
+  context
+}) => Card(
     shadowColor: Colors.grey,
     elevation: 2,
     color: Colors.white,
@@ -49,14 +55,19 @@ Widget communityCard() => Card(
           const SizedBox(
             height: 15,
           ),
-          const Text(
-              'I got this problem in my plant, why this happened adn how can I treat this '),
+           Text(
+              content),
           const SizedBox(
             height: 10,
           ),
-          Image.asset(
-            'assets/real_tomato.png',
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              postImage,
+              fit: BoxFit.cover,
+              width: MediaQuery.sizeOf(context).width,
+              height: 300,
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -74,7 +85,7 @@ Widget communityCard() => Card(
                     child: customRow(
                         width: 5,
                         icon: Icons.thumb_up_outlined,
-                        text: 'Upvote')),
+                        text: likes == 0 ? 'like' : '$likes',)),
               ),
               const Spacer(),
               GestureDetector(
@@ -88,7 +99,7 @@ Widget communityCard() => Card(
                     child: customRow(
                         width: 5,
                         icon: Icons.thumb_down_outlined,
-                        text: 'Dnvote')),
+                        text: dislikes == 0 ? 'dislike' : '$dislikes',),),
               ),
               const Spacer(),
               GestureDetector(
