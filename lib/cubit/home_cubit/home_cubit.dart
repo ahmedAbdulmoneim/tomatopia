@@ -12,43 +12,63 @@ import '../../screens/alerts_screen.dart';
 import '../../screens/community.dart';
 import '../../screens/home_screen.dart';
 
-class HomeCubit extends Cubit<HomePageStates>{
-  HomeCubit(this.tomatopiaServices):super(HomeInitialState());
+class HomeCubit extends Cubit<HomePageStates> {
+  HomeCubit(this.tomatopiaServices) : super(HomeInitialState());
 
   int currentIndex = 0;
+  int? likes;
+
+  int? disLikes;
 
   List<Widget> screens = [
-    HomeScreen(),
+    const HomeScreen(),
     Search(),
-    Community(),
-    Alerts(),
-    Tips()
+    const Community(),
+    const Alerts(),
+    const Tips()
   ];
 
-  TomatopiaServices tomatopiaServices ;
-  GetPostsModel? getPostsModel ;
+  TomatopiaServices tomatopiaServices;
+
   List<dynamic> data = [];
   List<GetPostsModel> allPosts = [];
 
-  getAllPost(){
+  getAllPost() {
     emit(GetAllPostsSuccessState());
-    tomatopiaServices.getData(endPoint: getPosts,token: token).then((value) {
-      data = value.data ;
+    tomatopiaServices.getData(endPoint: getPosts, token: token).then((value) {
+      data = value.data;
       allPosts.clear();
       for (int i = 0; i < data.length; i++) {
         allPosts.add(GetPostsModel.fromJson(data[i]));
       }
       debugPrint("${allPosts.length}");
       emit(GetAllPostsSuccessState());
-    }).catchError((onError){
+    }).catchError((onError) {
       debugPrint("get all posts error : $onError");
       emit(GetAllPostsFailureState());
     });
   }
 
-  onSelectedItem({required value}){
-    currentIndex = value ;
+  onSelectedItem({required value}) {
+    currentIndex = value;
     emit(OnSelectedItemState());
   }
 
+  GetPostsModel? reactModel;
+
+  addReactToPost({required int id, required bool like, required bool dislike,index}) {
+    emit(AddReactPostsLoadingState());
+    tomatopiaServices
+        .postData(
+      endPoint: addPostReact,
+      data: {"objectId": id, "like": like, "dislike": dislike},
+      token: token,
+    ).then((value) {
+      reactModel = GetPostsModel.fromJson(value.data);
+      emit(AddReactPostsSuccessState());
+    }).catchError((onError) {
+      debugPrint("add react error : $onError");
+      emit(AddReactPostsFailureState());
+    });
+  }
 }

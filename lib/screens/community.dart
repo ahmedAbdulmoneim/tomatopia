@@ -1,5 +1,4 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -21,7 +20,7 @@ class Community extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = BlocProvider.of<HomeCubit>(context);
-          final ScrollController _scrollController = ScrollController();
+          final ScrollController scrollController = ScrollController();
           return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -43,9 +42,10 @@ class Community extends StatelessWidget {
                         fallback: (context) {
                           // After the data is loaded, scroll to the bottom
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            _scrollController.jumpTo(
-                              _scrollController.position.maxScrollExtent,
-                            );
+                            if(state is GetAllPostsSuccessState) {
+                              scrollController.jumpTo(
+                                scrollController.position.maxScrollExtent,);
+                            }
                           });
 
                           return RefreshIndicator(
@@ -57,14 +57,16 @@ class Community extends StatelessWidget {
                             },
                             child: ListView.builder(
                               reverse: true,
-                              controller: _scrollController,
+                              controller: scrollController,
                               itemBuilder: (context, index) => communityCard(
+                                index: index,
                                 postImage:
                                 'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}',
                                 content: cubit.allPosts[index].content,
                                 context: context,
                                 dislikes: cubit.allPosts[index].disLikes,
                                 likes: cubit.allPosts[index].likes,
+                                id: cubit.allPosts[index].id
                               ),
                               itemCount: cubit.allPosts.length,
                             ),
