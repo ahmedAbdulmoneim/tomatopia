@@ -60,11 +60,13 @@ class Community extends StatelessWidget {
                               controller: scrollController,
                               itemBuilder: (context, index) => communityCard(
                                 index: index,
-                                postImage:
-                                'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}',
+                                postImage: 'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}',
+                                userImageInPost: 'http://graduationprojec.runasp.net//${cubit.allPosts[index].userImage}',
                                 content: cubit.allPosts[index].content,
                                 context: context,
                                 dislikes: cubit.allPosts[index].disLikes,
+                                userNameInPost: cubit.allPosts[index].userName,
+                                creationDate: cubit.allPosts[index].creationDate,
                                 likes: cubit.allPosts[index].likes,
                                 id: cubit.allPosts[index].id
                               ),

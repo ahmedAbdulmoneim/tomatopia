@@ -39,10 +39,12 @@ class HomeCubit extends Cubit<HomePageStates> {
     tomatopiaServices.getData(endPoint: getPosts, token: token).then((value) {
       data = value.data;
       allPosts.clear();
+
+      // save reversed data in list
+
       for (int i = 0; i < data.length; i++) {
-        allPosts.add(GetPostsModel.fromJson(data[i]));
+        allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
-      debugPrint("${allPosts.length}");
       emit(GetAllPostsSuccessState());
     }).catchError((onError) {
       debugPrint("get all posts error : $onError");
@@ -57,14 +59,16 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   AddReactModel? reactModel;
 
-  addReactToPost({required int id, required bool like, required bool dislike,index}) {
+  addReactToPost(
+      {required int id, required bool like, required bool dislike, index}) {
     emit(AddReactPostsLoadingState());
     tomatopiaServices
         .postData(
       endPoint: addPostReact,
       data: {"objectId": id, "like": like, "dislike": dislike},
       token: token,
-    ).then((value) {
+    )
+        .then((value) {
       reactModel = AddReactModel.fromJson(value.data);
       emit(AddReactPostsSuccessState());
     }).catchError((onError) {
