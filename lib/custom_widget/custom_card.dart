@@ -4,7 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:tomatopia/constant/variables.dart';
 
-Widget card(
+Widget customCard(
 {
   required String image ,
   required int index ,
@@ -65,7 +65,7 @@ Widget card(
               ],
             ),
           ),
-          userEmail == 'admin@gamil.com' ?
+          userEmail == 'Admin@gamil.com' || userEmail == 'admin@gamil.com' ?
           IconButton(
             onPressed: (){
               AwesomeDialog(
@@ -85,7 +85,8 @@ Widget card(
             icon: const Icon(
               Icons.delete,
               color: Colors.red,
-            ),) :
+            ),
+          ) :
           const Icon(Icons.arrow_forward_ios_outlined)
         ],
       ),

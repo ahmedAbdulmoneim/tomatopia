@@ -59,7 +59,7 @@ class AllDiseases extends StatelessWidget {
                   child: LoadingAnimationWidget.staggeredDotsWave(
                       color: Colors.blue, size: 50)),
             fallback: (context) => ListView.builder(
-              itemBuilder: (context, index) => card(
+              itemBuilder: (context, index) => customCard(
                   image: cubit.allDisease[index].image!,
                   index: index,
                   context: context,

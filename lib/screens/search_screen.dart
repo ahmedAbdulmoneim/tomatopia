@@ -90,7 +90,7 @@ class Search extends StatelessWidget {
                           ),
                         );
                       },
-                      child: card(
+                      child: customCard(
                         image: cubit.searchedDisease[index].image!,
                         index: index,
                         context: context,
