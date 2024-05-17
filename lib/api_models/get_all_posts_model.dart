@@ -4,6 +4,7 @@ class GetPostsModel {
   final int id;
   final String content;
   final String image;
+  final String userImage;
   final String creationDate;
   final int likes;
   final int disLikes;
@@ -14,6 +15,7 @@ class GetPostsModel {
     required this.id,
     required this.content,
     required this.image,
+    required this.userImage,
     required this.creationDate,
     required this.likes,
     required this.disLikes,
@@ -26,6 +28,7 @@ class GetPostsModel {
       id: json['id'],
       content: json['content'],
       image: json['image'],
+      userImage: json['userImage'],
       creationDate: json['creationDate'],
       likes: json['likes'],
       disLikes: json['disLikes'],

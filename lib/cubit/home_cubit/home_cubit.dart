@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tomatopia/api_models/add_react_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/screens/search_screen.dart';
 
@@ -54,7 +55,7 @@ class HomeCubit extends Cubit<HomePageStates> {
     emit(OnSelectedItemState());
   }
 
-  GetPostsModel? reactModel;
+  AddReactModel? reactModel;
 
   addReactToPost({required int id, required bool like, required bool dislike,index}) {
     emit(AddReactPostsLoadingState());
@@ -64,7 +65,7 @@ class HomeCubit extends Cubit<HomePageStates> {
       data: {"objectId": id, "like": like, "dislike": dislike},
       token: token,
     ).then((value) {
-      reactModel = GetPostsModel.fromJson(value.data);
+      reactModel = AddReactModel.fromJson(value.data);
       emit(AddReactPostsSuccessState());
     }).catchError((onError) {
       debugPrint("add react error : $onError");
