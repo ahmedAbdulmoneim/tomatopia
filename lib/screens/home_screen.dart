@@ -1,14 +1,9 @@
-import 'dart:io';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/admin/admin_panel.dart';
 import 'package:tomatopia/auth/login.dart';
 import 'package:tomatopia/constant/carousal_items.dart';
@@ -22,7 +17,6 @@ import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
-import 'package:tomatopia/screens/treatment_screen.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
 
@@ -63,8 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     style:
                     const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                  currentAccountPicture: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/ahmed.png'),
+                  currentAccountPicture:  CircleAvatar(
+                    backgroundImage: userImage == "" ? const AssetImage('assets/no_profile_image.png') :NetworkImage('http://graduationprojec.runasp.net//$userImage')as ImageProvider,
                   ),
                   currentAccountPictureSize: const Size.fromRadius(40),
                 ),
@@ -78,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Profile(),
+                          builder: (context) =>  Profile(),
                         ));
                   },
                 ),

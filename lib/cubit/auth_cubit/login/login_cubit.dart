@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tomatopia/api_models/auth_models/login_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
+import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_states.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -17,10 +18,14 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(LoginLoadingState());
     tomatopiaServices.postData(endPoint: endPoint, data: data).then((value) {
       loginModel = LoginModel.fromJson(value.data);
-      print(loginModel!.name);
+      debugPrint(loginModel!.image);
+      if(loginModel?.image != null){
+        userImage = loginModel!.image;
+      }
+
       emit(LoginSuccessState());
     }).catchError((onError) {
-      print('catch error her : $onError');
+      debugPrint('catch error her : $onError');
       emit(LoginFailureState());
     });
   }

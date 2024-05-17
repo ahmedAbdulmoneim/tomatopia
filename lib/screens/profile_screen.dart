@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/constant/validate_password.dart';
 import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_cubit.dart';
@@ -16,24 +12,18 @@ import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
 import '../api_services/tomatopia_services.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
-
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
+class Profile extends StatelessWidget {
+  Profile({super.key});
   GlobalKey<FormState> formKey = GlobalKey();
   GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  File? selectedImage;
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -50,7 +40,7 @@ class _ProfileState extends State<Profile> {
 
           },
           builder: (context, state) {
-            var profile = BlocProvider.of<ProfileCubit>(context);
+            var profileCubit = BlocProvider.of<ProfileCubit>(context);
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView(
@@ -62,15 +52,16 @@ class _ProfileState extends State<Profile> {
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            selectedImage != null
-                                ? CircleAvatar(
-                                    radius: 90,
-                                    backgroundImage:
-                                        FileImage(selectedImage!))
-                                : const CircleAvatar(
-                                    radius: 90,
-                                    backgroundImage: AssetImage(
-                                        'assets/no_profile_image.png')),
+                            userImage == ""
+                                ?
+                            const CircleAvatar(
+                                radius: 90,
+                                backgroundImage:
+                                AssetImage('assets/no_profile_image.png'))
+                                :
+                            CircleAvatar(
+                              radius: 90,
+                              backgroundImage: NetworkImage('http://graduationprojec.runasp.net//$userImage')),
                             IconButton(
                               onPressed: () {
                                 showModalBottomSheet(
@@ -84,8 +75,9 @@ class _ProfileState extends State<Profile> {
                                           children: [
                                             IconButton(
                                               onPressed: () async {
-                                                await takeProfileImage();
-                                                Navigator.pop(context);
+                                                Navigator.pop(context);                                                await profileCubit.picImageFromCamera();
+                                                profileCubit.addUserImage(data: profileCubit.formData!);
+
                                               },
                                               icon: const Icon(
                                                 Icons.camera_alt_outlined,
@@ -100,15 +92,17 @@ class _ProfileState extends State<Profile> {
                                           children: [
                                             IconButton(
                                               onPressed: () async {
-                                                await loadProfileImage();
                                                 Navigator.pop(context);
+                                                await profileCubit.picImageFromGallery();
+                                                profileCubit.addUserImage(data: profileCubit.formData!);
+
                                               },
                                               icon: const Icon(
                                                 Icons.image,
                                                 color: Colors.blue,
                                               ),
                                             ),
-                                            const Text('camera')
+                                            const Text('gallery')
                                           ],
                                         ),
                                         const Spacer(),
@@ -167,7 +161,7 @@ class _ProfileState extends State<Profile> {
                                       Navigator.pop(context);
                                     }
                                     if (state
-                                        is ChangePasswordFailuerState) {
+                                    is ChangePasswordFailuerState) {
                                       Fluttertoast.showToast(
                                           msg: "name doesn't changed",
                                           toastLength: Toast.LENGTH_LONG,
@@ -180,8 +174,8 @@ class _ProfileState extends State<Profile> {
                                   },
                                   builder: (context, state) {
                                     var cubit =
-                                        BlocProvider.of<ProfileCubit>(
-                                            context);
+                                    BlocProvider.of<ProfileCubit>(
+                                        context);
                                     return Form(
                                       key: formKey,
                                       child: Container(
@@ -214,7 +208,7 @@ class _ProfileState extends State<Profile> {
                                                 TextButton(
                                                     onPressed: () {
                                                       nameController.text =
-                                                          '';
+                                                      '';
                                                       Navigator.pop(
                                                           context);
                                                     },
@@ -222,7 +216,7 @@ class _ProfileState extends State<Profile> {
                                                       'cancel',
                                                       style: TextStyle(
                                                         color:
-                                                            Colors.black54,
+                                                        Colors.black54,
                                                       ),
                                                     )),
                                                 TextButton(
@@ -237,16 +231,16 @@ class _ProfileState extends State<Profile> {
                                                     style: TextStyle(
                                                         color: Colors.green,
                                                         decoration:
-                                                            TextDecoration
-                                                                .underline,
+                                                        TextDecoration
+                                                            .underline,
                                                         decorationStyle:
-                                                            TextDecorationStyle
-                                                                .solid,
+                                                        TextDecorationStyle
+                                                            .solid,
                                                         decorationColor:
-                                                            Colors.green,
+                                                        Colors.green,
                                                         textBaseline:
-                                                            TextBaseline
-                                                                .alphabetic,
+                                                        TextBaseline
+                                                            .alphabetic,
                                                         fontSize: 18),
                                                   ),
                                                 ),
@@ -279,9 +273,9 @@ class _ProfileState extends State<Profile> {
                           ),
                           Expanded(
                             child: Text(
-                              profile.profileModel?.email == null
+                              profileCubit.profileModel?.email == null
                                   ? userEmail
-                                  : profile.profileModel!.email,
+                                  : profileCubit.profileModel!.email,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -321,10 +315,10 @@ class _ProfileState extends State<Profile> {
                                       ChangePasswordStates>(
                                     listener: (context, state) {
                                       if (state
-                                          is ChangePasswordSuccessState) {
+                                      is ChangePasswordSuccessState) {
                                         Fluttertoast.showToast(
                                             msg:
-                                                'password changed successfully',
+                                            'password changed successfully',
                                             toastLength: Toast.LENGTH_LONG,
                                             backgroundColor: Colors.green,
                                             timeInSecForIosWeb: 5,
@@ -337,7 +331,7 @@ class _ProfileState extends State<Profile> {
                                         Navigator.pop(context);
                                       }
                                       if (state
-                                          is ChangePasswordFailuerState) {
+                                      is ChangePasswordFailuerState) {
                                         Fluttertoast.showToast(
                                             msg: 'we cant change password',
                                             toastLength: Toast.LENGTH_LONG,
@@ -380,10 +374,10 @@ class _ProfileState extends State<Profile> {
                                                 prefix: Icons.password,
                                                 suffix: cubit.suffixIcon,
                                                 suffixFunc:
-                                                    cubit.suffixFunction,
+                                                cubit.suffixFunction,
                                                 label: 'enter old password',
                                                 controller:
-                                                    oldPasswordController,
+                                                oldPasswordController,
                                               ),
                                               const SizedBox(
                                                 height: 15,
@@ -404,7 +398,7 @@ class _ProfileState extends State<Profile> {
                                                 obscureText: cubit.isSecure,
                                                 label: 'enter new password',
                                                 controller:
-                                                    newPasswordController,
+                                                newPasswordController,
                                               ),
                                               const SizedBox(
                                                 height: 15,
@@ -424,10 +418,10 @@ class _ProfileState extends State<Profile> {
                                                 prefix: Icons.password,
                                                 obscureText: cubit.isSecure,
                                                 suffixFunc:
-                                                    cubit.suffixFunction,
+                                                cubit.suffixFunction,
                                                 label: 'confirm new password',
                                                 controller:
-                                                    confirmPasswordController,
+                                                confirmPasswordController,
                                               ),
                                               Row(
                                                 children: [
@@ -447,7 +441,7 @@ class _ProfileState extends State<Profile> {
                                                         'cancel',
                                                         style: TextStyle(
                                                           color:
-                                                              Colors.black54,
+                                                          Colors.black54,
                                                         ),
                                                       )),
                                                   TextButton(
@@ -458,14 +452,14 @@ class _ProfileState extends State<Profile> {
                                                         cubit.changePassword(
                                                             data: {
                                                               "oldPassword":
-                                                                  oldPasswordController
-                                                                      .text,
+                                                              oldPasswordController
+                                                                  .text,
                                                               "newPassword":
-                                                                  newPasswordController
-                                                                      .text,
+                                                              newPasswordController
+                                                                  .text,
                                                               "confirmPassword":
-                                                                  confirmPasswordController
-                                                                      .text,
+                                                              confirmPasswordController
+                                                                  .text,
                                                             });
                                                       }
                                                     },
@@ -474,16 +468,16 @@ class _ProfileState extends State<Profile> {
                                                       style: TextStyle(
                                                           color: Colors.green,
                                                           decoration:
-                                                              TextDecoration
-                                                                  .underline,
+                                                          TextDecoration
+                                                              .underline,
                                                           decorationStyle:
-                                                              TextDecorationStyle
-                                                                  .solid,
+                                                          TextDecorationStyle
+                                                              .solid,
                                                           decorationColor:
-                                                              Colors.green,
+                                                          Colors.green,
                                                           textBaseline:
-                                                              TextBaseline
-                                                                  .alphabetic,
+                                                          TextBaseline
+                                                              .alphabetic,
                                                           fontSize: 18),
                                                     ),
                                                   ),
@@ -514,20 +508,5 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-  Future takeProfileImage() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-    });
-  }
-
-  Future loadProfileImage() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-    });
-  }
 }
+
