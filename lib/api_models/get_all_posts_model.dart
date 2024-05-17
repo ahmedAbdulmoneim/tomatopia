@@ -3,7 +3,7 @@
 class GetPostsModel {
   final int id;
   final String content;
-  final String image;
+  final String? image;
   final String userImage;
   final String creationDate;
   final int likes;
@@ -15,7 +15,7 @@ class GetPostsModel {
   GetPostsModel({
     required this.id,
     required this.content,
-    required this.image,
+    this.image,
     required this.userImage,
     required this.creationDate,
     required this.likes,

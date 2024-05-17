@@ -61,11 +61,15 @@ Widget communityCard(
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.network(
+                child: postImage != '' ?
+                Image.network(
                   postImage,
                   fit: BoxFit.cover,
                   width: MediaQuery.sizeOf(context).width,
                   height: 300,
+                ) :
+                const Text(
+                    '',
                 ),
               ),
               const SizedBox(
