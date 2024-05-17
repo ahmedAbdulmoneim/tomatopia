@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:tomatopia/custom_widget/custom_row.dart';
 
 import '../cubit/home_cubit/home_cubit.dart';
@@ -10,6 +11,9 @@ Widget communityCard(
         required int likes,
         required int dislikes,
         required int id,
+        required String userImageInPost,
+        required String userNameInPost,
+        required String creationDate,
         required int index,
         context}) =>
     Card(
@@ -21,38 +25,28 @@ Widget communityCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+               Row(
                 children: [
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: AssetImage('assets/ahmed.png'),
+                    backgroundImage: BlocProvider.of<HomeCubit>(context).allPosts[index].userImage == "" ?const AssetImage('assets/no_profile_image.png') : NetworkImage(userImageInPost)as ImageProvider,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Column(
+                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Ahmed',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Egypt',
-                            style: TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
                       Text(
-                        '28 Dec, 22',
-                        style: TextStyle(fontSize: 12, color: Colors.black54),
+                        userNameInPost,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600),
+                      ),
+                       Text(
+                        DateFormat("d MMM yyy").format(DateTime.parse(creationDate)),
+                        style: const TextStyle(fontSize: 12, color: Colors.black54),
                       ),
                     ],
                   )
@@ -110,7 +104,6 @@ Widget communityCard(
                         id: id,
                         like: false,
                         dislike: true,
-                          index: index
                       );
                       // BlocProvider.of<HomeCubit>(context).onDisLikeTaped();
                     },
