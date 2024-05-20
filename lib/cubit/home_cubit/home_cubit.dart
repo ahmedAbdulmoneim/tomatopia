@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/add_react_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
@@ -75,5 +79,58 @@ class HomeCubit extends Cubit<HomePageStates> {
       debugPrint("add react error : $onError");
       emit(AddReactPostsFailureState());
     });
+  }
+
+  File? imageFile;
+  FormData? formData;
+
+  Future picImageFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    );
+    if (result != null) {
+      imageFile = File(result.files.single.path!);
+      formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(
+          imageFile!.path,
+          filename: imageFile!.path.split('/').last,
+        ),
+      });
+      emit(LoadImagePost());
+    } else {
+      debugPrint("didn't select an image ");
+    }
+  }
+
+  addPost({required String content, File? imageFile}) async {
+    emit(AddPostLoadingState());
+
+    try {
+      FormData formData = FormData.fromMap({
+        'content': content,
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path,
+              filename: 'image.jpg'),
+      });
+
+      var response = await tomatopiaServices.postData(
+        endPoint: addNewPost,
+        data: formData,
+        token: token,
+      );
+
+      debugPrint(response.data.toString());
+      getAllPost();
+      emit(AddPostSuccessState());
+    } catch (error) {
+      debugPrint("add new post error : $error");
+      emit(AddPostFailureState());
+    }
+  }
+
+  clearPostImage() {
+    imageFile = null;
+    emit(ClearPostImage());
   }
 }
