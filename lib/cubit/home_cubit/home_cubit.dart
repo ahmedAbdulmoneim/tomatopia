@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/add_react_model.dart';
+import 'package:tomatopia/api_models/tips_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/screens/search_screen.dart';
 
@@ -27,10 +28,9 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   List<Widget> screens = [
     const HomeScreen(),
-    Search(),
     const Community(),
     const Alerts(),
-    const Tips()
+
   ];
 
   TomatopiaServices tomatopiaServices;
@@ -45,7 +45,6 @@ class HomeCubit extends Cubit<HomePageStates> {
       allPosts.clear();
 
       // save reversed data in list
-
       for (int i = 0; i < data.length; i++) {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
@@ -132,5 +131,25 @@ class HomeCubit extends Cubit<HomePageStates> {
   clearPostImage() {
     imageFile = null;
     emit(ClearPostImage());
+  }
+
+  TipsModel? tipsModel ;
+  List<dynamic> tipsMap = [];
+  List<TipsModel> allTips = [];
+
+  getAllTips(){
+    emit(GetAllTipsLoadingState());
+    tomatopiaServices.getData(endPoint: getTips,token: token).then((value) {
+      tipsMap = value.data;
+      allTips.clear();
+      for(int i = 0; i< tipsMap.length;i++){
+        allTips.add(TipsModel.fromJson(tipsMap[i]));
+      }
+      print(allTips[0].title);
+      emit(GetAllTipsSuccessState());
+    }).catchError((onError){
+      debugPrint('ger tips error : $onError');
+      emit(GetAllTipsFailureState());
+    });
   }
 }

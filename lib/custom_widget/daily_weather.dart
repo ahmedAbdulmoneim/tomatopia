@@ -13,12 +13,12 @@ Widget dailyWeather() => Container(
       borderRadius: BorderRadius.circular(50),
       border: const Border(
         top: BorderSide(
-          color: Colors.black,
+          color: Colors.greenAccent,
           width: 2,
           strokeAlign: 1,
         ),
         bottom: BorderSide(
-          color: Colors.black,
+          color: Colors.greenAccent,
           width: 3,
           strokeAlign: 1,
         ),

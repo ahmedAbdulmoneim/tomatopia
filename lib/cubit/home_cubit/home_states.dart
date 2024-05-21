@@ -25,3 +25,9 @@ class AddPostFailureState extends HomePageStates {}
 class LoadImagePost extends HomePageStates {}
 
 class ClearPostImage extends HomePageStates {}
+
+class GetAllTipsLoadingState extends HomePageStates {}
+
+class GetAllTipsSuccessState extends HomePageStates {}
+
+class GetAllTipsFailureState extends HomePageStates {}

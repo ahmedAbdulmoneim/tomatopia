@@ -1,22 +1,25 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/admin/admin_panel.dart';
 import 'package:tomatopia/auth/login.dart';
-import 'package:tomatopia/constant/carousal_items.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_state.dart';
+import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
+import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
+import 'package:tomatopia/screens/search_screen.dart';
+import 'package:tomatopia/screens/tips.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
 
@@ -152,34 +155,119 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'popular disease',
-                  style: TextStyle(fontSize: 20),
-                ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                CarouselSlider(
-                  items: carousalItems,
-                  options: CarouselOptions(
-                    height: 200,
-                    aspectRatio: 16 / 9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.easeInBack,
-                    enlargeCenterPage: true,
-                    enlargeFactor: 0.3,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForecastWeather(),
+                          ));
+                    },
+                    child: dailyWeather()),
                 const SizedBox(
                   height: 35,
+                ),
+                BlocConsumer<HomeCubit,HomePageStates>(
+                  listener: (context, state) {
+                    if(state is GetAllTipsSuccessState){
+                      Navigator.push(context, SizeTransition1(ShowTips(
+                        allTips: BlocProvider.of<HomeCubit>(context).allTips,
+                      )));
+                    }
+
+                  },
+                  builder: (context, state) {
+                    return Row(
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context, SizeTransition1(Search()));
+                          },
+                          child: Container(
+                            height: 130,
+                            width: MediaQuery.of(context).size.width/2.2,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color : Colors.greenAccent[100]
+                            ),
+                            child:  Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white
+                                    ),
+                                    child: const Icon(
+                                      Icons.search,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5,),
+                                  const Text(
+                                    'Search for disease',
+                                    style: TextStyle(
+                                        fontSize: 16
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: ()async{
+                            await BlocProvider.of<HomeCubit>(context).getAllTips();
+                          },
+                          child: Container(
+                            height: 130,
+                            width: MediaQuery.of(context).size.width/2.2,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color : Colors.greenAccent[100]
+                            ),
+                            child:  Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white
+                                    ),
+                                    child: const Icon(
+                                      Icons.tips_and_updates,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5,),
+                                  const Text(
+                                    'Tips for you',
+                                    style: TextStyle(
+                                        fontSize: 16
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 BlocConsumer<AiCubit, AiModelStates>(
                   listener: (context, state) {
@@ -298,18 +386,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForecastWeather(),
-                          ));
-                    },
-                    child: dailyWeather()),
-                const SizedBox(
-                  height: 20,
-                ),
+
+
               ],
             ),
           ],

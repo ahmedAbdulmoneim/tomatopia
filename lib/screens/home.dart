@@ -30,11 +30,6 @@ class Home extends StatelessWidget {
                 inactiveColor: Colors.black,
               ),
               BottomNavyBarItem(
-                  activeColor: Colors.lightBlueAccent,
-                  inactiveColor: Colors.black,
-                  icon: const Icon(Icons.search),
-                  title: const Text('Search')),
-              BottomNavyBarItem(
                   activeColor: Colors.deepOrange,
                   inactiveColor: Colors.black,
                   icon: const Icon(Icons.chat_outlined),
@@ -44,15 +39,10 @@ class Home extends StatelessWidget {
                   inactiveColor: Colors.black,
                   icon: const Icon(Icons.crisis_alert),
                   title: const Text('Alert')),
-              BottomNavyBarItem(
-                  activeColor: Colors.blue,
-                  inactiveColor: Colors.black,
-                  icon: const Icon(Icons.tips_and_updates_outlined),
-                  title: const Text('Tips')),
             ],
             onItemSelected: (value) {
               cubit.onSelectedItem(value: value);
-              if(value == 2){
+              if(value == 1){
                 cubit.getAllPost();
               }
             },
