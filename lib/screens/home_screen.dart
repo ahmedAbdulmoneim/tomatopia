@@ -19,6 +19,7 @@ import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
+import 'package:tomatopia/screens/settings_screen.dart';
 import 'package:tomatopia/screens/tips.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
@@ -84,8 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.settings,
                   ),
                   title: const Text('Settings'),
-                  onTap: () {
+                  onTap: () async{
                     Navigator.pop(context);
+                    await Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
                   },
                 ),
                 ListTile(
