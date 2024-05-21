@@ -47,25 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 250,
             child: Column(
               children: [
-                UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(color: Color(0xFF9CECBF)),
-                  accountName: Text(
-                    BlocProvider.of<ProfileCubit>(context).newName == null
-                        ? userName
-                        : BlocProvider.of<ProfileCubit>(context).newName!,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  accountEmail: Text(
-                    userEmail,
-                    style:
-                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  currentAccountPicture:  CircleAvatar(
-                    backgroundImage: userImage == "" ? const AssetImage('assets/no_profile_image.png') :NetworkImage('http://graduationprojec.runasp.net//$userImage')as ImageProvider,
-                  ),
-                  currentAccountPictureSize: const Size.fromRadius(40),
-                ),
+                const SizedBox(height: 70,),
                 ListTile(
                   leading: const Icon(
                     Icons.person,
@@ -73,11 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: const Text('Profile'),
                   onTap: () async {
                     Navigator.pop(context);
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  Profile(),
-                        ));
+                    await BlocProvider.of<ProfileCubit>(context).getUserProfile();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
+
                   },
                 ),
                 ListTile(
@@ -87,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: const Text('Settings'),
                   onTap: () async{
                     Navigator.pop(context);
+                    await BlocProvider.of<ProfileCubit>(context).getUserProfile();
                     await Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
                   },
                 ),

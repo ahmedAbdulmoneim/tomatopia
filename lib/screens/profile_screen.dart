@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/constant/validate_password.dart';
-import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_cubit.dart';
-import 'package:tomatopia/cubit/auth_cubit/change_password/change_password_states.dart';
+
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_states.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
@@ -13,7 +12,8 @@ import 'package:tomatopia/custom_widget/text_form_filed.dart';
 import '../api_services/tomatopia_services.dart';
 
 class Profile extends StatelessWidget {
-  Profile({super.key});
+  Profile({super.key,required this.image});
+  String image ;
   GlobalKey<FormState> formKey = GlobalKey();
   GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
   TextEditingController oldPasswordController = TextEditingController();
@@ -36,8 +36,11 @@ class Profile extends StatelessWidget {
           listener: (context, state) {
             if(state is ChangeNameSuccessState){
               BlocProvider.of<ProfileCubit>(context).profileModel!.name = nameController.text;
-            }
 
+            }
+            if(state is AddProfileImageSuccessState){
+              print('profile : ${BlocProvider.of<ProfileCubit>(context).profileModel?.image}');
+            }
           },
           builder: (context, state) {
             var profileCubit = BlocProvider.of<ProfileCubit>(context);
@@ -52,7 +55,7 @@ class Profile extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            userImage == ""
+                            BlocProvider.of<ProfileCubit>(context).profileModel?.image == null
                                 ?
                             const CircleAvatar(
                                 radius: 90,
@@ -61,59 +64,7 @@ class Profile extends StatelessWidget {
                                 :
                             CircleAvatar(
                               radius: 90,
-                              backgroundImage: NetworkImage('http://graduationprojec.runasp.net//$userImage')),
-                            IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => SizedBox(
-                                    height: 100,
-                                    child: Row(
-                                      children: [
-                                        const Spacer(),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                Navigator.pop(context);                                                await profileCubit.picImageFromCamera();
-                                                profileCubit.addUserImage(data: profileCubit.formData!);
-
-                                              },
-                                              icon: const Icon(
-                                                Icons.camera_alt_outlined,
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                            const Text('camera')
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                Navigator.pop(context);
-                                                await profileCubit.picImageFromGallery();
-                                                profileCubit.addUserImage(data: profileCubit.formData!);
-
-                                              },
-                                              icon: const Icon(
-                                                Icons.image,
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                            const Text('gallery')
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(Icons.add_a_photo_sharp),
-                              color: Colors.black,
-                            )
+                              backgroundImage: NetworkImage('http://graduationprojec.runasp.net//${BlocProvider.of<ProfileCubit>(context).profileModel!.image}')),
                           ],
                         ),
                       ),
@@ -148,7 +99,7 @@ class Profile extends StatelessWidget {
                                     ProfileStates>(
                                   listener: (context, state) {
                                     if (state is ChangeNameSuccessState) {
-                                      BlocProvider.of<ProfileCubit>(context).userData();
+                                      BlocProvider.of<ProfileCubit>(context).getUserProfile();
                                       Fluttertoast.showToast(
                                           msg: 'name changed successfully',
                                           toastLength: Toast.LENGTH_LONG,
@@ -160,8 +111,7 @@ class Profile extends StatelessWidget {
                                       nameController.text = '';
                                       Navigator.pop(context);
                                     }
-                                    if (state
-                                    is ChangePasswordFailuerState) {
+                                    if (state is ChangePasswordFailuerState) {
                                       Fluttertoast.showToast(
                                           msg: "name doesn't changed",
                                           toastLength: Toast.LENGTH_LONG,
@@ -302,200 +252,7 @@ class Profile extends StatelessWidget {
                               fontSize: 18,
                             ),
                           ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) => BlocProvider(
-                                  create: (context) => ChangePasswordCubit(
-                                      TomatopiaServices(Dio())),
-                                  child: BlocConsumer<ChangePasswordCubit,
-                                      ChangePasswordStates>(
-                                    listener: (context, state) {
-                                      if (state
-                                      is ChangePasswordSuccessState) {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                            'password changed successfully',
-                                            toastLength: Toast.LENGTH_LONG,
-                                            backgroundColor: Colors.green,
-                                            timeInSecForIosWeb: 5,
-                                            textColor: Colors.white,
-                                            fontSize: 16.5,
-                                            gravity: ToastGravity.CENTER);
-                                        oldPasswordController.text = '';
-                                        newPasswordController.text = '';
-                                        confirmPasswordController.text = '';
-                                        Navigator.pop(context);
-                                      }
-                                      if (state
-                                      is ChangePasswordFailuerState) {
-                                        Fluttertoast.showToast(
-                                            msg: 'we cant change password',
-                                            toastLength: Toast.LENGTH_LONG,
-                                            backgroundColor: Colors.red,
-                                            timeInSecForIosWeb: 5,
-                                            textColor: Colors.white,
-                                            fontSize: 16.5,
-                                            gravity: ToastGravity.CENTER);
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      var cubit = BlocProvider.of<
-                                          ChangePasswordCubit>(context);
-                                      return Form(
-                                        key: bottomSheetFormKey,
-                                        child: Container(
-                                          height: 350,
-                                          margin: EdgeInsets.only(
-                                              bottom: MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom,
-                                              top: 20,
-                                              left: 10,
-                                              right: 10),
-                                          child: Column(
-                                            children: [
-                                              textFormField(
-                                                validate: (value) {
-                                                  if (value
-                                                      .toString()
-                                                      .isEmpty) {
-                                                    return "this filed can't be null";
-                                                  }
-                                                  return validatePassword(
-                                                      value);
-                                                },
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                obscureText: cubit.isSecure,
-                                                prefix: Icons.password,
-                                                suffix: cubit.suffixIcon,
-                                                suffixFunc:
-                                                cubit.suffixFunction,
-                                                label: 'enter old password',
-                                                controller:
-                                                oldPasswordController,
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              textFormField(
-                                                validate: (value) {
-                                                  if (value
-                                                      .toString()
-                                                      .isEmpty) {
-                                                    return "this filed can't be null";
-                                                  }
-                                                  return validatePassword(
-                                                      value);
-                                                },
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                prefix: Icons.password,
-                                                obscureText: cubit.isSecure,
-                                                label: 'enter new password',
-                                                controller:
-                                                newPasswordController,
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                              textFormField(
-                                                validate: (value) {
-                                                  if (value
-                                                      .toString()
-                                                      .isEmpty) {
-                                                    return "this filed can't be null";
-                                                  }
-                                                  return validatePassword(
-                                                      value);
-                                                },
-                                                keyboardType: TextInputType
-                                                    .visiblePassword,
-                                                prefix: Icons.password,
-                                                obscureText: cubit.isSecure,
-                                                suffixFunc:
-                                                cubit.suffixFunction,
-                                                label: 'confirm new password',
-                                                controller:
-                                                confirmPasswordController,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Spacer(),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        oldPasswordController
-                                                            .text = '';
-                                                        newPasswordController
-                                                            .text = '';
-                                                        confirmPasswordController
-                                                            .text = '';
-                                                        Navigator.pop(
-                                                            context);
-                                                      },
-                                                      child: const Text(
-                                                        'cancel',
-                                                        style: TextStyle(
-                                                          color:
-                                                          Colors.black54,
-                                                        ),
-                                                      )),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      if (bottomSheetFormKey
-                                                          .currentState!
-                                                          .validate()) {
-                                                        cubit.changePassword(
-                                                            data: {
-                                                              "oldPassword":
-                                                              oldPasswordController
-                                                                  .text,
-                                                              "newPassword":
-                                                              newPasswordController
-                                                                  .text,
-                                                              "confirmPassword":
-                                                              confirmPasswordController
-                                                                  .text,
-                                                            });
-                                                      }
-                                                    },
-                                                    child: const Text(
-                                                      'save',
-                                                      style: TextStyle(
-                                                          color: Colors.green,
-                                                          decoration:
-                                                          TextDecoration
-                                                              .underline,
-                                                          decorationStyle:
-                                                          TextDecorationStyle
-                                                              .solid,
-                                                          decorationColor:
-                                                          Colors.green,
-                                                          textBaseline:
-                                                          TextBaseline
-                                                              .alphabetic,
-                                                          fontSize: 18),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                            ),
-                          )
+
                         ],
                       ),
                     ],

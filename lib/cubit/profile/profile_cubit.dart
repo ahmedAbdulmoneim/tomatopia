@@ -4,10 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/profile/profile_states.dart';
 
+import '../../api_models/auth_models/change_password_model.dart';
 import '../../api_models/profile_model.dart';
 import '../../constant/variables.dart';
 import '../../constant/endpints.dart';
@@ -18,13 +20,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TomatopiaServices tomatopiaServices;
   ProfileModel? profileModel;
 
-  userData() {
+  getUserProfile() {
     emit(ProfileLoadingState());
-    tomatopiaServices.getData(endPoint: profile, token: token).then((value) {
+    tomatopiaServices.getData(endPoint: profile,token: token).then((value){
+      print(value.data);
       profileModel = ProfileModel.fromJson(value.data);
-      print(profileModel!.email);
+      debugPrint('${profileModel!.image}');
       emit(ProfileSuccessState());
-    }).catchError((onError) {
+    }).catchError((onError){
+      debugPrint("get user profile error : $onError");
       emit(ProfileFailureState());
     });
   }
@@ -36,6 +40,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
         endPoint: changeName,
         token: token,
         query: {"NewName": newName}).then((value) {
+          print(value.data);
       profileModel = ProfileModel.fromJson(value.data);
       userName = profileModel!.name;
       newName = profileModel!.name;
@@ -66,35 +71,86 @@ class ProfileCubit extends Cubit<ProfileStates> {
       debugPrint("didn't select an image ");
     }
   }
-  Future picImageFromCamera() async {
-    final picker = ImagePicker();
-    XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      formData = FormData.fromMap({
+  Future<void> picImageFromCamera() async {
+    try {
+      final picker = ImagePicker();
+      XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+      if (pickedFile != null) {
+        imageFile = File(pickedFile.path);
+        formData = FormData.fromMap({
+          'image': await MultipartFile.fromFile(
+            imageFile!.path,
+            filename: imageFile!.path.split('/').last,
+          ),
+        });
+        emit(PicProfileImageState());
+      } else {
+        debugPrint("No image selected from camera");
+      }
+    } catch (e) {
+      debugPrint("Error picking image from camera: $e");
+    }
+  }
+
+
+
+  addUserImage({required File imageFile}) async {
+    emit(AddProfileImageLoadingState());
+    try {
+      FormData formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(
           imageFile.path,
           filename: imageFile.path.split('/').last,
         ),
       });
-      emit(PicProfileImageState());
-    } else {
-      debugPrint("No image selected from camera");
+
+      final response = await tomatopiaServices.postData(
+        endPoint: addUserProfileImage,
+        token: token,
+        data: formData,
+      );
+
+      getUserProfile();
+      debugPrint("${response.data}");
+      emit(AddProfileImageSuccessState());
+    } catch (error) {
+      debugPrint("add profile image error : $error");
+      emit(AddProfileImageFailureState());
     }
   }
 
-  addUserImage({required FormData data}){
-    emit(AddProfileImageLoadingState());
-    tomatopiaServices.postData(endPoint: addUserProfileImage,token:  token, data: data).then((value) {
-      debugPrint("${value.data}");
-      emit(AddProfileImageSuccessState());
-    }).catchError((onError){
-      debugPrint("add profile image error : $onError");
-      emit(AddProfileImageFailureState());
-    });
-  }
   void clearSelectedImage() {
     imageFile = null;
     emit(DeleteUserImage());
+  }
+
+  ChangePasswordModel? changePasswordModel;
+
+  void changePassword({
+    required Map<String, dynamic> data,
+  }) {
+    emit(ChangePasswordLoadingState());
+    tomatopiaServices
+        .postData(endPoint: changePasswordEndPoint, data: data, token: token)
+        .then((value) {
+      changePasswordModel = ChangePasswordModel.fromJson(value.data);
+      print(changePasswordModel!.message);
+      emit(ChangePasswordSuccessState());
+    }).catchError((onError) {
+      print('change password error $onError');
+      emit(ChangePasswordFailuerState());
+    });
+  }
+
+  bool isSecure = true;
+  IconData suffixIcon = Icons.visibility_off_outlined;
+
+  suffixFunction() {
+    isSecure = !isSecure;
+    suffixIcon = isSecure
+        ? Icons.visibility_off_outlined
+        : Icons.remove_red_eye_outlined;
+    emit(SuffixIconVisibility());
   }
 }

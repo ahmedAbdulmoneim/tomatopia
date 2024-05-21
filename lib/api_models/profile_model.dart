@@ -1,14 +1,15 @@
 class ProfileModel{
-   String id ;
+
    String name ;
    String email;
-  ProfileModel({required this.name,required this.email,required this.id});
+   String image;
+  ProfileModel({required this.name,required this.email,required this.image});
 
   factory ProfileModel.fromJson(Map<String,dynamic> json){
     return ProfileModel(
         name: json['fullName'],
         email: json['email'],
-        id: json['id'],
+        image: json['image'],
     );
   }
 }
