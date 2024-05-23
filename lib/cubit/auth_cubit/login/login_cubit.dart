@@ -21,8 +21,8 @@ class LoginCubit extends Cubit<LoginStates> {
       debugPrint(loginModel!.image);
       if(loginModel?.image != null){
         userImage = loginModel!.image;
+        userId = loginModel!.userId!;
       }
-
       emit(LoginSuccessState());
     }).catchError((onError) {
       debugPrint('catch error her : $onError');

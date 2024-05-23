@@ -152,4 +152,15 @@ class HomeCubit extends Cubit<HomePageStates> {
       emit(GetAllTipsFailureState());
     });
   }
+
+  deletePost({required int id }){
+    emit(DeletePostLoadingState());
+    tomatopiaServices.deleteRequest(token: token, endpoint: deletePostEndpoint,query: {'id' : id}).then((value) {
+      print(value.data);
+      emit(DeletePostSuccessState());
+    }).catchError((onError){
+      debugPrint("delete post error : $onError");
+      emit(DeletePostFailureState());
+    });
+  }
 }

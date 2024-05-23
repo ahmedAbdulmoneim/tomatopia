@@ -1,8 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/custom_widget/custom_row.dart';
-
 import '../cubit/home_cubit/home_cubit.dart';
 
 Widget communityCard(
@@ -14,6 +15,7 @@ Widget communityCard(
         required String userImageInPost,
         required String userNameInPost,
         required String creationDate,
+        required String userIdPost,
         required int index,
         context}) =>
     Card(
@@ -29,7 +31,7 @@ Widget communityCard(
                 children: [
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: BlocProvider.of<HomeCubit>(context).allPosts[index].userImage == "" ?const AssetImage('assets/no_profile_image.png') : NetworkImage(userImageInPost)as ImageProvider,
+                    backgroundImage: BlocProvider.of<HomeCubit>(context).allPosts[index].userImage == "" ? NetworkImage(noImage) : NetworkImage(userImageInPost),
                   ),
                   const SizedBox(
                     width: 10,
@@ -49,8 +51,45 @@ Widget communityCard(
                         style: const TextStyle(fontSize: 12, color: Colors.black54),
                       ),
                     ],
-                  )
+                  ),
+                  const Spacer(),
+                  userId == userIdPost ?
+                  PopupMenuButton(
+                    icon: const Icon(Icons.more_horiz),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: customRow(width: 5, icon: Icons.edit, text: 'Edit post'),
+                        onTap: (){
+
+
+                        },
+                      ),
+                      PopupMenuItem(
+                        child: customRow(width: 5, icon: Icons.delete, text: 'Delete post'),
+                        onTap: (){
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.warning,
+                            btnOkOnPress: () async {
+                              await BlocProvider.of<HomeCubit>(context).deletePost(id: id);
+                            },
+                            btnCancelOnPress: () {},
+                            btnCancelText: 'Cancel',
+                            btnOkText: 'Delete',
+                            btnCancelColor: Colors.green,
+                            btnOkColor: Colors.red,
+                            title:
+                            'Are you sure you want to delete this post ! .',
+                            animType: AnimType.leftSlide,
+                          ).show();
+                        },
+                      ),
+                    ],
+                  ):
+                  const SizedBox() ,
+
                 ],
+
               ),
               const SizedBox(
                 height: 15,

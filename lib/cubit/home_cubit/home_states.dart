@@ -31,3 +31,9 @@ class GetAllTipsLoadingState extends HomePageStates {}
 class GetAllTipsSuccessState extends HomePageStates {}
 
 class GetAllTipsFailureState extends HomePageStates {}
+
+class DeletePostLoadingState extends HomePageStates {}
+
+class DeletePostSuccessState extends HomePageStates {}
+
+class DeletePostFailureState extends HomePageStates {}

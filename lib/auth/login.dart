@@ -46,6 +46,13 @@ class LoginPage extends StatelessWidget {
                 .then((value) {
               token = BlocProvider.of<LoginCubit>(context).loginModel!.token;
             });
+            SharedPreference.saveData(
+                key: 'userId',
+                value:
+                BlocProvider.of<LoginCubit>(context).loginModel!.token)
+                .then((value) {
+              userId = BlocProvider.of<LoginCubit>(context).loginModel!.userId!;
+            });
             userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
             userEmail = BlocProvider.of<LoginCubit>(context).loginModel!.email;
             Navigator.pushReplacement(

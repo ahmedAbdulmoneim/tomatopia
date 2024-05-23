@@ -6,6 +6,7 @@ import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/custom_widget/community_card.dart';
 import 'package:tomatopia/custom_widget/custom_row.dart';
+import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/add_post_screen.dart';
 import '../custom_widget/search_box.dart';
@@ -19,6 +20,10 @@ class Community extends StatelessWidget {
     return SafeArea(
       child: BlocConsumer<HomeCubit, HomePageStates>(
         listener: (context, state) {
+          if(state is DeletePostSuccessState){
+            show(context, 'Done!', "post deleted successfully!", Colors.green);
+            BlocProvider.of<HomeCubit>(context).getAllPost();
+          }
 
         },
         builder: (context, state) {
@@ -79,7 +84,8 @@ class Community extends StatelessWidget {
                                 userNameInPost: cubit.allPosts[index].userName,
                                 creationDate: cubit.allPosts[index].creationDate,
                                 likes: cubit.allPosts[index].likes,
-                                id: cubit.allPosts[index].id
+                                id: cubit.allPosts[index].id,
+                                userIdPost: cubit.allPosts[index].userId,
                               ),
                               itemCount: cubit.allPosts.length,
                             ),
