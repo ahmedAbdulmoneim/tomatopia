@@ -34,7 +34,7 @@ class TomatopiaServices {
   Future<Response> update({
     required String endPoint,
     Map<String, dynamic>? query,
-    Map<String, dynamic>? data,
+    dynamic data,
     String? token,
   }) async {
     dio.options.headers = {

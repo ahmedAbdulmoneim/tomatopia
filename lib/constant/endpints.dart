@@ -19,6 +19,7 @@ const String getPosts = 'Post/GetAllPosts';
 const String addPostReact = 'Post/AddReact';
 const String addNewPost = 'Post/AddPost';
 const String deletePostEndpoint = 'Post/DeletePost';
+const String editPostEndpoint = 'Post/EditPost';
 const String addUserProfileImage = 'Account/AddUserImage';
 const String getTips = 'Tips/GetAll';
 

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/custom_widget/custom_row.dart';
+import 'package:tomatopia/page_transitions/scale_transition.dart';
+import 'package:tomatopia/screens/edit_post.dart';
 import '../cubit/home_cubit/home_cubit.dart';
 
 Widget communityCard(
@@ -60,8 +62,13 @@ Widget communityCard(
                       PopupMenuItem(
                         child: customRow(width: 5, icon: Icons.edit, text: 'Edit post'),
                         onTap: (){
-
-
+                          Navigator.push(context, ScaleTransition1(EditPost(
+                            id: id,
+                            oldContent: content,
+                            oldImage: postImage,
+                          ),
+                          ),
+                          );
                         },
                       ),
                       PopupMenuItem(

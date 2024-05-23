@@ -132,6 +132,10 @@ class HomeCubit extends Cubit<HomePageStates> {
     imageFile = null;
     emit(ClearPostImage());
   }
+  clearOldPostImage({required oldImage}) {
+    oldImage = '';
+    emit(ClearOldPostImage());
+  }
 
   TipsModel? tipsModel ;
   List<dynamic> tipsMap = [];
@@ -156,11 +160,36 @@ class HomeCubit extends Cubit<HomePageStates> {
   deletePost({required int id }){
     emit(DeletePostLoadingState());
     tomatopiaServices.deleteRequest(token: token, endpoint: deletePostEndpoint,query: {'id' : id}).then((value) {
-      print(value.data);
       emit(DeletePostSuccessState());
     }).catchError((onError){
       debugPrint("delete post error : $onError");
       emit(DeletePostFailureState());
     });
+  }
+
+  editPost({required String content, File? imageFile,required id})async {
+    emit(EditPostLoadingState());
+
+    try {
+      FormData formData = FormData.fromMap({
+        'content': content,
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path,
+              filename: 'image.jpg'),
+      });
+
+      var response = await tomatopiaServices.update(
+        endPoint: editPostEndpoint,
+        data: formData,
+        query: { "id" : id },
+        token: token,
+      );
+
+      debugPrint(response.data.toString());
+      emit(EditPostSuccessState());
+    } catch (error) {
+      debugPrint("edit post error : $error");
+      emit(EditPostFailureState());
+    }
   }
 }

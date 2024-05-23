@@ -25,6 +25,7 @@ class AddPostFailureState extends HomePageStates {}
 class LoadImagePost extends HomePageStates {}
 
 class ClearPostImage extends HomePageStates {}
+class ClearOldPostImage extends HomePageStates {}
 
 class GetAllTipsLoadingState extends HomePageStates {}
 
@@ -37,3 +38,9 @@ class DeletePostLoadingState extends HomePageStates {}
 class DeletePostSuccessState extends HomePageStates {}
 
 class DeletePostFailureState extends HomePageStates {}
+
+class EditPostLoadingState extends HomePageStates {}
+
+class EditPostSuccessState extends HomePageStates {}
+
+class EditPostFailureState extends HomePageStates {}
