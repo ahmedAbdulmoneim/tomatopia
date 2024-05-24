@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () async {
                     Navigator.pop(context);
                     await BlocProvider.of<ProfileCubit>(context).getUserProfile();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
 
                   },
                 ),

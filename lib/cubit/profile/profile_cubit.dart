@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
@@ -26,6 +25,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       print(value.data);
       profileModel = ProfileModel.fromJson(value.data);
       debugPrint('${profileModel!.image}');
+      userImage = profileModel!.image;
       emit(ProfileSuccessState());
     }).catchError((onError){
       debugPrint("get user profile error : $onError");
