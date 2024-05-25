@@ -77,7 +77,7 @@ class RegisterPage extends StatelessWidget {
                             alignment: Alignment.bottomLeft,
                             children: [
                               Image.asset(
-                                'assets/tomato4.png',
+                                'assets/logo.png',
                               ),
                               const Text(
                                 'Sign Up',

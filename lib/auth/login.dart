@@ -89,7 +89,7 @@ class LoginPage extends StatelessWidget {
                             alignment: Alignment.bottomLeft,
                             children: [
                               Image.asset(
-                                'assets/tomato1.png',
+                                'assets/logo.png',
                               ),
                               const Text(
                                 'Login',
