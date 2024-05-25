@@ -31,6 +31,15 @@ class EditPost extends StatelessWidget {
         } else if (state is EditPostFailureState) {
           show(context, 'Error', 'Error happened', Colors.red);
         }
+        else if (state is DeleteImageSuccessState) {
+          show(context, 'Done!', 'Image Deleted successfully!', Colors.green);
+          BlocProvider.of<HomeCubit>(context).clearPostImage();
+          BlocProvider.of<HomeCubit>(context).getAllPost();
+          Navigator.pop(context);
+        } else if (state is DeleteImageFailureState) {
+          show(context, 'Error', 'Error happened', Colors.red);
+        }
+
       },
       builder: (context, state) {
         var homeCubit = BlocProvider.of<HomeCubit>(context);
@@ -94,6 +103,46 @@ class EditPost extends StatelessWidget {
                       height: 10,
                     ),
                     oldImage.isNotEmpty ?
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.attach_file_outlined,
+                              size: 35,
+                              color: Colors.blue,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await homeCubit.picImageFromGallery();
+                              },
+                              child: const Text(
+                                'Edit Image',
+                                style: TextStyle(fontSize: 20, color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.delete,
+                              size: 35,
+                              color: Colors.blue,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                homeCubit.removePostImage(id: id);
+                              },
+                              child: const Text(
+                                'Remove Image',
+                                style: TextStyle(fontSize: 20, color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ) :
                     Row(
                       children: [
                         const Icon(
@@ -106,14 +155,13 @@ class EditPost extends StatelessWidget {
                             await homeCubit.picImageFromGallery();
                           },
                           child: const Text(
-                            'Edit Image',
+                            'Add Image',
                             style: TextStyle(fontSize: 20, color: Colors.blue),
                           ),
                         ),
                       ],
-                    ) :
-                    const SizedBox(),
-                    if (homeCubit.imageFile != null )
+                    ),
+                    if (homeCubit.imageFile != null)
                       Stack(
                         alignment: Alignment.topRight,
                         children: [
@@ -124,7 +172,7 @@ class EditPost extends StatelessWidget {
                               fit: BoxFit.cover,
                               width: MediaQuery.sizeOf(context).width,
                               height: 300,
-                            ),
+                            )
                           ),
                           IconButton(
                             onPressed: () {

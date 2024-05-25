@@ -44,3 +44,9 @@ class EditPostLoadingState extends HomePageStates {}
 class EditPostSuccessState extends HomePageStates {}
 
 class EditPostFailureState extends HomePageStates {}
+
+class DeleteImageLoadingState extends HomePageStates {}
+
+class DeleteImageSuccessState extends HomePageStates {}
+
+class DeleteImageFailureState extends HomePageStates {}

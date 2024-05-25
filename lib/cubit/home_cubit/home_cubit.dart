@@ -192,4 +192,14 @@ class HomeCubit extends Cubit<HomePageStates> {
       emit(EditPostFailureState());
     }
   }
+  removePostImage({required id}){
+    emit(DeleteImageLoadingState());
+    tomatopiaServices.deleteRequest(token: token, endpoint: deletePostImage,query: {'postId': id }).then((value) {
+      debugPrint(value.data.toString());
+      emit(DeleteImageSuccessState());
+    }).catchError((onError){
+      debugPrint("delete image error : $onError");
+      emit(DeleteImageFailureState());
+    });
+  }
 }

@@ -21,6 +21,7 @@ import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
 import 'package:tomatopia/screens/settings_screen.dart';
 import 'package:tomatopia/screens/tips.dart';
+import 'package:tomatopia/screens/treatment_screen.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
 
@@ -95,20 +96,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 userEmail == 'Admin@gamil.com'
                     ? ListTile(
-                        leading: const Icon(
-                          Icons.admin_panel_settings_sharp,
-                          color: Colors.blue,
-                        ),
-                        title: const Text('Admin Panel'),
-                        onTap: () async {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AdminPanel(),
-                              ));
-                        },
-                      )
+                  leading: const Icon(
+                    Icons.admin_panel_settings_sharp,
+                    color: Colors.blue,
+                  ),
+                  title: const Text('Admin Panel'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  AdminPanel(),
+                        ));
+                  },
+                )
                     : const SizedBox(),
                 const Spacer(),
                 ListTile(
@@ -254,11 +255,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 BlocConsumer<AiCubit, AiModelStates>(
                   listener: (context, state) {
+                    print(state);
                     if (state is AiModelSuccessState) {
-                      // BlocProvider.of<AiCubit>(context).navigateToGetMedicineScreen(
-                      //     context: context,
-                      //     page: GetMedicine(img: BlocProvider.of<AiCubit>(context).imageFile!)
-                      // );
+
+                      BlocProvider.of<AiCubit>(context).navigateToGetMedicineScreen(
+                          context: context,
+                          page: GetMedicine(img: BlocProvider.of<AiCubit>(context).imageFile!)
+                      );
                     } else if (state is AiModelFailureState) {
                       show(context, 'Error', "Image can't be recognized",
                           Colors.red);
@@ -268,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     var cubit = BlocProvider.of<AiCubit>(context);
                     return Container(
                       padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 50),
+                      const EdgeInsets.only(left: 20, right: 20, top: 50),
                       height: 250,
                       decoration: BoxDecoration(
                         boxShadow: const [
@@ -340,15 +343,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 AwesomeDialog(
                                   context: context,
                                   btnCancelOnPress: () async {
-                                    await cubit.picImageFromGallery();
-                                    cubit.postData(formData: cubit.formData!);
-
+                                    await cubit.pickImageFromGallery();
+                                    cubit.postData(imageFile: cubit.imageFile!);
 
                                   },
                                   btnOkOnPress: () async {
-                                    await cubit.picImageFromCamera();
-                                    cubit.postData(formData: cubit.formData!);
-
+                                    await cubit.pickImageFromCamera();
+                                    cubit.postData(imageFile: cubit.imageFile!);
                                   },
                                   isDense: true,
                                   btnOkText: 'Camera',
