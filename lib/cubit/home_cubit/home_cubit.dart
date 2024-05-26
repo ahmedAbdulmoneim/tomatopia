@@ -43,11 +43,11 @@ class HomeCubit extends Cubit<HomePageStates> {
     tomatopiaServices.getData(endPoint: getPosts, token: token).then((value) {
       data = value.data;
       allPosts.clear();
-
       // save reversed data in list
       for (int i = 0; i < data.length; i++) {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
+      debugPrint('${allPosts[10].comments[0].content}');
       emit(GetAllPostsSuccessState());
     }).catchError((onError) {
       debugPrint("get all posts error : $onError");
@@ -201,5 +201,32 @@ class HomeCubit extends Cubit<HomePageStates> {
       debugPrint("delete image error : $onError");
       emit(DeleteImageFailureState());
     });
+  }
+
+  addCommentToPost({File?imageFile,required postId,required content})async{
+    emit(AddCommentLoadingState());
+    try {
+      FormData formData = FormData.fromMap({
+        'content' :content,
+        'postId' : postId,
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path,
+            filename: 'image.jpg'),
+      });
+
+      var response = await tomatopiaServices.postData(
+        endPoint: addComment,
+        data: formData,
+        token: token,
+      );
+
+      debugPrint(response.data.toString());
+      getAllPost();
+      emit(AddPostSuccessState());
+    } catch (error) {
+      debugPrint("add new Comment error : $error");
+      emit(AddCommentFailureState());
+    }
+
   }
 }

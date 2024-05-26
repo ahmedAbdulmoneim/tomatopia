@@ -7,6 +7,7 @@ import 'package:tomatopia/custom_widget/custom_row.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/edit_post.dart';
 import '../cubit/home_cubit/home_cubit.dart';
+import '../screens/add_comment.dart';
 
 Widget communityCard(
         {required String postImage,
@@ -173,7 +174,12 @@ Widget communityCard(
                       ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CommentScreen(id: id,postIndex: index,imagePost: postImage,postContent: content,)),
+                      );
+                    },
                     child: Container(
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, top: 5, bottom: 5),
