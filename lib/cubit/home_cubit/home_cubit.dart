@@ -222,7 +222,7 @@ class HomeCubit extends Cubit<HomePageStates> {
 
       debugPrint(response.data.toString());
       getAllPost();
-      emit(AddPostSuccessState());
+      emit(AddCommentSuccessState());
     } catch (error) {
       debugPrint("add new Comment error : $error");
       emit(AddCommentFailureState());

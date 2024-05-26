@@ -187,7 +187,7 @@ Widget communityCard(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(20)),
                         child: customRow(
-                            width: 5, icon: Icons.comment, text: 'Comment')),
+                            width: 5, icon: Icons.comment, text: '${BlocProvider.of<HomeCubit>(context).allPosts[index].comments.length}')),
                   ),
                 ],
               )

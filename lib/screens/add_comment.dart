@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
+import 'package:tomatopia/custom_widget/toasts.dart';
 
 import '../cubit/home_cubit/home_cubit.dart';
 import '../custom_widget/custom_row.dart';
@@ -23,13 +24,26 @@ class CommentScreen extends StatelessWidget {
   final String imagePost;
   final String postContent;
   final int id ;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
       child: Scaffold(
-        body: BlocBuilder<HomeCubit,HomePageStates>(
+        body: BlocConsumer<HomeCubit,HomePageStates>(
+          listener: (context, state) {print(state);
+            if(state is AddCommentSuccessState){
+              commentController.clear();
+              BlocProvider.of<HomeCubit>(context).clearPostImage();
+              show(context, 'Done', 'comment added successfully', Colors.green);
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent, // Scroll to the very bottom
+                duration: const Duration(milliseconds: 300), // Animation duration
+                curve: Curves.easeOut, // Animation easing
+              );
+            }
+          },
           builder: (context, state) {
             var cubit = BlocProvider.of<HomeCubit>(context);
             var comments =
@@ -38,6 +52,7 @@ class CommentScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: CustomScrollView(
+                    controller: _scrollController,
                     slivers: [
                       SliverAppBar(
                         expandedHeight: 350,
