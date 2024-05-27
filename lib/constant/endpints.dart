@@ -25,4 +25,5 @@ const String addUserProfileImage = 'Account/AddUserImage';
 const String getTips = 'Tips/GetAll';
 const String addComment = 'Comment/AddComment';
 const String addCommentReact = 'Comment/AddReact';
+const String deleteCommentEndpoint = 'Comment/DeleteComment';
 

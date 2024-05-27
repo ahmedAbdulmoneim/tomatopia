@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +17,6 @@ class CommentScreen extends StatelessWidget {
     required this.imagePost,
     required this.postContent,
     required this.id,
-    // required this.commentLikes,
-    // required this.commentDislikes
   });
 
   final TextEditingController commentController = TextEditingController();
@@ -27,8 +26,6 @@ class CommentScreen extends StatelessWidget {
   final String postContent;
   final int id;
 
-  // final int commentLikes ;
-  // final int commentDislikes ;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -38,11 +35,9 @@ class CommentScreen extends StatelessWidget {
       child: Scaffold(
         body: BlocConsumer<HomeCubit, HomePageStates>(
           listener: (context, state) {
-            print(state);
             if (state is AddCommentSuccessState) {
               commentController.clear();
               BlocProvider.of<HomeCubit>(context).clearPostImage();
-              show(context, 'Done', 'comment added successfully', Colors.green);
               _scrollController.animateTo(
                 _scrollController.position.maxScrollExtent,
                 // Scroll to the very bottom
@@ -50,6 +45,10 @@ class CommentScreen extends StatelessWidget {
                 // Animation duration
                 curve: Curves.easeOut, // Animation easing
               );
+            }
+            else if(state is DeleteCommentSuccessState){
+              show(context, 'Done', 'comment deleted successfully', Colors.green);
+              BlocProvider.of<HomeCubit>(context).getAllPost();
             }
           },
           builder: (context, state) {
@@ -156,6 +155,39 @@ class CommentScreen extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
+                                            Spacer(),
+                                            userId == comment.userId ?
+                                            PopupMenuButton(
+                                              icon: const Icon(Icons.more_horiz),
+                                              itemBuilder: (context) => [
+                                                PopupMenuItem(
+                                                  child: customRow(width: 5, icon: Icons.edit, text: 'Edit post'),
+                                                  onTap: (){
+                                                  },
+                                                ),
+                                                PopupMenuItem(
+                                                  child: customRow(width: 5, icon: Icons.delete, text: 'Delete post'),
+                                                  onTap: (){
+                                                    AwesomeDialog(
+                                                      context: context,
+                                                      dialogType: DialogType.warning,
+                                                      btnOkOnPress: (){
+                                                        cubit.deleteComment(id: comment.id);
+                                                      },
+                                                      btnCancelOnPress: () {},
+                                                      btnCancelText: 'Cancel',
+                                                      btnOkText: 'Delete',
+                                                      btnCancelColor: Colors.green,
+                                                      btnOkColor: Colors.red,
+                                                      title:
+                                                      'Are you sure you want to delete this comment ! .',
+                                                      animType: AnimType.leftSlide,
+                                                    ).show();
+                                                  },
+                                                ),
+                                              ],
+                                            ):
+                                            const SizedBox() ,
                                           ],
                                         ),
                                         const SizedBox(
@@ -347,5 +379,3 @@ class SliverAppBarTitle extends StatelessWidget {
   }
 }
 
-// text: BlocProvider.of<HomeCubit>(context).commentReactModel != null && BlocProvider.of<HomeCubit>(context).commentReactModel!.id == id ?
-// '${BlocProvider.of<HomeCubit>(context).commentReactModel!.likes}' : '${cubit.allPosts[index].comments[0].likes}

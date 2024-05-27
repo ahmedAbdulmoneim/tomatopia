@@ -45,6 +45,12 @@ class DeletePostSuccessState extends HomePageStates {}
 
 class DeletePostFailureState extends HomePageStates {}
 
+class DeleteCommentLoadingState extends HomePageStates {}
+
+class DeleteCommentSuccessState extends HomePageStates {}
+
+class DeleteCommentFailureState extends HomePageStates {}
+
 class EditPostLoadingState extends HomePageStates {}
 
 class EditPostSuccessState extends HomePageStates {}

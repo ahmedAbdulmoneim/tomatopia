@@ -184,6 +184,16 @@ class HomeCubit extends Cubit<HomePageStates> {
     });
   }
 
+  deleteComment({required int id }){
+    emit(DeleteCommentLoadingState());
+    tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentEndpoint,query: {'id' : id}).then((value) {
+      emit(DeleteCommentSuccessState());
+    }).catchError((onError){
+      debugPrint("delete post error : $onError");
+      emit(DeleteCommentFailureState());
+    });
+  }
+
   editPost({required String content, File? imageFile,required id})async {
     emit(EditPostLoadingState());
 
