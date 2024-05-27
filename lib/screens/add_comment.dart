@@ -15,7 +15,9 @@ class CommentScreen extends StatelessWidget {
     required this.postIndex,
     required this.imagePost,
     required this.postContent,
-    required this.id
+    required this.id,
+    // required this.commentLikes,
+    // required this.commentDislikes
   });
 
   final TextEditingController commentController = TextEditingController();
@@ -23,7 +25,10 @@ class CommentScreen extends StatelessWidget {
   final int postIndex;
   final String imagePost;
   final String postContent;
-  final int id ;
+  final int id;
+
+  // final int commentLikes ;
+  // final int commentDislikes ;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -31,23 +36,25 @@ class CommentScreen extends StatelessWidget {
     return Form(
       key: formKey,
       child: Scaffold(
-        body: BlocConsumer<HomeCubit,HomePageStates>(
-          listener: (context, state) {print(state);
-            if(state is AddCommentSuccessState){
+        body: BlocConsumer<HomeCubit, HomePageStates>(
+          listener: (context, state) {
+            print(state);
+            if (state is AddCommentSuccessState) {
               commentController.clear();
               BlocProvider.of<HomeCubit>(context).clearPostImage();
               show(context, 'Done', 'comment added successfully', Colors.green);
               _scrollController.animateTo(
-                _scrollController.position.maxScrollExtent, // Scroll to the very bottom
-                duration: const Duration(milliseconds: 300), // Animation duration
+                _scrollController.position.maxScrollExtent,
+                // Scroll to the very bottom
+                duration: const Duration(milliseconds: 300),
+                // Animation duration
                 curve: Curves.easeOut, // Animation easing
               );
             }
           },
           builder: (context, state) {
             var cubit = BlocProvider.of<HomeCubit>(context);
-            var comments =
-                cubit.allPosts[postIndex].comments;
+            var comments = cubit.allPosts[postIndex].comments;
             return Column(
               children: [
                 Expanded(
@@ -97,7 +104,8 @@ class CommentScreen extends StatelessWidget {
                               builder: (context) => ListView.separated(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder: (context, index) => const Divider(
+                                separatorBuilder: (context, index) =>
+                                    const Divider(
                                   height: 20,
                                   thickness: 5,
                                 ),
@@ -107,14 +115,17 @@ class CommentScreen extends StatelessWidget {
                                   return Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             CircleAvatar(
                                               radius: 20,
                                               backgroundImage: NetworkImage(
-                                                comment.userImage != '' && comment.userImage.isNotEmpty
+                                                comment.userImage != '' &&
+                                                        comment.userImage
+                                                            .isNotEmpty
                                                     ? '$basUrlImage${comment.userImage}'
                                                     : noImage,
                                               ),
@@ -124,19 +135,21 @@ class CommentScreen extends StatelessWidget {
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   comment.userName,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: const TextStyle(
                                                       color: Colors.green,
-                                                      fontWeight: FontWeight.w600),
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
                                                 Text(
                                                   DateFormat("d MMM ").format(
-                                                      DateTime.parse(
-                                                          comment.creationDate)),
+                                                      DateTime.parse(comment
+                                                          .creationDate)),
                                                   style: const TextStyle(
                                                       fontSize: 12,
                                                       color: Colors.black54),
@@ -158,12 +171,14 @@ class CommentScreen extends StatelessWidget {
                                         if (comment.image != null &&
                                             comment.image!.isNotEmpty)
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(15),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
                                             child: Image.network(
                                               '$basUrlImage${comment.image}',
                                               fit: BoxFit.cover,
-                                              width:
-                                              MediaQuery.of(context).size.width,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               height: 200,
                                             ),
                                           ),
@@ -178,6 +193,10 @@ class CommentScreen extends StatelessWidget {
                                           children: [
                                             GestureDetector(
                                               onTap: () {
+                                                cubit.addReactToComment(
+                                                    id: comment.id,
+                                                    like: true,
+                                                    dislike: false);
                                                 // Add your like functionality here
                                               },
                                               child: Container(
@@ -189,11 +208,20 @@ class CommentScreen extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                     color: Colors.grey[300],
                                                     borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                        BorderRadius.circular(
+                                                            20)),
                                                 child: customRow(
                                                     width: 5,
-                                                    icon: Icons.thumb_up_outlined,
-                                                    text: 'likes'),
+                                                    icon:
+                                                        Icons.thumb_up_outlined,
+                                                    text: cubit.commentReactModel
+                                                                    ?.id !=
+                                                                null &&
+                                                            cubit.commentReactModel!
+                                                                    .id ==
+                                                                comment.id
+                                                        ? '${cubit.commentReactModel!.likes}'
+                                                        : '${comments[index].likes}'),
                                               ),
                                             ),
                                             const SizedBox(
@@ -201,6 +229,10 @@ class CommentScreen extends StatelessWidget {
                                             ),
                                             GestureDetector(
                                               onTap: () {
+                                                cubit.addReactToComment(
+                                                    id: comment.id,
+                                                    like: false,
+                                                    dislike: true);
                                                 // Add your dislike functionality here
                                               },
                                               child: Container(
@@ -212,11 +244,15 @@ class CommentScreen extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                     color: Colors.grey[300],
                                                     borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                        BorderRadius.circular(
+                                                            20,),),
                                                 child: customRow(
                                                     width: 5,
                                                     icon: Icons.thumb_down_outlined,
-                                                    text: 'dislikes'),
+                                                    text: cubit.commentReactModel?.id != null && cubit.commentReactModel!.id == comment.id
+                                                        ? '${cubit.commentReactModel!.disLikes}'
+                                                        : '${comments[index].disLikes}'
+                                                        ),
                                               ),
                                             ),
                                           ],
@@ -228,11 +264,12 @@ class CommentScreen extends StatelessWidget {
                               ),
                               fallback: (context) => Padding(
                                   padding: const EdgeInsets.only(top: 70),
-                                  child: Image.asset('assets/nocomment(1).jpg',height: 100,width: 100,)
-                              ),
+                                  child: Image.asset(
+                                    'assets/nocomment(1).jpg',
+                                    height: 100,
+                                    width: 100,
+                                  )),
                             ),
-
-
                           ],
                         ),
                       ),
@@ -270,8 +307,11 @@ class CommentScreen extends StatelessWidget {
                         icon: const Icon(Icons.send),
                         onPressed: () {
                           formKey.currentState!.save();
-                          if(formKey.currentState!.validate()){
-                            cubit.addCommentToPost(postId: id, content: commentController.text,imageFile: cubit.imageFile);
+                          if (formKey.currentState!.validate()) {
+                            cubit.addCommentToPost(
+                                postId: id,
+                                content: commentController.text,
+                                imageFile: cubit.imageFile);
                           }
                           // Add your send comment functionality here
                         },
@@ -282,7 +322,6 @@ class CommentScreen extends StatelessWidget {
               ],
             );
           },
-
         ),
       ),
     );
@@ -308,3 +347,5 @@ class SliverAppBarTitle extends StatelessWidget {
   }
 }
 
+// text: BlocProvider.of<HomeCubit>(context).commentReactModel != null && BlocProvider.of<HomeCubit>(context).commentReactModel!.id == id ?
+// '${BlocProvider.of<HomeCubit>(context).commentReactModel!.likes}' : '${cubit.allPosts[index].comments[0].likes}

@@ -63,7 +63,7 @@ class HomeCubit extends Cubit<HomePageStates> {
   AddReactModel? reactModel;
 
   addReactToPost(
-      {required int id, required bool like, required bool dislike, index}) {
+      {required int id, required bool like, required bool dislike}) {
     emit(AddReactPostsLoadingState());
     tomatopiaServices
         .postData(
@@ -77,6 +77,27 @@ class HomeCubit extends Cubit<HomePageStates> {
     }).catchError((onError) {
       debugPrint("add react error : $onError");
       emit(AddReactPostsFailureState());
+    });
+  }
+
+
+  AddReactCommentModel? commentReactModel;
+  addReactToComment(
+      {required int id, required bool like, required bool dislike}) {
+    emit(AddReactCommentLoadingState());
+    tomatopiaServices
+        .postData(
+      endPoint: addCommentReact,
+      data: {"objectId": id, "like": like, "dislike": dislike},
+      token: token,
+    )
+        .then((value) {
+          print(value.data);
+          commentReactModel = AddReactCommentModel.fromJson(value.data);
+      emit(AddReactCommentSuccessState());
+    }).catchError((onError) {
+      debugPrint("add react error : $onError");
+      emit(AddReactCommentFailureState());
     });
   }
 
@@ -131,10 +152,6 @@ class HomeCubit extends Cubit<HomePageStates> {
   clearPostImage() {
     imageFile = null;
     emit(ClearPostImage());
-  }
-  clearOldPostImage({required oldImage}) {
-    oldImage = '';
-    emit(ClearOldPostImage());
   }
 
   TipsModel? tipsModel ;

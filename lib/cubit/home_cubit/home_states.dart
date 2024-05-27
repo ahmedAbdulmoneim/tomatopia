@@ -16,6 +16,12 @@ class AddReactPostsSuccessState extends HomePageStates {}
 
 class AddReactPostsFailureState extends HomePageStates {}
 
+class AddReactCommentLoadingState extends HomePageStates {}
+
+class AddReactCommentSuccessState extends HomePageStates {}
+
+class AddReactCommentFailureState extends HomePageStates {}
+
 class AddPostLoadingState extends HomePageStates {}
 
 class AddPostSuccessState extends HomePageStates {}

@@ -130,7 +130,6 @@ Widget communityCard(
                         id: id,
                         like: true,
                         dislike: false,
-                        index: index
 
                       );
                       // BlocProvider.of<HomeCubit>(context).onLikeTaped();
@@ -167,7 +166,7 @@ Widget communityCard(
                       child: customRow(
                         width: 5,
                         icon: Icons.thumb_down_outlined,
-                        text: BlocProvider.of<HomeCubit>(context).reactModel?.id == id ?
+                        text:  BlocProvider.of<HomeCubit>(context).reactModel != null && BlocProvider.of<HomeCubit>(context).reactModel?.id == id ?
                             '${BlocProvider.of<HomeCubit>(context).reactModel!.disLikes}' : '$dislikes'
                       ),
                     ),
