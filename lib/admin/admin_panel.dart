@@ -99,7 +99,8 @@ class AdminPanel extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (context) => const AllDiseases()),
                         );
-                        await BlocProvider.of<AdminCubit>(context).getAllDisease();
+                         BlocProvider.of<AdminCubit>(context).getAllDisease();
+                         BlocProvider.of<AdminCubit>(context).getAllTreatment();
                       },
                       child: containerPanel('Disease'),
                     ),

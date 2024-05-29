@@ -72,3 +72,9 @@ class DeleteDiseaseLoadingState extends AdminStates {}
 class DeleteDiseaseSuccessState extends AdminStates {}
 
 class DeleteDiseaseFailureState extends AdminStates {}
+
+class GetAlTreatmentLoadingState extends AdminStates {}
+
+class GetAllTreatmentSuccessState extends AdminStates {}
+
+class GetAllTreatmentFailureState extends AdminStates {}

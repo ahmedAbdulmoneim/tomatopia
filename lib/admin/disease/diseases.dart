@@ -38,6 +38,7 @@ class AllDiseases extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(context,
                   SizeTransition1(const AddDisease()));
+                  cubit.getAllCategories();
                 },
                 icon: Container(
                   padding: const EdgeInsets.all(5),

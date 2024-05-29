@@ -10,6 +10,7 @@ import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 
 import '../../api_models/admin_models/category_model.dart';
 import '../../api_models/admin_models/disease_model.dart';
+import '../../api_models/admin_models/treatment_model.dart';
 
 class AdminCubit extends Cubit<AdminStates> {
   AdminCubit(this.tomatopiaServices) : super(GetAllUsersInitialState());
@@ -66,7 +67,6 @@ class AdminCubit extends Cubit<AdminStates> {
 
   List<dynamic> categories = [];
   List<CategoryModel> categoryList = [];
-  List<String> categoryName = [];
   getAllCategories() {
     emit(GetAllCategoryLoadingState());
     tomatopiaServices.getData(endPoint: getAllCat, token: token).then((value) {
@@ -75,15 +75,6 @@ class AdminCubit extends Cubit<AdminStates> {
       for (int i = 0; i < categories.length; i++) {
         categoryList.add(CategoryModel.fromJson(categories[i]));
       }
-      categoryName.clear();
-      if(categoryList.isNotEmpty){
-        for (int i = 0; i < categoryList.length; i++) {
-          categoryName.add(categoryList[i].name);
-        }
-      }
-      print(categoryName.length);
-
-
       emit(GetAllCategorySuccessState());
     }).catchError((onError) {
       emit(GetAllCategoryFailureState());
@@ -162,7 +153,7 @@ class AdminCubit extends Cubit<AdminStates> {
     required int categoryId,
     required String symptoms,
     required FormData data,
-    required int treatments,
+    required List<int> treatments,
   }) {
     emit(AddDiseaseLoadingState());
     tomatopiaServices.postData(
@@ -233,4 +224,23 @@ class AdminCubit extends Cubit<AdminStates> {
 
   }
 
+  // treatment
+
+ List<dynamic> treatments = [];
+  List<TreatmentModel> treatmentList = [];
+
+  getAllTreatment(){
+    emit(GetAlTreatmentLoadingState());
+    tomatopiaServices.getData(endPoint: getAllTreatmentEndPoint,token: token).then((value) {
+      treatments = value.data;
+      treatmentList.clear();
+      for (int i = 0; i < treatments.length; i++) {
+        treatmentList.add(TreatmentModel.fromJson(treatments[i]));
+      }
+      emit(GetAllTreatmentSuccessState());
+    }).catchError((onError){
+      debugPrint('get treatment error : $onError');
+      emit(GetAllTreatmentFailureState());
+    });
+  }
 }
