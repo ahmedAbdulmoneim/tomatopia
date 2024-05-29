@@ -2,8 +2,8 @@ class ProfileModel{
 
    String name ;
    String email;
-   String image;
-  ProfileModel({required this.name,required this.email,required this.image});
+   String? image;
+  ProfileModel({required this.name,required this.email, this.image});
 
   factory ProfileModel.fromJson(Map<String,dynamic> json){
     return ProfileModel(

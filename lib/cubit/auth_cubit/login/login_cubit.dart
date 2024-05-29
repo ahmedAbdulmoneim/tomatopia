@@ -20,7 +20,7 @@ class LoginCubit extends Cubit<LoginStates> {
       loginModel = LoginModel.fromJson(value.data);
       debugPrint(loginModel!.image);
       if(loginModel?.image != null){
-        userImage = loginModel!.image;
+        userImage = loginModel!.image!;
         userId = loginModel!.userId!;
       }
       emit(LoginSuccessState());

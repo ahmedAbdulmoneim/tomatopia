@@ -25,7 +25,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
       print(value.data);
       profileModel = ProfileModel.fromJson(value.data);
       debugPrint('${profileModel!.image}');
-      userImage = profileModel!.image;
+      if(profileModel!.image != null){
+        userImage = profileModel!.image!;
+      }
+
       emit(ProfileSuccessState());
     }).catchError((onError){
       debugPrint("get user profile error : $onError");

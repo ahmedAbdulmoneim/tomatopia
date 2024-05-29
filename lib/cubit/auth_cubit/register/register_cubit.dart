@@ -1,14 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tomatopia/api_models/auth_models/login_model.dart';
+import 'package:tomatopia/api_models/auth_models/register_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/auth_cubit/register/register_states.dart';
+
+import '../../../constant/variables.dart';
 
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit(this.tomatopiaServices) : super(RegisterInitialState());
   TomatopiaServices tomatopiaServices;
 
-  LoginModel? loginModel;
+  RegisterModel? registerModel;
 
   register({
     required String endPoint,
@@ -16,8 +19,12 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }) {
     emit(RegisterLoadingState());
     tomatopiaServices.postData(endPoint: endPoint, data: data).then((value) {
-      loginModel = LoginModel.fromJson(value.data);
-      print(loginModel!.name);
+      print(value.data);
+      registerModel = RegisterModel.fromJson(value.data);
+      if(registerModel!.userId != null){
+        userId = registerModel!.userId!;
+        userImage = '';
+      }
       emit(RegisterSuccessState());
     }).catchError((onError) {
       print('catch error her : $onError');

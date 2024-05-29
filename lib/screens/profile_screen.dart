@@ -62,11 +62,14 @@ class Profile extends StatelessWidget {
                   ),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(80),
-                      child: Image.network(
+                      child: userImage != ''
+                          ? Image.network(
                           '$basUrlImage$userImage',
                           width: 80,
                           height: 80,
-                          fit: BoxFit.cover)),
+                          fit: BoxFit.cover) :
+                      Image.network(noImage)
+                  ),
                 ),
               ),
             ],

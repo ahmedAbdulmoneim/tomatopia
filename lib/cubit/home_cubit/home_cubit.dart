@@ -45,7 +45,6 @@ class HomeCubit extends Cubit<HomePageStates> {
       for (int i = 0; i < data.length; i++) {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
-      debugPrint(allPosts[10].comments[0].content);
       emit(GetAllPostsSuccessState());
     }).catchError((onError) {
       debugPrint("get all posts error : $onError");

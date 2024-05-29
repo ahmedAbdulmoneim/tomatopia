@@ -39,11 +39,12 @@ class RegisterPage extends StatelessWidget {
                 textColor: Colors.white,
                 fontSize: 16.5,
                 gravity: ToastGravity.CENTER);
-            SharedPreference.saveData(key: 'token', value: BlocProvider.of<RegisterCubit>(context).loginModel!.token).then((value) {
-              token = BlocProvider.of<RegisterCubit>(context).loginModel!.token;
+            SharedPreference.saveData(key: 'token', value: BlocProvider.of<RegisterCubit>(context).registerModel!.token).then((value) {
+              token = BlocProvider.of<RegisterCubit>(context).registerModel!.token!;
             });
-            userName = BlocProvider.of<RegisterCubit>(context).loginModel!.name;
-            userEmail = BlocProvider.of<RegisterCubit>(context).loginModel!.email;
+            userName = BlocProvider.of<RegisterCubit>(context).registerModel!.fullName!;
+            userEmail = BlocProvider.of<RegisterCubit>(context).registerModel!.email!;
+            userId = BlocProvider.of<RegisterCubit>(context).registerModel!.userId!;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
