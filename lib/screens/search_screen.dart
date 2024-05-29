@@ -2,12 +2,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
 import '../custom_widget/custom_card.dart';
 import 'about_disease.dart';
-import '../cubit/admin_cubit/disease/disease_cubit.dart';
-import '../cubit/admin_cubit/disease/disease_states.dart';
+
 
 class Search extends StatelessWidget {
   Search({Key? key}) : super(key: key);
@@ -16,10 +17,10 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DiseaseCubit, DiseaseStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = BlocProvider.of<DiseaseCubit>(context);
+        var cubit = BlocProvider.of<AdminCubit>(context);
         return Scaffold(
           appBar: AppBar(
             title: Form(

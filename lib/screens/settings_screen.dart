@@ -12,12 +12,12 @@ class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
 
   final TextEditingController nameController = TextEditingController();
-  GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
-  TextEditingController oldPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey();
-  GlobalKey<FormState> changImageFormKey = GlobalKey();
+  final GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
+  final TextEditingController oldPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> changImageFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

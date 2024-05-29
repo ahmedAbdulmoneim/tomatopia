@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/custom_widget/add_category.dart';
 import 'package:tomatopia/custom_widget/category_list_item.dart';
-import '../cubit/admin_cubit/categories_cubit/category_states.dart';
 import '../custom_widget/toasts.dart';
 
 class Category extends StatelessWidget {
@@ -16,22 +15,22 @@ class Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CategoryCubit, CategoryStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
         if (state is AddCategorySuccessState) {
-          BlocProvider.of<CategoryCubit>(context).getAllCategories();
+          BlocProvider.of<AdminCubit>(context).getAllCategories();
           show(context, 'Done', 'Category added successfully!', Colors.green);
         }
         if (state is DeleteCategorySuccessState) {
-          BlocProvider.of<CategoryCubit>(context).getAllCategories();
+          BlocProvider.of<AdminCubit>(context).getAllCategories();
           show(context, 'Done', 'Category deleted successfully!', Colors.green);
         }
         if (state is EditeCategorySuccessState) {
-          BlocProvider.of<CategoryCubit>(context).getAllCategories();
+          BlocProvider.of<AdminCubit>(context).getAllCategories();
           show(context, 'Done', 'Category updated successfully!', Colors.green);
         }
         if (state is AddCategorySuccessState) {
-          BlocProvider.of<CategoryCubit>(context).getAllCategories();
+          BlocProvider.of<AdminCubit>(context).getAllCategories();
         }
         if (state is DeleteCategoryFailureState) {
           show(context, 'Error', 'Delete failed!', Colors.red);
@@ -41,7 +40,7 @@ class Category extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        var cubit = BlocProvider.of<CategoryCubit>(context);
+        var cubit = BlocProvider.of<AdminCubit>(context);
         return Scaffold(
             appBar: AppBar(
               title: const Text(
@@ -71,7 +70,7 @@ class Category extends StatelessWidget {
                             itemBuilder: (context, index) => categoryListItem(context, nameController, cubit, index, formKey, state),
                             separatorBuilder: (context, index) =>
                                 const Divider(height: 30),
-                            itemCount: cubit.categoryList!.length,
+                            itemCount: cubit.categoryList.length,
                           ),
                         ),
                       ),

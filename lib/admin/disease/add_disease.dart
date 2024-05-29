@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 
@@ -38,7 +38,7 @@ class _AddDiseaseState extends State<AddDisease> {
       appBar: AppBar(
         title: const Text('Add Disease'),
       ),
-      body: BlocConsumer<DiseaseCubit, DiseaseStates>(
+      body: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
           if (state is AddDiseaseLoadingState) {
             btnController.start(); // Start loading animation
@@ -273,7 +273,7 @@ class _AddDiseaseState extends State<AddDisease> {
                                 int.parse(categoryIdController.text);
                             int treatmentsId =
                                 int.parse(treatmentController.text);
-                            BlocProvider.of<DiseaseCubit>(context).addDisease(
+                            BlocProvider.of<AdminCubit>(context).addDisease(
                               name: nameController.text,
                               info: infoController.text,
                               reasons: reasonsController.text,

@@ -1,7 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../cubit/admin_cubit/categories_cubit/category_states.dart';
+import '../cubit/admin_cubit/admin_states.dart';
+
 
 Widget deleteCategory({context, cubit, index, state}) => IconButton(
   onPressed: () {
@@ -9,7 +10,7 @@ Widget deleteCategory({context, cubit, index, state}) => IconButton(
       context: context,
       dialogType: DialogType.warning,
       btnOkOnPress: ()  async{
-        await cubit.deleteCategory(id: cubit.categoryList![index]['id']);
+        await cubit.deleteCategory(id: cubit.categoryList![index].id);
         if(state is GetAllCategorySuccessState || state is DeleteCategorySuccessState){
           cubit.getAllCategories();
         }
@@ -19,7 +20,7 @@ Widget deleteCategory({context, cubit, index, state}) => IconButton(
       btnOkText: 'Delete',
       btnCancelColor: Colors.green,
       btnOkColor: Colors.red,
-      title: 'Are You Sure You Want To Delete This User .',
+      title: 'Are You Sure You Want To Delete This Category .',
       animType: AnimType.leftSlide,
     ).show();
 

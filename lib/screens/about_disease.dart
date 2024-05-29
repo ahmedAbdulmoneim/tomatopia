@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/disease_treatments.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
+
 
 import 'full_screen_image.dart';
 
@@ -15,10 +16,10 @@ class DiseaseDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DiseaseCubit, DiseaseStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = BlocProvider.of<DiseaseCubit>(context);
+        var cubit = BlocProvider.of<AdminCubit>(context);
         return Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(

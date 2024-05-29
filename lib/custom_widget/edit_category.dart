@@ -47,7 +47,7 @@ Widget editCategory({context, name, key, cubit, index}) => IconButton(
                   TextButton(
                     onPressed: () {
                       if (key.currentState!.validate()){
-                        cubit.editeCategory(id:cubit.categoryList![index]['id'],newCategory: name.text);
+                        cubit.editeCategory(id:cubit.categoryList![index].id,newCategory: name.text);
                         Navigator.pop(context);
                       }
                     },

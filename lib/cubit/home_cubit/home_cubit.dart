@@ -7,9 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/add_react_model.dart';
 import 'package:tomatopia/api_models/tips_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
-import 'package:tomatopia/screens/search_screen.dart';
 
-import '../../admin/tips.dart';
 import '../../api_models/get_all_posts_model.dart';
 import '../../api_services/tomatopia_services.dart';
 import '../../constant/endpints.dart';
@@ -47,7 +45,7 @@ class HomeCubit extends Cubit<HomePageStates> {
       for (int i = 0; i < data.length; i++) {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
-      debugPrint('${allPosts[10].comments[0].content}');
+      debugPrint(allPosts[10].comments[0].content);
       emit(GetAllPostsSuccessState());
     }).catchError((onError) {
       debugPrint("get all posts error : $onError");

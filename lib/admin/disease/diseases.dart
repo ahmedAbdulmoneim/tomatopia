@@ -1,17 +1,13 @@
-import 'dart:convert';
-import 'package:achievement_view/achievement_view.dart';
-import 'package:achievement_view/achievement_widget.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/admin/disease/add_disease.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
-import 'package:tomatopia/screens/about_disease.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_states.dart';
+
 
 import '../../custom_widget/custom_card.dart';
 
@@ -20,18 +16,18 @@ class AllDiseases extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DiseaseCubit, DiseaseStates>(
+    return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
         if(state is DeleteDiseaseSuccessState){
           show(context, 'Done', 'Disease deleted successfully!', Colors.green);
-          BlocProvider.of<DiseaseCubit>(context).getAllDisease();
+          BlocProvider.of<AdminCubit>(context).getAllDisease();
         }
         if(state is DeleteDiseaseFailureState){
           show(context, 'Error', 'Failed to delete disease', Colors.red);
         }
       },
       builder: (context, state) {
-        var cubit = BlocProvider.of<DiseaseCubit>(context);
+        var cubit = BlocProvider.of<AdminCubit>(context);
         return Scaffold(
           backgroundColor: Colors.grey[300],
           appBar: AppBar(
@@ -41,7 +37,7 @@ class AllDiseases extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   Navigator.push(context,
-                  SizeTransition1(AddDisease()));
+                  SizeTransition1(const AddDisease()));
                 },
                 icon: Container(
                   padding: const EdgeInsets.all(5),

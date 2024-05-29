@@ -3,12 +3,10 @@ import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:number_paginator/number_paginator.dart';
-import 'package:tomatopia/admin/disease/diseases.dart';
-import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
-import '../cubit/admin_cubit/users_cubit/users_states.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import '../cubit/admin_cubit/admin_states.dart';
 import '../custom_widget/toasts.dart';
 
 class Users extends StatelessWidget {

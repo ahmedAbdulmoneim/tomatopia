@@ -5,9 +5,7 @@ import 'package:tomatopia/api_services/model_services.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
-import 'package:tomatopia/cubit/admin_cubit/categories_cubit/category_cubit.dart';
-import 'package:tomatopia/cubit/admin_cubit/disease/disease_cubit.dart';
-import 'package:tomatopia/cubit/admin_cubit/users_cubit/users_cubit.dart';
+import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
 import 'package:tomatopia/cubit/auth_cubit/forget_password/forget_password_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
@@ -36,14 +34,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<ProfileCubit>(
             create: (context) => ProfileCubit(TomatopiaServices(Dio())),
           ),
-          BlocProvider<CategoryCubit>(
-            create: (context) => CategoryCubit(TomatopiaServices(Dio())),
-          ),
           BlocProvider<AdminCubit>(
             create: (context) => AdminCubit(TomatopiaServices(Dio())),
-          ),
-          BlocProvider<DiseaseCubit>(
-            create: (context) => DiseaseCubit(TomatopiaServices(Dio())),
           ),
           BlocProvider<ForgetPasswordCubit>(
             create: (context) => ForgetPasswordCubit(TomatopiaServices(Dio())),
