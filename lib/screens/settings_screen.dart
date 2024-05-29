@@ -290,7 +290,7 @@ class SettingsScreen extends StatelessWidget {
                                     Icons.location_on,
                                     color: Color(0xFF039687),
                                   ),
-                                  title: const Text("Change Password"),
+                                  title: const Text("Change Location"),
                                   trailing:
                                       const Icon(Icons.keyboard_arrow_right),
                                   onTap: () {

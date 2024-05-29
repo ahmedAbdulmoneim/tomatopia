@@ -9,17 +9,17 @@ class Treatments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final disease = searchedDisease[index];
+    final treatments = disease.treatments?.map((t) => t.description!).toList() ?? [];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Treatments',
-        ),
+        title: const Text('Treatments'),
       ),
       body: PlantDiseaseTreatmentWidget(
-          diseaseName: searchedDisease[index].treatments![0].name!,
-          treatments: [
-            searchedDisease[index].treatments![0].description!,
-          ]),
+        diseaseName: disease.name!,
+        treatments: treatments,
+      ),
     );
   }
 }
@@ -28,7 +28,7 @@ class PlantDiseaseTreatmentWidget extends StatelessWidget {
   final String diseaseName;
   final List<String> treatments;
 
-  const PlantDiseaseTreatmentWidget({
+  const PlantDiseaseTreatmentWidget({super.key,
     required this.diseaseName,
     required this.treatments,
   });
@@ -55,27 +55,27 @@ class PlantDiseaseTreatmentWidget extends StatelessWidget {
           const SizedBox(height: 10.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: treatments
-                .map((treatment) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(width: 8.0),
-                          Expanded(
-                            child: Text(
-                              treatment,
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ],
+            children: treatments.map((treatment) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(
+                        treatment,
+                        style: const TextStyle(fontSize: 16.0),
                       ),
-                    ))
-                .toList(),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
