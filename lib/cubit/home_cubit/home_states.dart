@@ -74,3 +74,15 @@ class AddCommentLoadingState extends HomePageStates {}
 class AddCommentSuccessState extends HomePageStates {}
 
 class AddCommentFailureState extends HomePageStates {}
+
+class EditCommentLoadingState extends HomePageStates {}
+
+class EditCommentSuccessState extends HomePageStates {}
+
+class EditCommentFailureState extends HomePageStates {}
+
+class DeleteCommentImageLoadingState extends HomePageStates {}
+
+class DeleteCommentImageSuccessState extends HomePageStates {}
+
+class DeleteCommentImageFailureState extends HomePageStates {}

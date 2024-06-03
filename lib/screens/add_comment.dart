@@ -7,9 +7,11 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/screens/edit_comment.dart';
 
 import '../cubit/home_cubit/home_cubit.dart';
 import '../custom_widget/custom_row.dart';
+import '../page_transitions/scale_transition.dart';
 
 class CommentScreen extends StatelessWidget {
   CommentScreen({
@@ -161,12 +163,20 @@ class CommentScreen extends StatelessWidget {
                                                   icon: const Icon(Icons.more_horiz),
                                                   itemBuilder: (context) => [
                                                     PopupMenuItem(
-                                                      child: customRow(width: 5, icon: Icons.edit, text: 'Edit post'),
+                                                      child: customRow(width: 5, icon: Icons.edit, text: 'Edit Comment'),
                                                       onTap: (){
+                                                        Navigator.push(context, ScaleTransition1(EditComment(
+                                                          commentId: comment.id,
+                                                          postId: id,
+                                                          oldContent: comment.content,
+                                                          oldImage: comment.image != null ? '$basUrlImage${comment.image!}' : '',
+                                                        ),
+                                                        ),
+                                                        );
                                                       },
                                                     ),
                                                     PopupMenuItem(
-                                                      child: customRow(width: 5, icon: Icons.delete, text: 'Delete post'),
+                                                      child: customRow(width: 5, icon: Icons.delete, text: 'Delete Comment'),
                                                       onTap: (){
                                                         AwesomeDialog(
                                                           context: context,

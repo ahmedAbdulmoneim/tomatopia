@@ -261,6 +261,41 @@ class HomeCubit extends Cubit<HomePageStates> {
     });
   }
 
+  editComment({required String content, File? imageFile,required id})async {
+    emit(EditCommentLoadingState());
+
+    try {
+      FormData formData = FormData.fromMap({
+        'content': content,
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path,
+              filename: 'image.jpg'),
+      });
+
+      var response = await tomatopiaServices.update(
+        endPoint: editCommentEndPoint,
+        data: formData,
+        query: { "id" : id },
+        token: token,
+      );
+
+      debugPrint(response.data.toString());
+      emit(EditCommentSuccessState());
+    } catch (error) {
+      debugPrint("edit comment error : $error");
+      emit(EditCommentFailureState());
+    }
+  }
+  removeCommentImage({required id}){
+    emit(DeleteCommentImageLoadingState());
+    tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentImage,query: {'commentId': id }).then((value) {
+      emit(DeleteCommentImageSuccessState());
+    }).catchError((onError){
+      debugPrint("delete image error : $onError");
+      emit(DeleteCommentImageFailureState());
+    });
+  }
+
   addCommentToPost({File?imageFile,required postId,required content})async{
     emit(AddCommentLoadingState());
     try {
