@@ -34,7 +34,7 @@ Widget communityCard(
                 children: [
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: BlocProvider.of<HomeCubit>(context).allPosts[index].userImage == "" ? NetworkImage(noImage) : NetworkImage(userImageInPost),
+                    backgroundImage: userImageInPost == "" ? NetworkImage(noImage) : NetworkImage(userImageInPost),
                   ),
                   const SizedBox(
                     width: 10,
@@ -173,10 +173,11 @@ Widget communityCard(
                       ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      await BlocProvider.of<HomeCubit>(context).getPostComments(id: id);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CommentScreen(id: id,postIndex: index,imagePost: postImage,postContent: content,)),
+                        MaterialPageRoute(builder: (context) => CommentScreen(id: id,imagePost: postImage,postContent: content,)),
                       );
                     },
                     child: Container(
@@ -186,7 +187,7 @@ Widget communityCard(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(20)),
                         child: customRow(
-                            width: 5, icon: Icons.comment, text: '${BlocProvider.of<HomeCubit>(context).allPosts[index].comments.length}')),
+                            width: 5, icon: Icons.comment, text: '${BlocProvider.of<HomeCubit>(context).allPosts[index].comments}')),
                   ),
                 ],
               )

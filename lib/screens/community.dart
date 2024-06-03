@@ -77,7 +77,7 @@ class Community extends StatelessWidget {
                               itemBuilder: (context, index) => communityCard(
                                 index: index,
                                 postImage: cubit.allPosts[index].image != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}' : '',
-                                userImageInPost: 'http://graduationprojec.runasp.net//${cubit.allPosts[index].userImage}',
+                                userImageInPost: cubit.allPosts[index].userImage != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].userImage}' : '',
                                 content: cubit.allPosts[index].content,
                                 context: context,
                                 dislikes: cubit.allPosts[index].disLikes,

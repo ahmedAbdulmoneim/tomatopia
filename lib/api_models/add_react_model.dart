@@ -18,9 +18,9 @@ class AddReactModel {
 }
 
 class AddReactCommentModel {
-  final int id;
-  final int likes;
-  final int disLikes;
+  final int? id;
+  final int? likes;
+  final int? disLikes;
 
   AddReactCommentModel({
     required this.id,
@@ -32,7 +32,7 @@ class AddReactCommentModel {
     return AddReactCommentModel(
       id: json['id'],
       likes: json['likes'],
-      disLikes: json['disLikes'],
+      disLikes: json['dislikes'],
     );
   }
 }

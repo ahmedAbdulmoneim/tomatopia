@@ -10,6 +10,12 @@ class GetAllPostsSuccessState extends HomePageStates {}
 
 class GetAllPostsFailureState extends HomePageStates {}
 
+class GetAllPostCommentsLoadingState extends HomePageStates {}
+
+class GetAllPostCommentsSuccessState extends HomePageStates {}
+
+class GetAllPostCommentsFailureState extends HomePageStates {}
+
 class AddReactPostsLoadingState extends HomePageStates {}
 
 class AddReactPostsSuccessState extends HomePageStates {}

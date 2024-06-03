@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/add_react_model.dart';
+import 'package:tomatopia/api_models/get_commetn_model.dart';
 import 'package:tomatopia/api_models/tips_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 
@@ -59,17 +60,24 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   AddReactModel? reactModel;
 
-  addReactToPost(
-      {required int id, required bool like, required bool dislike}) {
+
+  addReactToPost({
+    required int id,
+    required bool like,
+    required bool dislike,
+  }) {
     emit(AddReactPostsLoadingState());
-    tomatopiaServices
-        .postData(
+    tomatopiaServices.postData(
       endPoint: addPostReact,
       data: {"objectId": id, "like": like, "dislike": dislike},
       token: token,
-    )
-        .then((value) {
+    ).then((value) {
       reactModel = AddReactModel.fromJson(value.data);
+
+      // Find the post in allPosts and update its likes and dislikes
+      var post = allPosts.firstWhere((element) => element.id == id);
+          post.likes = reactModel!.likes;
+          post.disLikes = reactModel!.disLikes;
       emit(AddReactPostsSuccessState());
     }).catchError((onError) {
       debugPrint("add react error : $onError");
@@ -77,6 +85,25 @@ class HomeCubit extends Cubit<HomePageStates> {
     });
   }
 
+ Comment? commentModel;
+
+  List<dynamic> commentData = [];
+  List<Comment> commentPostList = [];
+  getPostComments({required id}){
+    emit(GetAllPostCommentsLoadingState());
+    tomatopiaServices.getData(endPoint: getPostComment,query: {'postId' : id}).then((value) {
+      commentData = value.data;
+      commentPostList.clear();
+      for (int i = 0; i < commentData.length; i++) {
+        commentPostList.add(Comment.fromJson(commentData[i]));
+      }
+      emit(GetAllPostCommentsSuccessState());
+    }).catchError((onError){
+      debugPrint("get comments error : $onError");
+      emit(GetAllPostCommentsFailureState());
+
+    });
+  }
 
   AddReactCommentModel? commentReactModel;
   addReactToComment(
@@ -89,8 +116,15 @@ class HomeCubit extends Cubit<HomePageStates> {
       token: token,
     )
         .then((value) {
-          print(value.data);
           commentReactModel = AddReactCommentModel.fromJson(value.data);
+
+          for (var comment in commentPostList) {
+            if (comment.id == id) {
+              comment.likes = commentReactModel!.likes!;
+              comment.disLikes = commentReactModel!.disLikes!;
+              break;
+            }
+          }
       emit(AddReactCommentSuccessState());
     }).catchError((onError) {
       debugPrint("add react error : $onError");
@@ -163,7 +197,7 @@ class HomeCubit extends Cubit<HomePageStates> {
       for(int i = 0; i< tipsMap.length;i++){
         allTips.add(TipsModel.fromJson(tipsMap[i]));
       }
-      print(allTips[0].title);
+
       emit(GetAllTipsSuccessState());
     }).catchError((onError){
       debugPrint('ger tips error : $onError');
