@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/constant/variables.dart';
 
 Widget customCard(
@@ -13,6 +14,7 @@ Widget customCard(
   required String mainTitle,
   required String subtitle,
   onPressed,
+  onPressEdit,
 }
     ) => Card(
   elevation: 6,
@@ -35,7 +37,7 @@ Widget customCard(
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.memory(
-              base64Decode('$image'),
+              base64Decode(image),
               fit: BoxFit.fill,
               width: 70,
               height: 70,
@@ -66,27 +68,37 @@ Widget customCard(
             ),
           ),
           userEmail == 'Admin@gamil.com' || userEmail == 'admin@gamil.com' ?
-          IconButton(
-            onPressed: (){
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.warning,
-                btnOkOnPress: onPressed,
-                btnCancelOnPress: () {},
-                btnCancelText: 'Cancel',
-                btnOkText: 'Delete',
-                btnCancelColor: Colors.green,
-                btnOkColor: Colors.red,
-                title:
-                dialogTitle,
-                animType: AnimType.leftSlide,
-              ).show();
-            },
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-          ) :
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: onPressEdit,
+                      icon: const Icon(
+                        FontAwesomeIcons.solidPenToSquare,color: Colors.blue,
+                      ),
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.warning,
+                        btnOkOnPress: onPressed,
+                        btnCancelOnPress: () {},
+                        btnCancelText: 'Cancel',
+                        btnOkText: 'Delete',
+                        btnCancelColor: Colors.green,
+                        btnOkColor: Colors.red,
+                        title:
+                        dialogTitle,
+                        animType: AnimType.leftSlide,
+                      ).show();
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              ):
           const Icon(Icons.arrow_forward_ios_outlined)
         ],
       ),

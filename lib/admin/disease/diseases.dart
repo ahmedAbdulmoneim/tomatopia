@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/admin/disease/add_disease.dart';
+import 'package:tomatopia/admin/disease/edit_disease.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
@@ -73,7 +74,22 @@ class AllDiseases extends StatelessWidget {
                         is DeleteDiseaseSuccessState) {
                       cubit.getAllDisease();
                     }
-                  }),
+                  },
+                  onPressEdit: (){
+                    cubit.getAllCategories();
+                    Navigator.push(context, ScaleTransition1( EditDisease(
+                      category: cubit.allDisease[index].category!.name!,
+                      categoryId: cubit.allDisease[index].categoryId!,
+                      info: cubit.allDisease[index].info!,
+                      id: cubit.allDisease[index].id!,
+                      diseaseName: cubit.allDisease[index].name!,
+                      reasons: cubit.allDisease[index].reasons!,
+                      symptoms: cubit.allDisease[index].symptoms!,
+                      treatments: cubit.allDisease[index].treatments!,
+                    )),
+                    );
+                  },
+                  ),
               itemCount: cubit.allDisease.length,
             ),
           ),

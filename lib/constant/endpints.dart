@@ -23,6 +23,9 @@ const String editPostEndpoint = 'Post/EditPost';
 const String deletePostImage = 'Post/DeletePostImage';
 const String addUserProfileImage = 'Account/AddUserImage';
 const String getTips = 'Tips/GetAll';
+const String deleteTipEndPoint = 'Tips/DeleteTip';
+const String addTipEndPint = 'Tips/AddTip';
+const String editTipEndPint = 'Tips/EditTip';
 const String addComment = 'Comment/AddComment';
 const String addCommentReact = 'Comment/AddReact';
 const String deleteCommentEndpoint = 'Comment/DeleteComment';
@@ -32,4 +35,5 @@ const String editTreatmentEndPoint = 'Treatment/EditTreatment';
 const String getPostComment = 'Comment/GetCommentByPostId';
 const String editCommentEndPoint = 'Comment/EditComment';
 const String deleteCommentImage = 'Comment/DeleteCommentImage';
+const String editDiseaseEndPoint = 'Disease/EditDisease';
 

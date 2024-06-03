@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/admin/category.dart';
 import 'package:tomatopia/admin/disease/diseases.dart';
-import 'package:tomatopia/admin/tips.dart';
+import 'package:tomatopia/admin/tips/tips.dart';
 import 'package:tomatopia/admin/users.dart';
 
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
@@ -84,7 +84,8 @@ class AdminPanel extends StatelessWidget {
 
                 const SizedBox(height: 15),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async{
+                    BlocProvider.of<AdminCubit>(context).getAllTips();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Tips()),

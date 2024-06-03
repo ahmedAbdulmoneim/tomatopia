@@ -1,4 +1,3 @@
-
 abstract class AdminStates {}
 
 class GetAllUsersInitialState extends AdminStates {}
@@ -9,7 +8,7 @@ class GetAllUsersSuccessState extends AdminStates {}
 
 class GetAllUsersFailuerState extends AdminStates {}
 
-class OnPageChange extends AdminStates{}
+class OnPageChange extends AdminStates {}
 
 class DeleteUsersLoadingState extends AdminStates {}
 
@@ -51,7 +50,6 @@ class GetAllDiseaseSuccessState extends AdminStates {}
 
 class GetAllDiseaseFailureState extends AdminStates {}
 
-
 class AddDiseaseLoadingState extends AdminStates {}
 
 class AddDiseaseSuccessState extends AdminStates {}
@@ -64,8 +62,9 @@ class GetDiseaseByNameSuccessState extends AdminStates {}
 
 class GetDiseaseByNameFailureState extends AdminStates {}
 
-class ChooseImage extends AdminStates{}
-class ClearSearchedDisease extends AdminStates{}
+class ChooseImage extends AdminStates {}
+
+class ClearSearchedDisease extends AdminStates {}
 
 class DeleteDiseaseLoadingState extends AdminStates {}
 
@@ -73,8 +72,44 @@ class DeleteDiseaseSuccessState extends AdminStates {}
 
 class DeleteDiseaseFailureState extends AdminStates {}
 
+class EditDiseaseLoadingState extends AdminStates {}
+
+class EditDiseaseSuccessState extends AdminStates {}
+
+class EditDiseaseFailureState extends AdminStates {}
+
 class GetAlTreatmentLoadingState extends AdminStates {}
 
 class GetAllTreatmentSuccessState extends AdminStates {}
 
 class GetAllTreatmentFailureState extends AdminStates {}
+
+class LoadDiseaseImage extends AdminStates {}
+
+class ClearDiseaseImage extends AdminStates {}
+
+class SelectCategoryId extends AdminStates {}
+
+class GetTipsLoadingState extends AdminStates {}
+
+class GetTipsSuccessState extends AdminStates {}
+
+class GetTipsFailureState extends AdminStates {}
+
+class DeleteTipLoadingState extends AdminStates {}
+
+class DeleteTipSuccessState extends AdminStates {}
+
+class DeleteTipFailureState extends AdminStates {}
+
+class EditTipLoadingState extends AdminStates {}
+
+class EditTipSuccessState extends AdminStates {}
+
+class EditTipFailureState extends AdminStates {}
+
+class AddTipLoadingState extends AdminStates {}
+
+class AddTipSuccessState extends AdminStates {}
+
+class AddTipFailureState extends AdminStates {}
