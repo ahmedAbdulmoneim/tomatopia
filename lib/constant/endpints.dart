@@ -32,6 +32,7 @@ const String deleteCommentEndpoint = 'Comment/DeleteComment';
 const String getAllTreatmentEndPoint = 'Treatment/GetAll';
 const String deleteTreatmentEndPoint = 'Treatment/DeleteTreatment';
 const String editTreatmentEndPoint = 'Treatment/EditTreatment';
+const String addTreatmentEndPoint = 'Treatment/AddTreatment';
 const String getPostComment = 'Comment/GetCommentByPostId';
 const String editCommentEndPoint = 'Comment/EditComment';
 const String deleteCommentImage = 'Comment/DeleteCommentImage';

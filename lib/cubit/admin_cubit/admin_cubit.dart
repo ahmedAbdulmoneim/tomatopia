@@ -287,6 +287,64 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+  deleteTreatment({required id}){
+    emit(DeleteTreatmentLoadingState());
+    tomatopiaServices.deleteRequest(token: token, endpoint: deleteTreatmentEndPoint,query: {"id" : id}).then((value){
+      emit(DeleteTreatmentSuccessState());
+    }).catchError((onError){
+      debugPrint("delete treatment error : $onError");
+      emit(DeleteTreatmentFailureState());
+    });
+  }
+
+  addTreatment({required name,required description}){
+    emit(AddTreatmentLoadingState());
+    tomatopiaServices.postData(
+        endPoint: addTreatmentEndPoint,
+        data: {
+          "name": name,
+          "description" : description,
+        },
+        token: token,
+    ).then((value){
+      emit(AddTreatmentSuccessState());
+    }).catchError((onError){
+      debugPrint("add treatment error : $onError");
+      emit(AddTreatmentFailureState());
+    });
+
+  }
+
+  editTreatment({required id,required name,required description}){
+    emit(EditTreatmentLoadingState());
+    tomatopiaServices.update(
+      endPoint: editTreatmentEndPoint,
+      data: {
+        "id" : id,
+        "name": name,
+        "description" : description,
+      },
+      token: token,
+    ).then((value){
+      emit(EditTreatmentSuccessState());
+    }).catchError((onError){
+      debugPrint("edit treatment error : $onError");
+      emit(EditTreatmentFailureState());
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   File? imageFile;
   FormData? formData;
 

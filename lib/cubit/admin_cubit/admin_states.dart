@@ -84,6 +84,24 @@ class GetAllTreatmentSuccessState extends AdminStates {}
 
 class GetAllTreatmentFailureState extends AdminStates {}
 
+class DeleteTreatmentLoadingState extends AdminStates {}
+
+class DeleteTreatmentSuccessState extends AdminStates {}
+
+class DeleteTreatmentFailureState extends AdminStates {}
+
+class EditTreatmentLoadingState extends AdminStates {}
+
+class EditTreatmentSuccessState extends AdminStates {}
+
+class EditTreatmentFailureState extends AdminStates {}
+
+class AddTreatmentLoadingState extends AdminStates {}
+
+class AddTreatmentSuccessState extends AdminStates {}
+
+class AddTreatmentFailureState extends AdminStates {}
+
 class LoadDiseaseImage extends AdminStates {}
 
 class ClearDiseaseImage extends AdminStates {}

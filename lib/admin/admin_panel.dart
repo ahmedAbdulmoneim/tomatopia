@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/admin/category.dart';
 import 'package:tomatopia/admin/disease/diseases.dart';
 import 'package:tomatopia/admin/tips/tips.dart';
+import 'package:tomatopia/admin/treatments/treatments.dart';
 import 'package:tomatopia/admin/users.dart';
 
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
@@ -69,7 +70,6 @@ class AdminPanel extends StatelessWidget {
                       },
                       child: containerPanel('Users'),
                     ),
-
                 const SizedBox(height: 15),
                 GestureDetector(
                       onTap: () {
@@ -81,7 +81,6 @@ class AdminPanel extends StatelessWidget {
                       },
                       child: containerPanel('Categories'),
                     ),
-
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () async{
@@ -105,6 +104,17 @@ class AdminPanel extends StatelessWidget {
                       },
                       child: containerPanel('Disease'),
                     ),
+                const SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Treatments()),
+                    );
+                    BlocProvider.of<AdminCubit>(context).getAllTreatment();
+                  },
+                  child: containerPanel('Treatments'),
+                ),
 
               ],
             ),
