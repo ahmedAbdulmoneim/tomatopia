@@ -5,24 +5,43 @@ import 'package:tomatopia/api_services/model_services.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/auth/login.dart';
+import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
 import 'package:tomatopia/cubit/auth_cubit/forget_password/forget_password_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/weather/weather_cubit.dart';
+import 'package:tomatopia/onboarding/onboarding.dart';
+import 'package:tomatopia/screens/home.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 import 'cubit/home_cubit/home_cubit.dart';
 import 'cubit/weather/weather_states.dart';
+import 'onboarding/splach.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreference.init();
-  runApp(const MyApp());
+  Widget widget ;
+  String onBoardingValue = await SharedPreference.getData(key: "onBoarding") ?? "" ;
+  token = await SharedPreference.getData(key: 'token') ?? "";
+
+  if(onBoardingValue != ""){
+    if(token != ""){
+      widget = Home();
+    }else{
+      widget = LoginPage();
+    }
+  }else{
+    widget = SplachScreen();
+  }
+
+  runApp( MyApp(startWidget: widget,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key,required this.startWidget}) : super(key: key);
+  Widget startWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +72,7 @@ class MyApp extends StatelessWidget {
             BlocProvider.of<WeatherCubit>(context).getWeatherData('Beni suef');
           }
           return MaterialApp(
-            home: LoginPage(),
+            home: startWidget,
             theme: ThemeData(
                 appBarTheme: const AppBarTheme(
                     elevation: .8,
