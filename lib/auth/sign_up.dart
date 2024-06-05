@@ -42,9 +42,23 @@ class RegisterPage extends StatelessWidget {
             SharedPreference.saveData(key: 'token', value: BlocProvider.of<RegisterCubit>(context).registerModel!.token).then((value) {
               token = BlocProvider.of<RegisterCubit>(context).registerModel!.token!;
             });
-            userName = BlocProvider.of<RegisterCubit>(context).registerModel!.fullName!;
-            userEmail = BlocProvider.of<RegisterCubit>(context).registerModel!.email!;
-            userId = BlocProvider.of<RegisterCubit>(context).registerModel!.userId!;
+            SharedPreference.saveData(
+                key: 'userEmail',
+                value:
+                BlocProvider.of<RegisterCubit>(context).registerModel!.email).then((value) {
+              userEmail = BlocProvider.of<RegisterCubit>(context).registerModel!.email!;
+            });
+            SharedPreference.saveData(
+                key: 'userName',
+                value:
+                BlocProvider.of<RegisterCubit>(context).registerModel!.fullName!).then((value) {
+              userName = BlocProvider.of<RegisterCubit>(context).registerModel!.fullName!;            });
+            SharedPreference.saveData(
+                key: 'userId',
+                value:
+                BlocProvider.of<RegisterCubit>(context).registerModel!.userId).then((value) {
+              userId = BlocProvider.of<RegisterCubit>(context).registerModel!.userId!;
+            });
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

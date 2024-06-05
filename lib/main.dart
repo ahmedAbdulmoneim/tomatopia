@@ -25,7 +25,10 @@ void main() async{
   Widget widget ;
   String onBoardingValue = await SharedPreference.getData(key: "onBoarding") ?? "" ;
   token = await SharedPreference.getData(key: 'token') ?? "";
-
+  userName = await SharedPreference.getData(key: 'userName');
+  userEmail = await SharedPreference.getData(key: 'userEmail');
+  userId = await SharedPreference.getData(key: 'userId');
+  userImage = await SharedPreference.getData(key: 'userImage') ?? "";
   if(onBoardingValue != ""){
     if(token != ""){
       widget = Home();

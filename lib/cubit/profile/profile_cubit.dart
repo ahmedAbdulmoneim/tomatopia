@@ -12,6 +12,7 @@ import '../../api_models/auth_models/change_password_model.dart';
 import '../../api_models/profile_model.dart';
 import '../../constant/variables.dart';
 import '../../constant/endpints.dart';
+import '../../shared_preferences/shared_preferences.dart';
 
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit(this.tomatopiaServices) : super(ProfileInitialState());

@@ -7,6 +7,7 @@ import 'package:tomatopia/cubit/profile/profile_states.dart';
 import 'package:tomatopia/custom_widget/change_name_bottom_sheet.dart';
 import 'package:tomatopia/custom_widget/change_password_sheet.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
@@ -30,6 +31,14 @@ class SettingsScreen extends StatelessWidget {
       body: BlocConsumer<ProfileCubit, ProfileStates>(
         listener: (context, state) {
           print(state);
+          if(state is ProfileSuccessState){
+            SharedPreference.saveData(key: 'userImage', value:BlocProvider.of<ProfileCubit>(context).profileModel!.image!).then((value){
+              userImage = BlocProvider.of<ProfileCubit>(context).profileModel!.image!;
+            });
+            SharedPreference.saveData(key: 'userName', value:BlocProvider.of<ProfileCubit>(context).profileModel!.name).then((value){
+              userName = BlocProvider.of<ProfileCubit>(context).profileModel!.name;
+            });
+          }
           if (state is ChangeNameSuccessState) {
             BlocProvider.of<ProfileCubit>(context).getUserProfile();
             show(context, 'Done!', 'Name changed successfully', Colors.green);
@@ -108,9 +117,7 @@ class SettingsScreen extends StatelessWidget {
                                                                 null) {
                                                               await profileCubit
                                                                   .addUserImage(
-                                                                      imageFile:
-                                                                          profileCubit
-                                                                              .imageFile!);
+                                                                      imageFile: profileCubit.imageFile!);
                                                             } else {
                                                               print(
                                                                   'image is null ');
@@ -132,8 +139,7 @@ class SettingsScreen extends StatelessWidget {
                                                           onPressed: () async {
                                                             Navigator.pop(
                                                                 context);
-                                                            await profileCubit
-                                                                .picImageFromGallery();
+                                                            await profileCubit.picImageFromGallery();
                                                             profileCubit.addUserImage(
                                                                 imageFile:
                                                                     profileCubit

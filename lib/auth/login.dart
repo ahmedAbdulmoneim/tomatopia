@@ -47,14 +47,28 @@ class LoginPage extends StatelessWidget {
               token = BlocProvider.of<LoginCubit>(context).loginModel!.token;
             });
             SharedPreference.saveData(
+                key: 'userEmail',
+                value:
+                BlocProvider.of<LoginCubit>(context).loginModel!.email).then((value) {
+              userEmail = BlocProvider.of<LoginCubit>(context).loginModel!.email;
+            });
+            SharedPreference.saveData(
+                key: 'userName',
+                value:
+                BlocProvider.of<LoginCubit>(context).loginModel!.name).then((value) {
+              userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;            });
+            SharedPreference.saveData(
                 key: 'userId',
                 value:
-                BlocProvider.of<LoginCubit>(context).loginModel!.token)
-                .then((value) {
+                BlocProvider.of<LoginCubit>(context).loginModel!.userId).then((value) {
               userId = BlocProvider.of<LoginCubit>(context).loginModel!.userId!;
             });
-            userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
-            userEmail = BlocProvider.of<LoginCubit>(context).loginModel!.email;
+            SharedPreference.saveData(
+                key: 'userImage',
+                value:
+                BlocProvider.of<LoginCubit>(context).loginModel!.image).then((value) {
+              userImage = BlocProvider.of<LoginCubit>(context).loginModel!.image!;
+            });
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

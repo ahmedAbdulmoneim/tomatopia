@@ -126,6 +126,8 @@ Widget communityCard(
                 children: [
                   GestureDetector(
                     onTap: () {
+                      print(userIdPost);
+                      print(userId);
                       BlocProvider.of<HomeCubit>(context).addReactToPost(
                         id: id,
                         like: true,
