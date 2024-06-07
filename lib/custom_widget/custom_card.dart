@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/constant/variables.dart';
@@ -83,8 +84,8 @@ Widget customCard(
                         dialogType: DialogType.warning,
                         btnOkOnPress: onPressed,
                         btnCancelOnPress: () {},
-                        btnCancelText: 'Cancel',
-                        btnOkText: 'Delete',
+                        btnCancelText: 'cancel'.tr(),
+                        btnOkText: 'delete'.tr(),
                         btnCancelColor: Colors.green,
                         btnOkColor: Colors.red,
                         title:

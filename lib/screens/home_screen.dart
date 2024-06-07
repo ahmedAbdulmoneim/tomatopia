@@ -13,11 +13,11 @@ import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
-import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
 import 'package:tomatopia/screens/settings_screen.dart';
 import 'package:tomatopia/screens/tips.dart';
@@ -26,7 +26,7 @@ import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
+        title:  const Text(
           'TOMATOPIA',
         ),
       ),
@@ -48,24 +48,23 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 250,
             child: Column(
               children: [
-                const SizedBox(height: 70,),
+                 const SizedBox(height: 70,),
                 ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     Icons.person,
                   ),
-                  title: const Text('Profile'),
+                  title: Text(context.profile),
                   onTap: () async {
                     Navigator.pop(context);
                     await BlocProvider.of<ProfileCubit>(context).getUserProfile();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
 
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     Icons.settings,
                   ),
-                  title: const Text('Settings'),
+                  title:  Text(context.settings),
                   onTap: () async{
                     Navigator.pop(context);
                     await BlocProvider.of<ProfileCubit>(context).getUserProfile();
@@ -73,50 +72,50 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     Icons.contacts_outlined,
                   ),
-                  title: const Text('Contact & Social'),
+                  title:  Text(context.contactSocial),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ContactUs(),
+                          builder: (context) =>  const ContactUs(),
                         ));
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     FontAwesomeIcons.circleInfo,
                   ),
-                  title: const Text('About us'),
+                  title: Text(context.aboutUs),
                   onTap: () {
                     Navigator.pop(context);
                   },
                 ),
                 userEmail == 'Admin@gamil.com'
                     ? ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     Icons.admin_panel_settings_sharp,
                     color: Colors.blue,
                   ),
-                  title: const Text('Admin Panel'),
+                  title:  Text(context.adminPanel),
                   onTap: () async {
                     Navigator.pop(context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  AdminPanel(),
+                          builder: (context) =>  const AdminPanel(),
                         ));
                   },
                 )
-                    : const SizedBox(),
-                const Spacer(),
+                    :  const SizedBox(),
+                 const Spacer(),
                 ListTile(
-                  leading: const Icon(
+                  leading:  const Icon(
                     FontAwesomeIcons.powerOff,
                   ),
-                  title: const Text('Logout'),
+                  title:  Text(context.logout),
                   onTap: () {
                     SharedPreference.removeData(key: 'token').then((value) {
                       Navigator.pushReplacement(
@@ -133,13 +132,13 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding:  const EdgeInsets.all(10.0),
         child: ListView(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
+                 const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
@@ -147,11 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ForecastWeather(),
+                            builder: (context) =>  const ForecastWeather(),
                           ));
                     },
                     child: dailyWeather()),
-                const SizedBox(
+                 const SizedBox(
                   height: 35,
                 ),
                 BlocConsumer<HomeCubit,HomePageStates>(
@@ -178,25 +177,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color : Colors.greenAccent[100]
                             ),
                             child:  Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding:  const EdgeInsets.all(10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: const BoxDecoration(
+                                    padding:  const EdgeInsets.all(5),
+                                    decoration:  const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white
                                     ),
-                                    child: const Icon(
+                                    child:  const Icon(
                                       Icons.search,
                                     ),
                                   ),
-                                  const SizedBox(height: 5,),
-                                  const Text(
-                                    'Search for disease',
-                                    style: TextStyle(
+                                   const SizedBox(height: 5,),
+                                   Text(
+                                     context.searchDisease,
+                                    style: const TextStyle(
                                         fontSize: 16
                                     ),
                                   )
@@ -205,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        const Spacer(),
+                         const Spacer(),
                         InkWell(
                           onTap: ()async{
                             await BlocProvider.of<HomeCubit>(context).getAllTips();
@@ -218,25 +217,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color : Colors.greenAccent[100]
                             ),
                             child:  Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding:  const EdgeInsets.all(10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: const BoxDecoration(
+                                    padding:  const EdgeInsets.all(5),
+                                    decoration:  const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white
                                     ),
-                                    child: const Icon(
+                                    child:  const Icon(
                                       Icons.tips_and_updates,
                                     ),
                                   ),
-                                  const SizedBox(height: 5,),
-                                  const Text(
-                                    'Tips for you',
-                                    style: TextStyle(
+                                   const SizedBox(height: 5,),
+                                   Text(
+                                     context.tipsForYou,
+                                    style: const TextStyle(
                                         fontSize: 16
                                     ),
                                   )
@@ -250,12 +249,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
 
                 ),
-                const SizedBox(
+                 const SizedBox(
                   height: 20,
                 ),
                 BlocConsumer<AiCubit, AiModelStates>(
                   listener: (context, state) {
-                    print(state);
                     if (state is AiModelSuccessState) {
 
                       BlocProvider.of<AiCubit>(context).navigateToGetMedicineScreen(
@@ -263,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           page: GetMedicine(img: BlocProvider.of<AiCubit>(context).imageFile!)
                       );
                     } else if (state is AiModelFailureState) {
-                      show(context, 'Error', "Image can't be recognized",
+                      show(context, context.error, context.errorImageNotRecognized,
                           Colors.red);
                     }
                   },
@@ -271,10 +269,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     var cubit = BlocProvider.of<AiCubit>(context);
                     return Container(
                       padding:
-                      const EdgeInsets.only(left: 20, right: 20, top: 50),
+                       const EdgeInsets.only(left: 20, right: 20, top: 50),
                       height: 250,
                       decoration: BoxDecoration(
-                        boxShadow: const [
+                        boxShadow:  const [
                           BoxShadow(
                               color: Colors.black26, offset: Offset(0.3, 3)),
                           BoxShadow(
@@ -300,13 +298,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 100,
                                       fit: BoxFit.cover,
                                     )),
-                                const SizedBox(
+                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const Text('Take picture')
+                                 Text(context.takeAPicture)
                               ],
                             ),
-                            const Padding(
+                             const Padding(
                               padding: EdgeInsets.only(bottom: 45.0),
                               child: Icon(Icons.navigate_next_sharp, size: 75),
                             ),
@@ -320,24 +318,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 100,
                                       fit: BoxFit.cover,
                                     )),
-                                const SizedBox(
+                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const Text('Get medicine')
+                                Text(context.getMedicine)
                               ],
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         const SizedBox(
                           height: 7,
                         ),
                         ConditionalBuilder(
                           condition: state is AiModelLoadingState,
-                          builder: (context) => const LinearProgressIndicator(
+                          builder: (context) =>  const LinearProgressIndicator(
                             color: Colors.green,
                           ),
                           fallback: (context) => customButton(
-                              text: 'Take a picture',
+                              text: context.takeAPicture,
                               onPressed: () {
                                 cubit.clearSelectedImage();
                                 AwesomeDialog(
@@ -352,13 +350,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     cubit.postData(imageFile: cubit.imageFile!);
                                   },
                                   isDense: true,
-                                  btnOkText: 'Camera',
-                                  btnCancelText: 'Gallery',
+                                  btnOkText: context.camera,
+                                  btnCancelText: context.gallery,
                                   btnCancelColor: Colors.lightBlueAccent,
                                   btnCancelIcon: Icons.image,
                                   btnOkIcon: Icons.camera_alt_outlined,
-                                  title: 'Choose picture',
-                                  desc: 'Take a picture or Load it ',
+                                  title: context.choosePicture,
+                                  desc: context.takePictureOrLoadIt,
                                   dialogType: DialogType.question,
                                 ).show();
                               }),
@@ -367,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
-                const SizedBox(
+                 const SizedBox(
                   height: 20,
                 ),
 

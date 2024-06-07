@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/disease_treatments.dart';
 
@@ -23,7 +24,7 @@ class DiseaseDetails extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
-            title: const Text('Diagnosis'),
+            title: Text(context.diagnosis),
             actions: [
               Container(
                 margin: const EdgeInsets.all(10),
@@ -43,9 +44,9 @@ class DiseaseDetails extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
-                    'Treatments',
-                    style: TextStyle(color: Colors.green),
+                  child: Text(
+                    context.treatments,
+                    style: const TextStyle(color: Colors.green),
                   ),
                 ),
               ),
@@ -71,7 +72,6 @@ class DiseaseDetails extends StatelessWidget {
                       base64Decode(cubit.searchedDisease[index].image!),
                       width: MediaQuery.sizeOf(context).width,
                       fit: BoxFit.cover,
-                      //height: MediaQuery.sizeOf(context).height / 3.2,
                     ),
                   ),
                 ),
@@ -94,19 +94,13 @@ class DiseaseDetails extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(
-                        height: 8,
-                      ),
+                      const SizedBox(height: 8),
                       Text(
                         cubit.searchedDisease[index].category!.name!,
                         style: const TextStyle(color: Colors.green),
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 15),
+                      const SizedBox(height: 20),
                       Accordion(
                         contentBorderColor: Colors.black,
                         children: [
@@ -120,14 +114,14 @@ class DiseaseDetails extends StatelessWidget {
                             headerPadding: const EdgeInsets.all(10),
                             headerBackgroundColor: Colors.greenAccent,
                             contentBackgroundColor:
-                                Colors.greenAccent.withOpacity(.5),
+                            Colors.greenAccent.withOpacity(.5),
                             leftIcon: const Icon(
                               Icons.info_outline,
                               color: Colors.black,
                             ),
-                            header: const Text(
-                              'Information',
-                              style: TextStyle(
+                            header: Text(
+                              context.information,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -158,15 +152,13 @@ class DiseaseDetails extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             children: [
-                              const Text(
-                                'Reasons',
-                                style: TextStyle(
+                              Text(
+                                context.reasons,
+                                style: const TextStyle(
                                   fontSize: 25,
                                 ),
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              const SizedBox(height: 5),
                               Text(
                                 cubit.searchedDisease[index].reasons!,
                                 style: const TextStyle(fontSize: 18),
@@ -175,26 +167,23 @@ class DiseaseDetails extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      const SizedBox(height: 20),
+                      Text(
+                        context.symptoms,
+                        style: const TextStyle(
+                          shadows: [
+                            Shadow(
+                              offset: Offset(2.0, -0.20),
+                              color: Colors.blue,
+                              blurRadius: 1,
+                            ),
+                          ],
+                          fontSize: 20,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      const Text(
-                        'SYMPTOMS',
-                        style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                offset: Offset(2.0, -0.20),
-                                color: Colors.blue,
-                                blurRadius: 1,
-                              ),
-                            ],
-                            fontSize: 20,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Text(
                         cubit.searchedDisease[index].symptoms!,
                         style: const TextStyle(fontSize: 16),
@@ -210,3 +199,4 @@ class DiseaseDetails extends StatelessWidget {
     );
   }
 }
+

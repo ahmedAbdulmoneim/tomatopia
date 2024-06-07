@@ -6,6 +6,7 @@ import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/admin/treatments/add_treatments.dart';
 import 'package:tomatopia/admin/treatments/edit_treatments.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import '../../../cubit/admin_cubit/admin_cubit.dart';
 import '../../../cubit/admin_cubit/admin_states.dart';
 import '../../../custom_widget/toasts.dart';
@@ -19,11 +20,11 @@ class Treatments extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
         if(state is DeleteTreatmentSuccessState){
-          show(context, 'Done', 'Treatment deleted successfully!', Colors.green);
+          show(context, context.done, context.deleteTreatmentSuccess, Colors.green);
           BlocProvider.of<AdminCubit>(context).getAllTreatment();
         }
         if(state is DeleteTreatmentFailureState){
-          show(context, 'Error', 'Failed to delete Treatment', Colors.red);
+          show(context,context.error, context.errorHappened, Colors.red);
         }
       },
       builder: (context, state) {
@@ -31,7 +32,7 @@ class Treatments extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.grey[300],
           appBar: AppBar(
-            title: const Text('All Treatments'),
+            title:  Text(context.allTreatments),
             centerTitle: true,
             actions: [
               IconButton(
@@ -118,11 +119,11 @@ class Treatments extends StatelessWidget {
                                      cubit.deleteTreatment(id: cubit.treatmentList[index].id);
                                   },
                                   btnCancelOnPress: () {},
-                                  btnCancelText: 'Cancel',
-                                  btnOkText: 'Delete',
+                                  btnCancelText: context.cancel,
+                                  btnOkText: context.delete,
                                   btnCancelColor: Colors.green,
                                   btnOkColor: Colors.red,
-                                  title: 'Are you want to delete this treatment',
+                                  title: context.deleteTreatmentConfirmation,
                                   animType: AnimType.leftSlide,
                                 ).show();
                               },

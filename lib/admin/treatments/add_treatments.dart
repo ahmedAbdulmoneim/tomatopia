@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 
@@ -19,13 +20,13 @@ class AddTreatments extends StatelessWidget {
     return BlocConsumer<AdminCubit,AdminStates>(
       listener: (context, state) {
         if(state is AddTreatmentSuccessState){
-          show(context, 'Done!', 'Treatment added successfully', Colors.green);
+          show(context, context.done, context.treatmentAddedSuccessfully, Colors.green);
           BlocProvider.of<AdminCubit>(context).getAllTreatment();
           titleController.clear();
           descriptionController.clear();
           Navigator.pop(context);
         }else if(state is AddTreatmentFailureState){
-          show(context, 'Error', 'Error happened', Colors.red);
+          show(context, context.error, context.errorHappened, Colors.red);
         }
 
       },
@@ -37,8 +38,8 @@ class AddTreatments extends StatelessWidget {
             appBar: AppBar(
               elevation: 6,
               backgroundColor: Colors.white,
-              title: const Text(
-                'Add Treatment',
+              title:  Text(
+                context.addTreatment,
               ),
               actions: [
                 TextButton(
@@ -50,9 +51,9 @@ class AddTreatments extends StatelessWidget {
                           );
                       }
                     },
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.green, fontSize: 18),
+                    child:  Text(
+                      context.save,
+                      style: const TextStyle(color: Colors.green, fontSize: 18),
                     ))
               ],
             ),
@@ -68,12 +69,12 @@ class AddTreatments extends StatelessWidget {
                     textFormField(
                       validate: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Name can't be empty";
+                          return context.nameCantBeEmpty;
                         }
                         return null;
                       },
                       prefix: Icons.title,
-                      label: 'Enter Treatment name',
+                      label: context.enterTreatmentName,
                       controller: titleController,
                     ),
                     const SizedBox(
@@ -82,7 +83,7 @@ class AddTreatments extends StatelessWidget {
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Description can't be empty";
+                          return context.descriptionCantBeEmpty;
                         }
                         return null;
                       },
@@ -90,15 +91,15 @@ class AddTreatments extends StatelessWidget {
                       enableInteractiveSelection: true,
                       cursorColor: Colors.green,
                       controller: descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Write a description for your Treatment',
-                        focusedBorder: OutlineInputBorder(
+                      decoration:  InputDecoration(
+                        hintText: context.writeDescriptionForTreatment,
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.green)),
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
+                        border: const OutlineInputBorder(),
+                        errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red)),
-                        errorStyle: TextStyle(color: Colors.red),
-                        hintStyle: TextStyle(
+                        errorStyle: const TextStyle(color: Colors.red),
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),

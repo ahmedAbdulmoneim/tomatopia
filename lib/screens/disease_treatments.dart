@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tomatopia/api_models/admin_models/disease_model.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 
 class Treatments extends StatelessWidget {
   const Treatments({super.key, required this.index, required this.searchedDisease});
@@ -14,7 +15,7 @@ class Treatments extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Treatments'),
+        title: Text(context.treatments),
       ),
       body: PlantDiseaseTreatmentWidget(
         diseaseName: disease.name!,
@@ -28,7 +29,8 @@ class PlantDiseaseTreatmentWidget extends StatelessWidget {
   final String diseaseName;
   final List<String> treatments;
 
-  const PlantDiseaseTreatmentWidget({super.key,
+  const PlantDiseaseTreatmentWidget({
+    super.key,
     required this.diseaseName,
     required this.treatments,
   });
@@ -41,16 +43,16 @@ class PlantDiseaseTreatmentWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Treatment for $diseaseName',
+            '${context.treatmentFor} $diseaseName',
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 10.0),
-          const Text(
-            'Here are some recommended treatments:',
-            style: TextStyle(fontSize: 16.0),
+          Text(
+            context.recommendedTreatments,
+            style: const TextStyle(fontSize: 16.0),
           ),
           const SizedBox(height: 10.0),
           Column(
@@ -82,3 +84,4 @@ class PlantDiseaseTreatmentWidget extends StatelessWidget {
     );
   }
 }
+

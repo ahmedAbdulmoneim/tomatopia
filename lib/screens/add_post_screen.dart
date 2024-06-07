@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 
 class AddPost extends StatelessWidget {
@@ -19,10 +20,10 @@ class AddPost extends StatelessWidget {
         if (state is AddPostSuccessState) {
           contentController.clear();
           BlocProvider.of<HomeCubit>(context).imageFile = null;
-          show(context, 'Done!', 'Post added successfully!', Colors.green);
+          show(context, context.done, context.postAddedSuccessfully, Colors.green);
           Navigator.pop(context);
         } else if (state is AddPostFailureState) {
-          show(context, 'Error', 'Error happened ', Colors.red);
+          show(context, context.error, context.errorHappened, Colors.red);
         }
       },
       builder: (context, state) {
@@ -33,8 +34,8 @@ class AddPost extends StatelessWidget {
             appBar: AppBar(
               elevation: 6,
               backgroundColor: Colors.white,
-              title: const Text(
-                'Ask Community',
+              title: Text(
+                context.askCommunity,
               ),
               actions: [
                 TextButton(
@@ -45,9 +46,9 @@ class AddPost extends StatelessWidget {
                             imageFile: homeCubit.imageFile);
                       }
                     },
-                    child: const Text(
-                      'publish',
-                      style: TextStyle(color: Colors.green, fontSize: 18),
+                    child: Text(
+                      context.publish,
+                      style: const TextStyle(color: Colors.green, fontSize: 18),
                     ))
               ],
             ),
@@ -63,7 +64,7 @@ class AddPost extends StatelessWidget {
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Description can't be empty";
+                          return context.descriptionEmpty;
                         }
                         return null;
                       },
@@ -72,12 +73,12 @@ class AddPost extends StatelessWidget {
                       enableInteractiveSelection: true,
                       cursorColor: Colors.green,
                       controller: contentController,
-                      decoration: const InputDecoration(
-                        hintText: 'Write a description for your problem',
-                        focusedBorder: OutlineInputBorder(
+                      decoration: InputDecoration(
+                        hintText: context.writeDescription,
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.green)),
-                        border: OutlineInputBorder(),
-                        hintStyle: TextStyle(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
@@ -96,9 +97,9 @@ class AddPost extends StatelessWidget {
                           onPressed: () async {
                             await homeCubit.picImageFromGallery();
                           },
-                          child: const Text(
-                            'Add Image',
-                            style: TextStyle(fontSize: 20, color: Colors.blue),
+                          child: Text(
+                            context.addImage,
+                            style: const TextStyle(fontSize: 20, color: Colors.blue),
                           ),
                         ),
                       ],

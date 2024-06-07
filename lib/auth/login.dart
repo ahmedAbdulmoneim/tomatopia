@@ -3,19 +3,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
-import 'package:tomatopia/auth/sign_up.dart';
-import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/constant/endpints.dart';
+import 'package:tomatopia/constant/validate_password.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_cubit.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
-
-import '../constant/validate_password.dart';
+import '../constant/variables.dart';
 import '../cubit/auth_cubit/login/login_states.dart';
 import '../custom_widget/custom_button.dart';
 import '../custom_widget/text_form_filed.dart';
 import '../screens/home.dart';
 import 'forget_password/email_checking.dart';
+import 'sign_up.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -32,58 +33,61 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             Fluttertoast.showToast(
-                msg: 'logging successfully',
-                toastLength: Toast.LENGTH_LONG,
-                backgroundColor: Colors.green,
-                timeInSecForIosWeb: 5,
-                textColor: Colors.white,
-                fontSize: 16.5,
-                gravity: ToastGravity.CENTER);
+              msg: context.loggingSuccessfully,
+              toastLength: Toast.LENGTH_LONG,
+              backgroundColor: Colors.green,
+              timeInSecForIosWeb: 5,
+              textColor: Colors.white,
+              fontSize: 16.5,
+              gravity: ToastGravity.CENTER,
+            );
             SharedPreference.saveData(
-                    key: 'token',
-                    value:
-                        BlocProvider.of<LoginCubit>(context).loginModel!.token)
-                .then((value) {
+              key: 'token',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.token,
+            ).then((value) {
               token = BlocProvider.of<LoginCubit>(context).loginModel!.token;
             });
             SharedPreference.saveData(
-                key: 'userEmail',
-                value:
-                BlocProvider.of<LoginCubit>(context).loginModel!.email).then((value) {
+              key: 'userEmail',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.email,
+            ).then((value) {
               userEmail = BlocProvider.of<LoginCubit>(context).loginModel!.email;
             });
             SharedPreference.saveData(
-                key: 'userName',
-                value:
-                BlocProvider.of<LoginCubit>(context).loginModel!.name).then((value) {
-              userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;            });
+              key: 'userName',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.name,
+            ).then((value) {
+              userName = BlocProvider.of<LoginCubit>(context).loginModel!.name;
+            });
             SharedPreference.saveData(
-                key: 'userId',
-                value:
-                BlocProvider.of<LoginCubit>(context).loginModel!.userId).then((value) {
+              key: 'userId',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.userId,
+            ).then((value) {
               userId = BlocProvider.of<LoginCubit>(context).loginModel!.userId!;
             });
             SharedPreference.saveData(
-                key: 'userImage',
-                value:
-                BlocProvider.of<LoginCubit>(context).loginModel!.image).then((value) {
+              key: 'userImage',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.image,
+            ).then((value) {
               userImage = BlocProvider.of<LoginCubit>(context).loginModel!.image!;
             });
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Home(),
+              ),
+            );
           }
           if (state is LoginFailureState) {
             Fluttertoast.showToast(
-                msg: 'Please verify the information entered',
-                toastLength: Toast.LENGTH_LONG,
-                backgroundColor: Colors.red,
-                timeInSecForIosWeb: 5,
-                textColor: Colors.white,
-                fontSize: 16.5,
-                gravity: ToastGravity.CENTER);
+              msg: tr('please_verify_information'),
+              toastLength: Toast.LENGTH_LONG,
+              backgroundColor: Colors.red,
+              timeInSecForIosWeb: 5,
+              textColor: Colors.white,
+              fontSize: 16.5,
+              gravity: ToastGravity.CENTER,
+            );
           }
         },
         builder: (context, state) {
@@ -102,114 +106,113 @@ class LoginPage extends StatelessWidget {
                           Stack(
                             alignment: Alignment.bottomLeft,
                             children: [
-                              Image.asset(
-                                'assets/logo.png',
+                              Image.asset('assets/logo.png'),
+                              Row(
+                                children: [
+                                  Text(
+                                    tr('login'),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                      fontSize: 25,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Text(
-                                'Login',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                    fontSize: 25),
-                              )
                             ],
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
+                          const SizedBox(height: 5),
                           textFormField(
-                              controller: emailController,
-                              label: 'Email address',
-                              keyboardType: TextInputType.emailAddress,
-                              prefix: Icons.alternate_email,
-                              validate: (value) {
-                                if (value.isEmpty) {
-                                  return "email can't be empty";
-                                }
-                              }),
-                          const SizedBox(
-                            height: 15,
+                            controller: emailController,
+                            label: tr('email_address'),
+                            keyboardType: TextInputType.emailAddress,
+                            prefix: Icons.alternate_email,
+                            validate: (value) {
+                              if (value.isEmpty) {
+                                return tr('email_is_required');
+                              }
+                              return null;
+                            },
                           ),
+                          const SizedBox(height: 15),
                           textFormField(
-                              controller: passwordController,
-                              onSaved: (value) {
-                                if (formKey.currentState!.validate()) {
-                                  BlocProvider.of<LoginCubit>(context).login(
-                                      endPoint: loginEndpoint,
-                                      data: {
-                                        'email': emailController.text,
-                                        'password': passwordController.text
-                                      });
-                                }
-                              },
-                              label: 'Password',
-                              obscureText:
-                                  BlocProvider.of<LoginCubit>(context).isSecure,
-                              keyboardType: TextInputType.visiblePassword,
-                              prefix: Icons.password,
-                              suffix:
-                                  BlocProvider.of<LoginCubit>(context).suffix,
-                              suffixFunc: BlocProvider.of<LoginCubit>(context)
-                                  .changePasswordVisibility,
-                              validate: (password) {
-                                if (password.toString().isEmpty) {
-                                  return "password can't be empty";
-                                }
-                                return validatePassword(password);
-                              }),
+                            controller: passwordController,
+                            onSaved: (value) {
+                              if (formKey.currentState!.validate()) {
+                                BlocProvider.of<LoginCubit>(context).login(
+                                  endPoint: loginEndpoint,
+                                  data: {
+                                    'email': emailController.text,
+                                    'password': passwordController.text,
+                                  },
+                                );
+                              }
+                            },
+                            label: tr('password'),
+                            obscureText: BlocProvider.of<LoginCubit>(context).isSecure,
+                            keyboardType: TextInputType.visiblePassword,
+                            prefix: Icons.password,
+                            suffix: BlocProvider.of<LoginCubit>(context).suffix,
+                            suffixFunc: BlocProvider.of<LoginCubit>(context).changePasswordVisibility,
+                            validate: (password) {
+                              if (password.toString().isEmpty) {
+                                return tr('password_cant_be_empty');
+                              }
+                              return validatePassword(password);
+                            },
+                          ),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EmailChecking(),
-                                  ));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EmailChecking(),
+                                ),
+                              );
                             },
-                            child: const Text(
-                              'Forget Password',
-                              style: TextStyle(color: Colors.green),
+                            child: Text(
+                              tr('forget_password'),
+                              style: const TextStyle(color: Colors.green),
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          const SizedBox(height: 20),
                           ConditionalBuilder(
                             condition: state is! LoginLoadingState,
                             builder: (context) => customButton(
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await BlocProvider.of<LoginCubit>(context)
-                                        .login(endPoint: loginEndpoint, data: {
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  await BlocProvider.of<LoginCubit>(context).login(
+                                    endPoint: loginEndpoint,
+                                    data: {
                                       'email': emailController.text,
-                                      'password': passwordController.text
-                                    });
-                                  }
-                                },
-                                text: 'LOGIN'),
+                                      'password': passwordController.text,
+                                    },
+                                  );
+                                }
+                              },
+                              text: tr('login_button'),
+                            ),
                             fallback: (context) => const Center(
-                                child: CircularProgressIndicator(
-                              color: Colors.green,
-                            )),
+                              child: CircularProgressIndicator(color: Colors.green),
+                            ),
                           ),
                           Row(
                             children: [
-                              const Text("Don't have an account "),
+                              Text(tr('dont_have_an_account')),
                               TextButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => RegisterPage(),
-                                        ));
-                                  },
-                                  child: const Text(
-                                    'SIGN UP',
-                                    style: TextStyle(
-                                      color: Colors.green,
-                                    ),
-                                  ))
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => RegisterPage()),
+                                  );
+                                },
+                                child: Text(
+                                  tr('sign_up_button'),
+                                  style: const TextStyle(color: Colors.green),
+                                ),
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ],

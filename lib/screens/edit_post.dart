@@ -1,4 +1,3 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditPost extends StatelessWidget {
   final int id;
@@ -24,22 +24,20 @@ class EditPost extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomePageStates>(
       listener: (context, state) {
         if (state is EditPostSuccessState) {
-          show(context, 'Done!', 'Post edited successfully!', Colors.green);
+          show(context, 'done'.tr(), 'post_edited_successfully'.tr(), Colors.green);
           BlocProvider.of<HomeCubit>(context).clearPostImage();
           BlocProvider.of<HomeCubit>(context).getAllPost();
           Navigator.pop(context);
         } else if (state is EditPostFailureState) {
-          show(context, 'Error', 'Error happened', Colors.red);
-        }
-        else if (state is DeleteImageSuccessState) {
-          show(context, 'Done!', 'Image Deleted successfully!', Colors.green);
+          show(context, 'error'.tr(), 'error_happened'.tr(), Colors.red);
+        } else if (state is DeleteImageSuccessState) {
+          show(context, 'done'.tr(), 'image_deleted_successfully'.tr(), Colors.green);
           BlocProvider.of<HomeCubit>(context).clearPostImage();
           BlocProvider.of<HomeCubit>(context).getAllPost();
           Navigator.pop(context);
         } else if (state is DeleteImageFailureState) {
-          show(context, 'Error', 'Error happened', Colors.red);
+          show(context, 'error'.tr(), 'error_happened'.tr(), Colors.red);
         }
-
       },
       builder: (context, state) {
         var homeCubit = BlocProvider.of<HomeCubit>(context);
@@ -49,8 +47,8 @@ class EditPost extends StatelessWidget {
             appBar: AppBar(
               elevation: 6,
               backgroundColor: Colors.white,
-              title: const Text(
-                'Edit Post',
+              title: Text(
+                'edit_post'.tr(),
               ),
               actions: [
                 TextButton(
@@ -62,9 +60,9 @@ class EditPost extends StatelessWidget {
                             id: id);
                       }
                     },
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.green, fontSize: 18),
+                    child: Text(
+                      'save'.tr(),
+                      style: const TextStyle(color: Colors.green, fontSize: 18),
                     ))
               ],
             ),
@@ -80,7 +78,7 @@ class EditPost extends StatelessWidget {
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Description can't be empty";
+                          return "description_empty".tr();
                         }
                         return null;
                       },
@@ -89,12 +87,12 @@ class EditPost extends StatelessWidget {
                       enableInteractiveSelection: true,
                       cursorColor: Colors.green,
                       controller: contentController,
-                      decoration: const InputDecoration(
-                        hintText: 'Write a description for your problem',
-                        focusedBorder: OutlineInputBorder(
+                      decoration: InputDecoration(
+                        hintText: 'write_description'.tr(),
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.green)),
-                        border: OutlineInputBorder(),
-                        hintStyle: TextStyle(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
@@ -102,8 +100,8 @@ class EditPost extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    oldImage.isNotEmpty ?
-                    Column(
+                    oldImage.isNotEmpty
+                        ? Column(
                       children: [
                         Row(
                           children: [
@@ -116,9 +114,10 @@ class EditPost extends StatelessWidget {
                               onPressed: () async {
                                 await homeCubit.picImageFromGallery();
                               },
-                              child: const Text(
-                                'Edit Image',
-                                style: TextStyle(fontSize: 20, color: Colors.blue),
+                              child: Text(
+                                'edit_image'.tr(),
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.blue),
                               ),
                             ),
                           ],
@@ -134,16 +133,17 @@ class EditPost extends StatelessWidget {
                               onPressed: () async {
                                 homeCubit.removePostImage(id: id);
                               },
-                              child: const Text(
-                                'Remove Image',
-                                style: TextStyle(fontSize: 20, color: Colors.blue),
+                              child: Text(
+                                'remove_image'.tr(),
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.blue),
                               ),
                             ),
                           ],
                         )
                       ],
-                    ) :
-                    Row(
+                    )
+                        : Row(
                       children: [
                         const Icon(
                           Icons.attach_file_outlined,
@@ -154,9 +154,10 @@ class EditPost extends StatelessWidget {
                           onPressed: () async {
                             await homeCubit.picImageFromGallery();
                           },
-                          child: const Text(
-                            'Add Image',
-                            style: TextStyle(fontSize: 20, color: Colors.blue),
+                          child: Text(
+                            'add_image'.tr(),
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.blue),
                           ),
                         ),
                       ],
@@ -172,7 +173,7 @@ class EditPost extends StatelessWidget {
                               fit: BoxFit.cover,
                               width: MediaQuery.sizeOf(context).width,
                               height: 300,
-                            )
+                            ),
                           ),
                           IconButton(
                             onPressed: () {

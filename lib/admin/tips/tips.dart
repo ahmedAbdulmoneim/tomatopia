@@ -6,6 +6,7 @@ import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/admin/tips/edit_tip.dart';
 import 'package:tomatopia/constant/variables.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 
 import '../../../cubit/admin_cubit/admin_cubit.dart';
 import '../../../cubit/admin_cubit/admin_states.dart';
@@ -20,12 +21,12 @@ class Tips extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
-        if(state is DeleteTipSuccessState){
-          show(context, 'Done', 'Tip deleted successfully!', Colors.green);
+        if (state is DeleteTipSuccessState) {
+          show(context, context.done, context.tipDeletedSuccessfully, Colors.green);
           BlocProvider.of<AdminCubit>(context).getAllTips();
         }
-        if(state is DeleteTipFailureState){
-          show(context, 'Error', 'Failed to delete Tip', Colors.red);
+        if (state is DeleteTipFailureState) {
+          show(context, context.error, context.failedToDeleteTip, Colors.red);
         }
       },
       builder: (context, state) {
@@ -33,17 +34,16 @@ class Tips extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.grey[300],
           appBar: AppBar(
-            title: const Text('All Tips'),
+            title: Text(context.allTips),
             centerTitle: true,
             actions: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      SizeTransition1( AddTips()));
+                  Navigator.push(context, SizeTransition1(AddTips()));
                 },
                 icon: Container(
                     padding: const EdgeInsets.all(5),
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.grey[300],
                       shape: BoxShape.circle,
                     ),
@@ -52,7 +52,7 @@ class Tips extends StatelessWidget {
             ],
           ),
           body: ConditionalBuilder(
-            condition: state is GetTipsLoadingState ,
+            condition: state is GetTipsLoadingState,
             builder: (context) => Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
                     color: Colors.blue, size: 50)),
@@ -108,36 +108,45 @@ class Tips extends StatelessWidget {
                             ],
                           ),
                         ),
-                        userEmail == 'Admin@gamil.com' || userEmail == 'admin@gamil.com' ?
-                        Row(
+                        userEmail == 'Admin@gamil.com' ||
+                            userEmail == 'admin@gamil.com'
+                            ? Row(
                           children: [
                             IconButton(
-                              onPressed: (){
-                                Navigator.push(context, SizeTransition1(EditTips(
-                                    description: cubit.allTips[index].description!,
-                                    title: cubit.allTips[index].title!,
-                                    id: cubit.allTips[index].id!,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  SizeTransition1(
+                                    EditTips(
+                                      description: cubit
+                                          .allTips[index].description!,
+                                      title:
+                                      cubit.allTips[index].title!,
+                                      id: cubit.allTips[index].id!,
+                                    ),
                                   ),
-                                ),);
+                                );
                               },
                               icon: const Icon(
-                                FontAwesomeIcons.solidPenToSquare,color: Colors.blue,
+                                FontAwesomeIcons.solidPenToSquare,
+                                color: Colors.blue,
                               ),
                             ),
                             IconButton(
-                              onPressed: (){
+                              onPressed: () {
                                 AwesomeDialog(
                                   context: context,
                                   dialogType: DialogType.warning,
-                                  btnOkOnPress: (){
-                                    cubit.deleteTip(id: cubit.allTips[index].id);
+                                  btnOkOnPress: () {
+                                    cubit.deleteTip(
+                                        id: cubit.allTips[index].id);
                                   },
                                   btnCancelOnPress: () {},
-                                  btnCancelText: 'Cancel',
-                                  btnOkText: 'Delete',
+                                  btnCancelText: context.cancel,
+                                  btnOkText: context.delete,
                                   btnCancelColor: Colors.green,
                                   btnOkColor: Colors.red,
-                                  title: 'Are you want to delete this tip',
+                                  title: context.deleteTipConfirmation,
                                   animType: AnimType.leftSlide,
                                 ).show();
                               },
@@ -147,8 +156,8 @@ class Tips extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ):
-                        const Icon(Icons.arrow_forward_ios_outlined)
+                        )
+                            : const Icon(Icons.arrow_forward_ios_outlined)
                       ],
                     ),
                   ),

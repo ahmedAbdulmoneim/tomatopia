@@ -27,12 +27,12 @@ class DiseaseModel {
     info = json['info'];
     symptoms = json['symptoms'];
     category = json['category'] != null
-        ? new Category.fromJson(json['category'])
+        ?  Category.fromJson(json['category'])
         : null;
     if (json['treatments'] != null) {
       treatments = <Treatments>[];
       json['treatments'].forEach((v) {
-        treatments!.add(new Treatments.fromJson(v));
+        treatments!.add( Treatments.fromJson(v));
       });
     }
     image = json['image'];

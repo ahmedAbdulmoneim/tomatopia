@@ -24,6 +24,7 @@ class HomeCubit extends Cubit<HomePageStates> {
   int? likes;
 
   int? disLikes;
+  
 
   List<Widget> screens = [
     const HomeScreen(),

@@ -46,10 +46,10 @@ class _GetMedicineState extends State<GetMedicine> {
                     const SizedBox(
                       height: 25,
                     ),
-                    Text(
+                    const Text(
                       // cubit.aiModel!.prediction == null? '' : 'Prediction :  ${cubit.aiModel!.prediction}',
                       'prediction',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                       ),
                     ),

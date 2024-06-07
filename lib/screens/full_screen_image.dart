@@ -15,13 +15,11 @@ class FullScreenImage extends StatelessWidget {
         body: Stack(
           alignment: Alignment.topLeft,
           children: [
-            Container(
-              child: PhotoView(
-                imageProvider: MemoryImage(base64Decode(imageUrl)),
-                minScale: PhotoViewComputedScale.contained * 0.8,
-                maxScale: PhotoViewComputedScale.covered * 2,
-                initialScale: PhotoViewComputedScale.contained,
-              ),
+            PhotoView(
+              imageProvider: MemoryImage(base64Decode(imageUrl)),
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 2,
+              initialScale: PhotoViewComputedScale.contained,
             ),
             IconButton(
               onPressed: () {

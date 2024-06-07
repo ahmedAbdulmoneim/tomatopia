@@ -21,10 +21,10 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordStates> {
       'email': email
     }).then((value) {
       forgetPasswordModel = ForgetPasswordModel.fromJson(value.data);
-      print(forgetPasswordModel!.confirmCode);
+      debugPrint(forgetPasswordModel!.confirmCode);
       emit(ForgetPasswordSuccessState());
     }).catchError((onError) {
-      print('check email error : $onError');
+      debugPrint('check email error : $onError');
       emit(ForgetPasswordFailuerState());
     });
   }
@@ -45,10 +45,10 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordStates> {
           "token": resetPasswordToken
         }
     ).then((value) {
-      print(value.data);
+      debugPrint(value.data);
       emit(ResetPasswordSuccessState());
     }).catchError((onError){
-      print('reset password error : $onError');
+      debugPrint('reset password error : $onError');
       emit(ResetPasswordFailuerState());
     });
   }

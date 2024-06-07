@@ -9,6 +9,7 @@ class GetAllPostsLoadingState extends HomePageStates {}
 class GetAllPostsSuccessState extends HomePageStates {}
 
 class GetAllPostsFailureState extends HomePageStates {}
+class ChangeLocaleState extends HomePageStates {}
 
 class GetAllPostCommentsLoadingState extends HomePageStates {}
 

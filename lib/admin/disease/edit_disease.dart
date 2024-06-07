@@ -1,7 +1,4 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -9,6 +6,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/custom_widget/custom_button.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 
 import '../../custom_widget/text_form_filed.dart';
@@ -43,7 +41,7 @@ class EditDisease extends StatelessWidget {
     reasonsController.text = reasons;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Disease'),
+        title:  Text(context.editDisease),
       ),
       body: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
@@ -51,14 +49,14 @@ class EditDisease extends StatelessWidget {
             btnController.start(); // Start loading animation
           } else if (state is EditDiseaseSuccessState) {
             btnController.success(); // Show success animation
-            show(context, "Done", "Disease edited successfully!", Colors.green);
+            show(context, context.done, context.diseaseEdited, Colors.green);
             BlocProvider.of<AdminCubit>(context).getAllDisease();
             BlocProvider.of<AdminCubit>(context).clearImage();
             BlocProvider.of<AdminCubit>(context).selectedCategoryId = null;
             Navigator.pop(context);
           } else if (state is EditDiseaseFailureState) {
             btnController.error(); // Show error animation
-            show(context, "Error", "Failed to add disease", Colors.red);
+            show(context, context.error,context.failedToEditDisease, Colors.red);
           }
         },
         builder: (context, state) {
@@ -70,10 +68,10 @@ class EditDisease extends StatelessWidget {
               child: ListView(
                 children: [
                   const SizedBox(height: 20),
-                  const Center(
+                   Center(
                     child: Text(
-                      'Enter disease details',
-                      style: TextStyle(
+                      context.enterDiseaseDetails,
+                      style: const TextStyle(
                         color: Colors.green,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -82,11 +80,11 @@ class EditDisease extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   textFormField(
-                    label: 'Name',
+                    label: context.name,
                     prefix: Icons.person,
                     validate: (value) {
                       if (value.toString().isEmpty) {
-                        return "Enter valid name";
+                        return context.enterValidName;
                       }
                       return null;
                     },
@@ -94,11 +92,11 @@ class EditDisease extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   textFormField(
-                    label: 'Info',
+                    label: context.info,
                     prefix: Icons.info,
                     validate: (value) {
                       if (value.toString().isEmpty) {
-                        return "Enter valid information";
+                        return context.enterValidInformation;
                       }
                       return null;
                     },
@@ -106,11 +104,11 @@ class EditDisease extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   textFormField(
-                    label: 'Symptoms',
+                    label: context.symptoms,
                     prefix: Icons.add,
                     validate: (value) {
                       if (value.toString().isEmpty) {
-                        return "Enter valid symptoms";
+                        return context.enterValidSymptoms;
                       }
                       return null;
                     },
@@ -118,10 +116,10 @@ class EditDisease extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   textFormField(
-                    label: 'Reasons',
+                    label: context.reasons,
                     validate: (value) {
                       if (value.toString().isEmpty) {
-                        return "Enter valid reasons";
+                        return context.enterValidReasons;
                       }
                       return null;
                     },
@@ -149,9 +147,9 @@ class EditDisease extends StatelessWidget {
                         borderSide: const BorderSide(color: Colors.green),
                       ),
                     ),
-                    hint: const Text(
-                      'Select category',
-                      style: TextStyle(fontSize: 14),
+                    hint:  Text(
+                      context.selectCategory,
+                      style: const TextStyle(fontSize: 14),
                     ),
                     value: cubit.selectedCategoryId,
                     onChanged: (value) {
@@ -159,7 +157,7 @@ class EditDisease extends StatelessWidget {
                     },
                     validator: (value) {
                       if (value == null) {
-                        return 'Select category';
+                        return context.selectCategory;
                       }
                       return null;
                     },
@@ -175,7 +173,7 @@ class EditDisease extends StatelessWidget {
                     items: cubit.treatmentList.map((treatment) {
                       return MultiSelectItem<int>(treatment.id, treatment.name);
                     }).toList(),
-                    title: const Text('Select Treatments'),
+                    title:  Text(context.selectTreatments),
                     selectedColor: Colors.green,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -185,8 +183,8 @@ class EditDisease extends StatelessWidget {
                       Icons.medical_services,
                       color: Colors.green,
                     ),
-                    buttonText: const Text(
-                      'Select treatments',
+                    buttonText:  Text(
+                      context.selectTreatments,
 
                     ),
                     onConfirm: (values) {
@@ -194,7 +192,7 @@ class EditDisease extends StatelessWidget {
                     },
                     validator: (values) {
                       if (values == null || values.isEmpty) {
-                        return 'Select at least one treatment';
+                        return context.selectAtLeastOneTreatment;
                       }
                       return null;
                     },
@@ -226,7 +224,7 @@ class EditDisease extends StatelessWidget {
                   )
                       : customButton(
                     width: 100,
-                    text: 'Load Image',
+                    text: context.loadImage,
                     onPressed: () {
                       cubit.picImageFromGallery();
                     },
@@ -256,13 +254,13 @@ class EditDisease extends StatelessWidget {
                             );
                             btnController.start();
                           } else {
-                            show(context, "Error", "Please select an image", Colors.red);
+                            show(context, context.error, context.pleaseSelectImage, Colors.red);
                           }
                         }
                       },
-                      child: const Text(
-                        'Edit Disease',
-                        style: TextStyle(
+                      child:  Text(
+                        context.editDisease,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
                         ),

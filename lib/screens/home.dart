@@ -2,6 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import '../cubit/home_cubit/home_states.dart';
 
 class Home extends StatelessWidget {
@@ -9,10 +10,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit,HomePageStates>(
-      listener: (context, state) {
-
-      },
+    return BlocConsumer<HomeCubit, HomePageStates>(
+      listener: (context, state) {},
       builder: (context, state) {
         var cubit = BlocProvider.of<HomeCubit>(context);
         return Scaffold(
@@ -23,26 +22,26 @@ class Home extends StatelessWidget {
             items: [
               BottomNavyBarItem(
                 icon: const Icon(Icons.home),
-                title: const Text(
-                  'Home',
-                ),
+                title: Text(context.home),
                 activeColor: Colors.green,
                 inactiveColor: Colors.black,
               ),
               BottomNavyBarItem(
-                  activeColor: Colors.deepOrange,
-                  inactiveColor: Colors.black,
-                  icon: const Icon(Icons.chat_outlined),
-                  title: const Text('Community')),
+                activeColor: Colors.deepOrange,
+                inactiveColor: Colors.black,
+                icon: const Icon(Icons.chat_outlined),
+                title: Text(context.community),
+              ),
               BottomNavyBarItem(
-                  activeColor: Colors.red,
-                  inactiveColor: Colors.black,
-                  icon: const Icon(Icons.crisis_alert),
-                  title: const Text('Alert')),
+                activeColor: Colors.red,
+                inactiveColor: Colors.black,
+                icon: const Icon(Icons.crisis_alert),
+                title: Text(context.reminder),
+              ),
             ],
             onItemSelected: (value) {
               cubit.onSelectedItem(value: value);
-              if(value == 1){
+              if (value == 1) {
                 cubit.getAllPost();
               }
             },
@@ -50,7 +49,6 @@ class Home extends StatelessWidget {
           body: cubit.screens[cubit.currentIndex],
         );
       },
-
     );
   }
 }

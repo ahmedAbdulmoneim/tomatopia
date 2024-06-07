@@ -125,7 +125,7 @@ class AdminCubit extends Cubit<AdminStates> {
       addModel = DeleteModel.fromJson(value.data);
       emit(AddCategorySuccessState());
     }).catchError((onError) {
-      print('add category error : $onError');
+      debugPrint('add category error : $onError');
       emit(AddCategoryFailureState());
     });
   }
@@ -139,14 +139,14 @@ class AdminCubit extends Cubit<AdminStates> {
     emit(GetAllDiseaseLoadingState());
     tomatopiaServices.getData(endPoint: getAllDiseaseEndpoint,token: token).then((value){
       data = value.data ;
-      print(data.toString());
+      debugPrint(data.toString());
       allDisease.clear();
       for (int i = 0; i < data.length; i++) {
         allDisease.add(DiseaseModel.fromJson(data[i]));
       }
       emit(GetAllDiseaseSuccessState());
     }).catchError((onError){
-      print("get disease error her : $onError");
+      debugPrint("get disease error her : $onError");
       emit(GetAllDiseaseFailureState());
     });
   }
@@ -174,10 +174,10 @@ class AdminCubit extends Cubit<AdminStates> {
         "reasons": reasons,
       },
     ).then((value) {
-      print(value.data);
+      debugPrint(value.data);
       emit(AddDiseaseSuccessState());
     }).catchError((onError) {
-      print('add disease error : $onError');
+      debugPrint('add disease error : $onError');
       emit(AddDiseaseFailureState());
     });
   }
@@ -212,10 +212,10 @@ class AdminCubit extends Cubit<AdminStates> {
         "reasons": reasons,
       },
     ).then((value) {
-      print(value.data);
+      debugPrint(value.data);
       emit(EditDiseaseSuccessState());
     }).catchError((onError) {
-      print('edit disease error : $onError');
+      debugPrint('edit disease error : $onError');
       emit(EditDiseaseFailureState());
     });
   }

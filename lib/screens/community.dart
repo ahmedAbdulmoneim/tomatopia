@@ -10,10 +10,10 @@ import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/add_post_screen.dart';
 import '../custom_widget/search_box.dart';
+import 'package:tomatopia/custom_widget/extensions.dart'; // Ensure to import the extension
 
 class Community extends StatelessWidget {
   const Community({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class Community extends StatelessWidget {
       child: BlocConsumer<HomeCubit, HomePageStates>(
         listener: (context, state) {
           if(state is DeletePostSuccessState){
-            show(context, 'Done!', "post deleted successfully!", Colors.green);
+            show(context, context.done, context.postDeletedSuccessfully, Colors.green);
             BlocProvider.of<HomeCubit>(context).getAllPost();
           }
 
@@ -33,69 +33,69 @@ class Community extends StatelessWidget {
             floatingActionButton: FloatingActionButton.extended(
               elevation: .6,
               backgroundColor: Colors.green[300],
-              label: customRow(width: 5, icon: Icons.add, text: 'ask community'),
+              label: customRow(width: 5, icon: Icons.add, text: context.askCommunity),
               onPressed: (){
                 Navigator.push(context, SizeTransition1(AddPost()));
               },
             ),
-              body: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
 
-                  children: [
-                    searchBox(),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Expanded(
-                      child: ConditionalBuilder(
-                        condition: state is GetAllPostsLoadingState,
-                        builder: (context) =>
-                            Center(
-                              child: LoadingAnimationWidget.waveDots(
-                                  color: Colors.green, size: 50),
-                            ),
-                        fallback: (context) {
-                          // After the data is loaded, scroll to the bottom
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            if(state is GetAllPostsSuccessState) {
-                              scrollController.jumpTo(
-                                scrollController.position.maxScrollExtent,);
-                            }
-                          });
+                children: [
+                  searchBox(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Expanded(
+                    child: ConditionalBuilder(
+                      condition: state is GetAllPostsLoadingState,
+                      builder: (context) =>
+                          Center(
+                            child: LoadingAnimationWidget.waveDots(
+                                color: Colors.green, size: 50),
+                          ),
+                      fallback: (context) {
+                        // After the data is loaded, scroll to the bottom
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if(state is GetAllPostsSuccessState) {
+                            scrollController.jumpTo(
+                              scrollController.position.maxScrollExtent,);
+                          }
+                        });
 
-                          return RefreshIndicator(
-                            color: Colors.green,
-                            onRefresh: () {
-                              // Trigger data fetch
-                              cubit.getAllPost();
-                              return Future(() => null);
-                            },
-                            child: ListView.builder(
-                              reverse: true,
-                              controller: scrollController,
-                              itemBuilder: (context, index) => communityCard(
-                                index: index,
-                                postImage: cubit.allPosts[index].image != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}' : '',
-                                userImageInPost: cubit.allPosts[index].userImage != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].userImage}' : '',
-                                content: cubit.allPosts[index].content,
-                                context: context,
-                                dislikes: cubit.allPosts[index].disLikes,
-                                userNameInPost: cubit.allPosts[index].userName,
-                                creationDate: cubit.allPosts[index].creationDate,
-                                likes: cubit.allPosts[index].likes,
-                                id: cubit.allPosts[index].id,
-                                userIdPost: cubit.allPosts[index].userId,
-                              ),
-                              itemCount: cubit.allPosts.length,
+                        return RefreshIndicator(
+                          color: Colors.green,
+                          onRefresh: () {
+                            // Trigger data fetch
+                            cubit.getAllPost();
+                            return Future(() => null);
+                          },
+                          child: ListView.builder(
+                            reverse: true,
+                            controller: scrollController,
+                            itemBuilder: (context, index) => communityCard(
+                              index: index,
+                              postImage: cubit.allPosts[index].image != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].image}' : '',
+                              userImageInPost: cubit.allPosts[index].userImage != null ?'http://graduationprojec.runasp.net//${cubit.allPosts[index].userImage}' : '',
+                              content: cubit.allPosts[index].content,
+                              context: context,
+                              dislikes: cubit.allPosts[index].disLikes,
+                              userNameInPost: cubit.allPosts[index].userName,
+                              creationDate: cubit.allPosts[index].creationDate,
+                              likes: cubit.allPosts[index].likes,
+                              id: cubit.allPosts[index].id,
+                              userIdPost: cubit.allPosts[index].userId,
                             ),
-                          );
-                        },
-                      ),
+                            itemCount: cubit.allPosts.length,
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
           );
         },
       ),

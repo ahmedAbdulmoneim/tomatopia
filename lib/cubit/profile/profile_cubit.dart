@@ -12,7 +12,6 @@ import '../../api_models/auth_models/change_password_model.dart';
 import '../../api_models/profile_model.dart';
 import '../../constant/variables.dart';
 import '../../constant/endpints.dart';
-import '../../shared_preferences/shared_preferences.dart';
 
 class ProfileCubit extends Cubit<ProfileStates> {
   ProfileCubit(this.tomatopiaServices) : super(ProfileInitialState());
@@ -23,7 +22,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
   getUserProfile() {
     emit(ProfileLoadingState());
     tomatopiaServices.getData(endPoint: profile,token: token).then((value){
-      print(value.data);
+      debugPrint(value.data);
       profileModel = ProfileModel.fromJson(value.data);
       debugPrint('${profileModel!.image}');
       if(profileModel!.image != null){
@@ -44,13 +43,13 @@ class ProfileCubit extends Cubit<ProfileStates> {
         endPoint: changeName,
         token: token,
         query: {"NewName": newName}).then((value) {
-          print(value.data);
+          debugPrint(value.data);
       profileModel = ProfileModel.fromJson(value.data);
       userName = profileModel!.name;
       newName = profileModel!.name;
       emit(ChangeNameSuccessState());
     }).catchError((onError) {
-      print('change name error $onError');
+      debugPrint('change name error $onError');
       emit(ChangeNameFailureState());
     });
   }
@@ -139,10 +138,10 @@ class ProfileCubit extends Cubit<ProfileStates> {
         .postData(endPoint: changePasswordEndPoint, data: data, token: token)
         .then((value) {
       changePasswordModel = ChangePasswordModel.fromJson(value.data);
-      print(changePasswordModel!.message);
+      debugPrint(changePasswordModel!.message);
       emit(ChangePasswordSuccessState());
     }).catchError((onError) {
-      print('change password error $onError');
+      debugPrint('change password error $onError');
       emit(ChangePasswordFailuerState());
     });
   }

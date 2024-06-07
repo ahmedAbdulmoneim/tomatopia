@@ -8,19 +8,20 @@ import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/edit_post.dart';
 import '../cubit/home_cubit/home_cubit.dart';
 import '../screens/add_comment.dart';
+import 'package:tomatopia/custom_widget/extensions.dart'; // Ensure to import the extension
 
 Widget communityCard(
-        {required String postImage,
-        required String content,
-        required int likes,
-        required int dislikes,
-        required int id,
-        required String userImageInPost,
-        required String userNameInPost,
-        required String creationDate,
-        required String userIdPost,
-        required int index,
-        context}) =>
+    {required String postImage,
+      required String content,
+      required int likes,
+      required int dislikes,
+      required int id,
+      required String userImageInPost,
+      required String userNameInPost,
+      required String creationDate,
+      required String userIdPost,
+      required int index,
+      context}) =>
     Card(
         shadowColor: Colors.grey,
         elevation: 2,
@@ -30,7 +31,7 @@ Widget communityCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Row(
+              Row(
                 children: [
                   CircleAvatar(
                     radius: 25,
@@ -39,7 +40,7 @@ Widget communityCard(
                   const SizedBox(
                     width: 10,
                   ),
-                   Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -49,7 +50,7 @@ Widget communityCard(
                             color: Colors.green,
                             fontWeight: FontWeight.w600),
                       ),
-                       Text(
+                      Text(
                         DateFormat("d MMM yyy").format(DateTime.parse(creationDate)),
                         style: const TextStyle(fontSize: 12, color: Colors.black54),
                       ),
@@ -61,7 +62,7 @@ Widget communityCard(
                     icon: const Icon(Icons.more_horiz),
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        child: customRow(width: 5, icon: Icons.edit, text: 'Edit post'),
+                        child: customRow(width: 5, icon: Icons.edit, text: context.editPost),
                         onTap: (){
                           Navigator.push(context, ScaleTransition1(EditPost(
                             id: id,
@@ -73,7 +74,7 @@ Widget communityCard(
                         },
                       ),
                       PopupMenuItem(
-                        child: customRow(width: 5, icon: Icons.delete, text: 'Delete post'),
+                        child: customRow(width: 5, icon: Icons.delete, text: context.deletePost),
                         onTap: (){
                           AwesomeDialog(
                             context: context,
@@ -82,12 +83,11 @@ Widget communityCard(
                               await BlocProvider.of<HomeCubit>(context).deletePost(id: id);
                             },
                             btnCancelOnPress: () {},
-                            btnCancelText: 'Cancel',
-                            btnOkText: 'Delete',
+                            btnCancelText: context.cancel,
+                            btnOkText: context.delete,
                             btnCancelColor: Colors.green,
                             btnOkColor: Colors.red,
-                            title:
-                            'Are you sure you want to delete this post ! .',
+                            title: context.deletePostConfirmation,
                             animType: AnimType.leftSlide,
                           ).show();
                         },
@@ -116,7 +116,7 @@ Widget communityCard(
                   height: 300,
                 ) :
                 const Text(
-                    '',
+                  '',
                 ),
               ),
               const SizedBox(
@@ -126,15 +126,12 @@ Widget communityCard(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print(userIdPost);
-                      print(userId);
                       BlocProvider.of<HomeCubit>(context).addReactToPost(
                         id: id,
                         like: true,
                         dislike: false,
 
                       );
-                      // BlocProvider.of<HomeCubit>(context).onLikeTaped();
                     },
                     child: Container(
                         padding: const EdgeInsets.only(
@@ -157,7 +154,6 @@ Widget communityCard(
                         like: false,
                         dislike: true,
                       );
-                      // BlocProvider.of<HomeCubit>(context).onDisLikeTaped();
                     },
                     child: Container(
                       padding: const EdgeInsets.only(
@@ -166,13 +162,13 @@ Widget communityCard(
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(20)),
                       child: customRow(
-                        width: 5,
-                        icon: Icons.thumb_down_outlined,
-                        text:  BlocProvider.of<HomeCubit>(context).reactModel != null && BlocProvider.of<HomeCubit>(context).reactModel?.id == id ?
-                            '${BlocProvider.of<HomeCubit>(context).reactModel!.disLikes}' : '$dislikes'
+                          width: 5,
+                          icon: Icons.thumb_down_outlined,
+                          text:  BlocProvider.of<HomeCubit>(context).reactModel != null && BlocProvider.of<HomeCubit>(context).reactModel?.id == id ?
+                          '${BlocProvider.of<HomeCubit>(context).reactModel!.disLikes}' : '$dislikes'
                       ),
                     ),
-                      ),
+                  ),
                   const Spacer(),
                   GestureDetector(
                     onTap: () async{

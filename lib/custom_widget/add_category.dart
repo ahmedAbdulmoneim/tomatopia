@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
 Widget addCategory(context,key,newCat,addCat) => TextButton(
@@ -21,12 +23,12 @@ Widget addCategory(context,key,newCat,addCat) => TextButton(
               textFormField(
                 validate: (value) {
                   if (value.toString().isEmpty) {
-                    return "this filed can't be null";
+                    return context.thisFieldCannotBeNull;
                   }
                 },
                 keyboardType: TextInputType.name,
                 prefix: Icons.category,
-                label: 'add new category ',
+                label: context.addNewCategory,
                 controller: newCat,
               ),
               Row(
@@ -37,9 +39,9 @@ Widget addCategory(context,key,newCat,addCat) => TextButton(
                         newCat.text = '';
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'cancel',
-                        style: TextStyle(
+                      child:  Text(
+                        'cancel'.tr(),
+                        style: const TextStyle(
                           color:
                           Colors.black54,
                         ),
@@ -51,9 +53,9 @@ Widget addCategory(context,key,newCat,addCat) => TextButton(
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text(
-                      'save',
-                      style: TextStyle(
+                    child:  Text(
+                      'save'.tr(),
+                      style: const TextStyle(
                         color: Colors.green,
                         decoration: TextDecoration.underline,
                         decorationStyle: TextDecorationStyle.solid,
@@ -71,18 +73,18 @@ Widget addCategory(context,key,newCat,addCat) => TextButton(
       ),
     );
   },
-  child: const Row(
+  child:  Row(
     children: [
-      Icon(
+      const Icon(
         FontAwesomeIcons.squarePlus,
         color: Colors.green,
       ),
-      SizedBox(
+      const SizedBox(
         width: 8,
       ),
       Text(
-        'Add new category',
-        style: TextStyle(
+        'add_new_category'.tr(),
+        style: const TextStyle(
           color: Colors.green,
         ),),
     ],

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/screens/edit_comment.dart';
 
@@ -42,14 +43,14 @@ class CommentScreen extends StatelessWidget {
               _scrollController.animateTo(
                 _scrollController.position.maxScrollExtent,
                 // Scroll to the very bottom
-                duration: const Duration(milliseconds: 300),
+                duration:  const Duration(milliseconds: 300),
                 // Animation duration
                 curve: Curves.easeOut, // Animation easing
               );
               BlocProvider.of<HomeCubit>(context).getPostComments(id: id);
             }
             else if(state is DeleteCommentSuccessState){
-              show(context, 'Done', 'comment deleted successfully', Colors.green);
+              show(context, context.done, context.commentDeletedSuccessfully, Colors.green);
               BlocProvider.of<HomeCubit>(context).getPostComments(id: id);
             }
           },
@@ -67,10 +68,10 @@ class CommentScreen extends StatelessWidget {
                           SliverAppBar(
                             expandedHeight: 350,
                             pinned: true,
-                            title: const SliverAppBarTitle(
+                            title:  SliverAppBarTitle(
                               child: Text(
-                                'Comments',
-                                style: TextStyle(color: Colors.black),
+                                context.comments,
+                                style: const TextStyle(color: Colors.black),
                               ),
                             ),
                             flexibleSpace: FlexibleSpaceBar(
@@ -85,10 +86,10 @@ class CommentScreen extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding:  const EdgeInsets.all(8.0),
                                       child: Text(
                                         postContent,
-                                        style: const TextStyle(fontSize: 16.0),
+                                        style:  const TextStyle(fontSize: 16.0),
                                       ),
                                     ),
                                   ),
@@ -99,16 +100,16 @@ class CommentScreen extends StatelessWidget {
                           SliverToBoxAdapter(
                             child: Column(
                               children: [
-                                const Divider(
+                                 const Divider(
                                   thickness: 5,
                                 ),
                                 ConditionalBuilder(
                                   condition: cubit.commentPostList.isNotEmpty,
                                   builder: (context) => ListView.separated(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:  const NeverScrollableScrollPhysics(),
                                     separatorBuilder: (context, index) =>
-                                    const Divider(
+                                     const Divider(
                                       height: 20,
                                       thickness: 5,
                                     ),
@@ -116,7 +117,7 @@ class CommentScreen extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       var comment = cubit.commentPostList[index];
                                       return Padding(
-                                        padding: const EdgeInsets.all(10.0),
+                                        padding:  const EdgeInsets.all(10.0),
                                         child: Column(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -132,7 +133,7 @@ class CommentScreen extends StatelessWidget {
                                                         : noImage,
                                                   ),
                                                 ),
-                                                const SizedBox(
+                                                 const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Column(
@@ -143,7 +144,7 @@ class CommentScreen extends StatelessWidget {
                                                       comment.userName,
                                                       overflow:
                                                       TextOverflow.ellipsis,
-                                                      style: const TextStyle(
+                                                      style:  const TextStyle(
                                                           color: Colors.green,
                                                           fontWeight:
                                                           FontWeight.w600),
@@ -151,19 +152,19 @@ class CommentScreen extends StatelessWidget {
                                                     Text(
                                                       DateFormat("d MMM ").format(
                                                           DateTime.parse(comment.creationDate)),
-                                                      style: const TextStyle(
+                                                      style:  const TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.black54),
                                                     ),
                                                   ],
                                                 ),
-                                                const Spacer(),
+                                                 const Spacer(),
                                                 userId == comment.userId ?
                                                 PopupMenuButton(
-                                                  icon: const Icon(Icons.more_horiz),
+                                                  icon:  const Icon(Icons.more_horiz),
                                                   itemBuilder: (context) => [
                                                     PopupMenuItem(
-                                                      child: customRow(width: 5, icon: Icons.edit, text: 'Edit Comment'),
+                                                      child: customRow(width: 5, icon: Icons.edit, text: context.editComment),
                                                       onTap: (){
                                                         Navigator.push(context, ScaleTransition1(EditComment(
                                                           commentId: comment.id,
@@ -176,7 +177,7 @@ class CommentScreen extends StatelessWidget {
                                                       },
                                                     ),
                                                     PopupMenuItem(
-                                                      child: customRow(width: 5, icon: Icons.delete, text: 'Delete Comment'),
+                                                      child: customRow(width: 5, icon: Icons.delete, text: context.deleteComment),
                                                       onTap: (){
                                                         AwesomeDialog(
                                                           context: context,
@@ -185,29 +186,29 @@ class CommentScreen extends StatelessWidget {
                                                             cubit.deleteComment(id: comment.id);
                                                           },
                                                           btnCancelOnPress: () {},
-                                                          btnCancelText: 'Cancel',
-                                                          btnOkText: 'Delete',
+                                                          btnCancelText: context.cancel,
+                                                          btnOkText: context.delete,
                                                           btnCancelColor: Colors.green,
                                                           btnOkColor: Colors.red,
                                                           title:
-                                                          'Are you sure you want to delete this comment ! .',
+                                                          context.areYouSureToDelete,
                                                           animType: AnimType.leftSlide,
                                                         ).show();
                                                       },
                                                     ),
                                                   ],
                                                 ):
-                                                const SizedBox() ,
+                                                 const SizedBox() ,
                                               ],
                                             ),
-                                            const SizedBox(
+                                             const SizedBox(
                                               height: 20,
                                             ),
                                             Text(
                                               comment.content,
-                                              style: const TextStyle(fontSize: 18),
+                                              style:  const TextStyle(fontSize: 18),
                                             ),
-                                            const SizedBox(
+                                             const SizedBox(
                                               height: 10,
                                             ),
                                             if (comment.image != null &&
@@ -224,11 +225,11 @@ class CommentScreen extends StatelessWidget {
                                                   height: 200,
                                                 ),
                                               ),
-                                            const Divider(
+                                             const Divider(
                                               endIndent: 10,
                                               indent: 10,
                                             ),
-                                            const SizedBox(
+                                             const SizedBox(
                                               height: 10,
                                             ),
                                             Row(
@@ -243,7 +244,7 @@ class CommentScreen extends StatelessWidget {
                                                     // Add your like functionality here
                                                   },
                                                   child: Container(
-                                                    padding: const EdgeInsets.only(
+                                                    padding:  const EdgeInsets.only(
                                                         left: 10,
                                                         right: 10,
                                                         top: 5,
@@ -263,7 +264,7 @@ class CommentScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(
+                                                 const SizedBox(
                                                   width: 10,
                                                 ),
                                                 GestureDetector(
@@ -275,7 +276,7 @@ class CommentScreen extends StatelessWidget {
                                                     // Add your dislike functionality here
                                                   },
                                                   child: Container(
-                                                    padding: const EdgeInsets.only(
+                                                    padding:  const EdgeInsets.only(
                                                         left: 10,
                                                         right: 10,
                                                         top: 5,
@@ -302,7 +303,7 @@ class CommentScreen extends StatelessWidget {
                                     },
                                   ),
                                   fallback: (context) => Padding(
-                                      padding: const EdgeInsets.only(top: 70),
+                                      padding:  const EdgeInsets.only(top: 70),
                                       child: Image.asset(
                                         'assets/nocomment(1).jpg',
                                         height: 100,
@@ -316,26 +317,26 @@ class CommentScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
                           Expanded(
                             child: TextFormField(
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return "write comment to send it";
+                                  return context.writeCommentToSend;
                                 }
                                 return null;
                               },
                               controller: commentController,
                               decoration: InputDecoration(
                                 suffixIcon: IconButton(
-                                  icon: const Icon(Icons.attach_file_outlined),
+                                  icon:  const Icon(Icons.attach_file_outlined),
                                   onPressed: () async {
                                     await cubit.picImageFromGallery();
                                   },
                                 ),
-                                labelText: 'Write a comment...',
+                                labelText: context.writeAComment,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -343,7 +344,7 @@ class CommentScreen extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.send),
+                            icon:  const Icon(Icons.send),
                             onPressed: () {
                               formKey.currentState!.save();
                               if (formKey.currentState!.validate()) {
@@ -370,7 +371,7 @@ class CommentScreen extends StatelessWidget {
 class SliverAppBarTitle extends StatelessWidget {
   final Widget child;
 
-  const SliverAppBarTitle({super.key, required this.child});
+   const SliverAppBarTitle({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

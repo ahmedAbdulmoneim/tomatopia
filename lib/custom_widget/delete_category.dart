@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../cubit/admin_cubit/admin_states.dart';
@@ -16,11 +17,11 @@ Widget deleteCategory({context, cubit, index, state}) => IconButton(
         }
       },
       btnCancelOnPress: () {},
-      btnCancelText: 'Cancel',
-      btnOkText: 'Delete',
+      btnCancelText: 'cancel'.tr(),
+      btnOkText: 'delete'.tr(),
       btnCancelColor: Colors.green,
       btnOkColor: Colors.red,
-      title: 'Are You Sure You Want To Delete This Category .',
+      title: 'delete_category_confirmation'.tr(),
       animType: AnimType.leftSlide,
     ).show();
 

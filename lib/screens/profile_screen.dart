@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tomatopia/constant/variables.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -26,7 +27,7 @@ class Profile extends StatelessWidget {
       children:[
         Ink(
           height: 200,
-          decoration:  BoxDecoration(
+          decoration:  const BoxDecoration(
             image: DecorationImage(
                 image:
                     AssetImage('assets/backimage.jpg'),
@@ -110,17 +111,17 @@ class Profile extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     ListTile(
-                      leading: Icon(Icons.email, color: Colors.teal),
-                      title: Text("E-Mail"),
+                      leading: const Icon(Icons.email, color: Colors.teal),
+                      title: Text(context.email),
                       subtitle: Text(userEmail),
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
                       contentPadding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      leading: Icon(Icons.my_location, color: Colors.teal),
-                      title: Text("Location"),
-                      subtitle: Text("Beni Suef"),
+                          const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      leading: const Icon(Icons.my_location, color: Colors.teal),
+                      title: Text(context.location),
+                      subtitle: const Text("Beni Suef"),
                     ),
                   ],
                 )

@@ -1,25 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
 import '../constant/validate_password.dart';
 
-Widget changePasswordBottomSheetBuilder ({
+Widget changePasswordBottomSheetBuilder({
   required bottomSheetFormKey,
-  required context,
+  required buildContext,
+  required save,
+  required cancel,
+  required notNull,
+  required enterOldPassword,
+  required confirmNewPassword,
   required confirmPasswordController,
   required oldPasswordController,
   required newPasswordController,
   required profileCubit,
-})=> Form(
+}) => Form(
   key: bottomSheetFormKey,
   child: Container(
     height: 350,
     margin: EdgeInsets.only(
-        bottom:
-        MediaQuery.of(context)
-            .viewInsets
-            .bottom,
+        bottom: MediaQuery.of(buildContext).viewInsets.bottom,
         top: 20,
         left: 10,
         right: 10),
@@ -27,142 +28,84 @@ Widget changePasswordBottomSheetBuilder ({
       children: [
         textFormField(
           validate: (value) {
-            if (value
-                .toString()
-                .isEmpty) {
-              return "this filed can't be null";
+            if (value.toString().isEmpty) {
+              return notNull;
             }
-            return validatePassword(
-                value);
+            return validatePassword(value);
           },
-          keyboardType:
-          TextInputType
-              .visiblePassword,
-          obscureText:
-          profileCubit
-              .isSecure,
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: profileCubit.isSecure,
           prefix: Icons.password,
-          suffix: profileCubit
-              .suffixIcon,
-          suffixFunc: profileCubit
-              .suffixFunction,
-          label:
-          'enter old password',
-          controller:
-          oldPasswordController,
+          suffix: profileCubit.suffixIcon,
+          suffixFunc: profileCubit.suffixFunction,
+          label: enterOldPassword,
+          controller: oldPasswordController,
         ),
-        const SizedBox(
-          height: 15,
-        ),
+        const SizedBox(height: 15),
         textFormField(
           validate: (value) {
-            if (value
-                .toString()
-                .isEmpty) {
-              return "this filed can't be null";
+            if (value.toString().isEmpty) {
+              return notNull;
             }
-            return validatePassword(
-                value);
+            return validatePassword(value);
           },
-          keyboardType:
-          TextInputType
-              .visiblePassword,
+          keyboardType: TextInputType.visiblePassword,
           prefix: Icons.password,
-          obscureText:
-          profileCubit
-              .isSecure,
-          label:
-          'enter new password',
-          controller:
-          newPasswordController,
+          obscureText: profileCubit.isSecure,
+          label: enterOldPassword,
+          controller: newPasswordController,
         ),
-        const SizedBox(
-          height: 15,
-        ),
+        const SizedBox(height: 15),
         textFormField(
           validate: (value) {
-            if (value
-                .toString()
-                .isEmpty) {
-              return "this filed can't be null";
+            if (value.toString().isEmpty) {
+              return notNull;
             }
-            return validatePassword(
-                value);
+            return validatePassword(value);
           },
-          keyboardType:
-          TextInputType
-              .visiblePassword,
+          keyboardType: TextInputType.visiblePassword,
           prefix: Icons.password,
-          obscureText:
-          profileCubit
-              .isSecure,
-          suffixFunc: profileCubit
-              .suffixFunction,
-          label:
-          'confirm new password',
-          controller:
-          confirmPasswordController,
+          obscureText: profileCubit.isSecure,
+          suffixFunc: profileCubit.suffixFunction,
+          label: confirmNewPassword,
+          controller: confirmPasswordController,
         ),
         Row(
           children: [
             const Spacer(),
             TextButton(
                 onPressed: () {
-                  oldPasswordController
-                      .text = '';
-                  newPasswordController
-                      .text = '';
-                  confirmPasswordController
-                      .text = '';
-                  Navigator.pop(
-                      context);
+                  oldPasswordController.text = '';
+                  newPasswordController.text = '';
+                  confirmPasswordController.text = '';
+                  Navigator.pop(buildContext);
                 },
-                child: const Text(
-                  'cancel',
-                  style:
-                  TextStyle(
-                    color: Colors
-                        .black54,
+                child: Text(
+                  cancel,
+                  style: const TextStyle(
+                    color: Colors.black54,
                   ),
                 )),
             TextButton(
               onPressed: () {
-                if (bottomSheetFormKey
-                    .currentState!
-                    .validate()) {
-                  profileCubit
-                      .changePassword(
-                      data: {
-                        "oldPassword":
-                        oldPasswordController
-                            .text,
-                        "newPassword":
-                        newPasswordController
-                            .text,
-                        "confirmPassword":
-                        confirmPasswordController
-                            .text,
-                      });
+                if (bottomSheetFormKey.currentState!.validate()) {
+                  profileCubit.changePassword(data: {
+                    "oldPassword": oldPasswordController.text,
+                    "newPassword": newPasswordController.text,
+                    "confirmPassword": confirmPasswordController.text,
+                  });
                 }
               },
-              child: const Text(
-                'save',
-                style: TextStyle(
-                    color: Colors
-                        .green,
-                    decoration:
-                    TextDecoration
-                        .underline,
-                    decorationStyle:
-                    TextDecorationStyle
-                        .solid,
-                    decorationColor:
-                    Colors
-                        .green,
-                    textBaseline:
-                    TextBaseline
-                        .alphabetic,
-                    fontSize: 18),
+              child: Text(
+               save,
+                style: const TextStyle(
+                  color: Colors.green,
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.solid,
+                  decorationColor: Colors.green,
+                  textBaseline: TextBaseline.alphabetic,
+                  fontSize: 18,
+                ),
               ),
             ),
           ],

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import '../cubit/admin_cubit/admin_states.dart';
 import '../custom_widget/toasts.dart';
 
@@ -19,7 +20,7 @@ class Users extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users'),
+        title:  Text(context.users),
       ),
       body: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
@@ -28,7 +29,7 @@ class Users extends StatelessWidget {
                 pageSize: 10,
                 pageNumber:
                     BlocProvider.of<AdminCubit>(context).currentPage + 1);
-            show(context, 'Done', 'User deleted successfully!', Colors.green);
+            show(context, context.done, context.userDeletedSuccessfully, Colors.green);
           }
         },
         builder: (context, state) {
@@ -82,18 +83,18 @@ class Users extends StatelessWidget {
                                                 }
                                               },
                                               btnCancelOnPress: () {},
-                                              btnCancelText: 'Cancel',
-                                              btnOkText: 'Delete',
+                                              btnCancelText: context.cancel,
+                                              btnOkText: context.delete,
                                               btnCancelColor: Colors.green,
                                               btnOkColor: Colors.red,
                                               title:
-                                                  'Are you sure you want to delete this user : ${cubit.userModel!.users![index].email} .',
+                                                  '${context.deleteUserConfirmation} : ${cubit.userModel!.users![index].email} .',
                                               animType: AnimType.leftSlide,
                                             ).show();
                                           },
-                                          child: const Text(
-                                            'Delete',
-                                            style: TextStyle(color: Colors.red),
+                                          child:  Text(
+                                            context.delete,
+                                            style: const TextStyle(color: Colors.red),
                                           ))
                                     ],
                                   ),

@@ -6,6 +6,8 @@ import 'package:page_transition/page_transition.dart';
 import 'onboarding.dart';
 
 class SplachScreen extends StatelessWidget {
+  const SplachScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
@@ -23,7 +25,7 @@ class SplachScreen extends StatelessWidget {
             //   Colors.green
             // ],
             totalRepeatCount: 1,
-            speed: Duration(milliseconds: 80),
+            speed: const Duration(milliseconds: 80),
             text: const ['WELCOME TO ', 'TOMATOPIA', 'TOMATOPIA'],
             textStyle: const TextStyle(
                 fontSize: 25,

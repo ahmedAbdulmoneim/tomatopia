@@ -7,6 +7,7 @@ import 'package:tomatopia/admin/treatments/treatments.dart';
 import 'package:tomatopia/admin/users.dart';
 
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 
 import '../cubit/admin_cubit/admin_states.dart';
 
@@ -42,7 +43,7 @@ class AdminPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Panel'),
+        title:  Text(context.adminPanel),
       ),
       body: BlocBuilder<AdminCubit,AdminStates>(
         builder: (context, state) {
@@ -68,7 +69,7 @@ class AdminPanel extends StatelessWidget {
                           pageNumber: pageNumber + 1,
                         );
                       },
-                      child: containerPanel('Users'),
+                      child: containerPanel(context.users),
                     ),
                 const SizedBox(height: 15),
                 GestureDetector(
@@ -79,7 +80,7 @@ class AdminPanel extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => Category()),
                         );
                       },
-                      child: containerPanel('Categories'),
+                      child: containerPanel(context.categories),
                     ),
                 const SizedBox(height: 15),
                 GestureDetector(
@@ -90,7 +91,7 @@ class AdminPanel extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const Tips()),
                     );
                   },
-                  child: containerPanel('Tips'),
+                  child: containerPanel(context.tips),
                 ),
                 const SizedBox(height: 15),
                 GestureDetector(
@@ -102,7 +103,7 @@ class AdminPanel extends StatelessWidget {
                          BlocProvider.of<AdminCubit>(context).getAllDisease();
                          BlocProvider.of<AdminCubit>(context).getAllTreatment();
                       },
-                      child: containerPanel('Disease'),
+                      child: containerPanel(context.diseases),
                     ),
                 const SizedBox(height: 15),
                 GestureDetector(
@@ -113,7 +114,7 @@ class AdminPanel extends StatelessWidget {
                     );
                     BlocProvider.of<AdminCubit>(context).getAllTreatment();
                   },
-                  child: containerPanel('Treatments'),
+                  child: containerPanel(context.treatments),
                 ),
 
               ],

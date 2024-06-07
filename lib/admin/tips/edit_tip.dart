@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 
@@ -22,14 +23,14 @@ class EditTips extends StatelessWidget {
     return BlocConsumer<AdminCubit,AdminStates>(
       listener: (context, state) {
         if(state is EditTipSuccessState){
-          show(context, 'Done!', 'Tip Edited successfully', Colors.green);
+          show(context, context.done, context.tipEditedSuccessfully, Colors.green);
           BlocProvider.of<AdminCubit>(context).getAllTips();
           titleController.clear();
           descriptionController.clear();
           BlocProvider.of<AdminCubit>(context).clearImage();
           Navigator.pop(context);
         }else if(state is EditTipFailureState){
-          show(context, 'Error', 'Error happened', Colors.red);
+          show(context, context.error, context.errorHappened, Colors.red);
         }
 
       },
@@ -43,8 +44,8 @@ class EditTips extends StatelessWidget {
             appBar: AppBar(
               elevation: 6,
               backgroundColor: Colors.white,
-              title: const Text(
-                'Edit Tips',
+              title:  Text(
+                context.editTips,
               ),
               actions: [
                 TextButton(
@@ -58,14 +59,14 @@ class EditTips extends StatelessWidget {
                             imageFile: adminCubit.imageFile,
                           );
                         }else{
-                          show(context, 'Error ', 'Please select Image', Colors.red);
+                          show(context,  context.error, context.pleaseSelectImage, Colors.red);
                         }
 
                       }
                     },
-                    child: const Text(
-                      'Edit',
-                      style: TextStyle(color: Colors.green, fontSize: 18),
+                    child:  Text(
+                      context.edit,
+                      style: const TextStyle(color: Colors.green, fontSize: 18),
                     ))
               ],
             ),
@@ -75,27 +76,27 @@ class EditTips extends StatelessWidget {
                   child: LoadingAnimationWidget.discreteCircle(
                       color: Colors.green, size: 50)),
               fallback: (context) => Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10, top: 20),
+                padding:  const EdgeInsets.only(left: 10.0, right: 10, top: 20),
                 child: ListView(
                   children: [
                     textFormField(
                       validate: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Title can't be empty";
+                          return context.titleEmptyError;
                         }
                         return null;
                       },
                       prefix: Icons.title,
-                      label: 'Enter tip title',
+                      label: context.enterTipTitle,
                       controller: titleController,
                     ),
-                    const SizedBox(
+                     const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Description can't be empty";
+                          return context.descriptionEmptyError;
                         }
                         return null;
                       },
@@ -103,25 +104,25 @@ class EditTips extends StatelessWidget {
                       enableInteractiveSelection: true,
                       cursorColor: Colors.green,
                       controller: descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Write a description for your Tip',
-                        focusedBorder: OutlineInputBorder(
+                      decoration:  InputDecoration(
+                        hintText: context.writeDescriptionForTip,
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.green)),
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
+                        border: const OutlineInputBorder(),
+                        errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red)),
-                        errorStyle: TextStyle(color: Colors.red),
-                        hintStyle: TextStyle(
+                        errorStyle: const TextStyle(color: Colors.red),
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
                     ),
-                    const SizedBox(
+                     const SizedBox(
                       height: 10,
                     ),
                     Row(
                       children: [
-                        const Icon(
+                         const Icon(
                           Icons.attach_file_outlined,
                           size: 35,
                           color: Colors.blue,
@@ -130,9 +131,9 @@ class EditTips extends StatelessWidget {
                           onPressed: () async {
                             await adminCubit.picImageFromGallery();
                           },
-                          child: const Text(
-                            'Add Image',
-                            style: TextStyle(fontSize: 20, color: Colors.blue),
+                          child:  Text(
+                            context.addImage,
+                            style: const TextStyle(fontSize: 20, color: Colors.blue),
                           ),
                         ),
                       ],
@@ -155,10 +156,10 @@ class EditTips extends StatelessWidget {
                               adminCubit.clearImage();
                             },
                             icon: Container(
-                              decoration: const BoxDecoration(
+                              decoration:  const BoxDecoration(
                                   color: Colors.black87,
                                   shape: BoxShape.circle),
-                              child: const Icon(
+                              child:  const Icon(
                                 Icons.clear,
                                 color: Colors.white,
                                 size: 30,

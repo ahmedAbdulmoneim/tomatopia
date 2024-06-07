@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
 
 Widget editCategory({context, name, key, cubit, index}) => IconButton(
@@ -21,12 +22,12 @@ Widget editCategory({context, name, key, cubit, index}) => IconButton(
               textFormField(
                 validate: (value) {
                   if (value.toString().isEmpty) {
-                    return "this filed can't be null";
+                    return context.thisFieldCannotBeNull;
                   }
                 },
                 keyboardType: TextInputType.name,
                 prefix: Icons.category,
-                label: 'edite category name ',
+                label: context.editCategoryName,
                 controller: name,
               ),
               Row(
@@ -37,9 +38,9 @@ Widget editCategory({context, name, key, cubit, index}) => IconButton(
                         name.text = '';
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'cancel',
-                        style: TextStyle(
+                      child:  Text(
+                        context.cancel,
+                        style: const TextStyle(
                           color:
                           Colors.black54,
                         ),
@@ -51,9 +52,9 @@ Widget editCategory({context, name, key, cubit, index}) => IconButton(
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text(
-                      'save',
-                      style: TextStyle(
+                    child:  Text(
+                      context.save,
+                      style: const TextStyle(
                         color: Colors.green,
                         decoration: TextDecoration.underline,
                         decorationStyle: TextDecorationStyle.solid,

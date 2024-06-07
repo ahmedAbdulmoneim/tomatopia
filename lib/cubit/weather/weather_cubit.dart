@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/weather_model.dart';
 import 'package:tomatopia/api_services/weather_services.dart';
 import 'package:tomatopia/cubit/weather/weather_states.dart';
@@ -14,7 +15,7 @@ class WeatherCubit extends Cubit<WeatherStates> {
       weatherModel = WeatherModel.fromJson(value.data);
       emit(GetWeatherSuccessState());
     }).catchError((onError) {
-      print('catch error her $onError');
+      debugPrint('catch error her $onError');
       emit(GetWeatherFailureState());
     });
   }

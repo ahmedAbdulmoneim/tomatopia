@@ -1,6 +1,7 @@
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:tomatopia/custom_widget/extensions.dart';
 
 import '../api_models/tips_model.dart';
 import '../constant/variables.dart';
@@ -16,7 +17,7 @@ class ShowTips extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blueGrey[100],
       appBar: AppBar(
-        title: const Text('Tips'),
+        title:  Text(context.tips),
       ),
       body: Accordion(
         headerBorderColor: Colors.blueGrey,
