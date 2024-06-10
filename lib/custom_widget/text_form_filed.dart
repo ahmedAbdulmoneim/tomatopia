@@ -52,3 +52,32 @@ Widget textFormField({
         focusColor: Colors.greenAccent,
       ),
     );
+
+Widget bigTextFormFiled(
+{
+  String? hint,
+  validate,
+  TextEditingController? controller,
+  IconData? prefix,
+
+}
+    )=> TextFormField(
+  validator: validate,
+  maxLines: 8,
+  enableInteractiveSelection: true,
+  cursorColor: Colors.green,
+  controller: controller,
+  decoration:  InputDecoration(
+    hintText: hint,
+    prefixIcon: Icon(prefix),
+    focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.green)),
+    border: const OutlineInputBorder(),
+    errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red)),
+    errorStyle: const TextStyle(color: Colors.red),
+    hintStyle: const TextStyle(
+      color: Colors.grey,
+    ),
+  ),
+);

@@ -35,8 +35,9 @@ class SettingsScreen extends StatelessWidget {
       body: BlocConsumer<ProfileCubit, ProfileStates>(
         listener: (context, state) {
           if (state is ProfileSuccessState) {
-            SharedPreference.saveData(key: 'userImage', value: BlocProvider.of<ProfileCubit>(context).profileModel!.image!).then((value) {
-              userImage = BlocProvider.of<ProfileCubit>(context).profileModel!.image!;
+
+            SharedPreference.saveData(key: 'userImage', value: BlocProvider.of<ProfileCubit>(context).profileModel!.image ?? '').then((value) {
+              userImage = BlocProvider.of<ProfileCubit>(context).profileModel!.image ?? '';
             });
             SharedPreference.saveData(key: 'userName', value: BlocProvider.of<ProfileCubit>(context).profileModel!.name).then((value) {
               userName = BlocProvider.of<ProfileCubit>(context).profileModel!.name;
@@ -164,9 +165,7 @@ class SettingsScreen extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          profileCubit.newName == null
-                                              ? userName
-                                              : BlocProvider.of<ProfileCubit>(context).newName!,
+                                          profileCubit.nName ?? userName,
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -174,6 +173,7 @@ class SettingsScreen extends StatelessWidget {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
+
                                       ],
                                     ),
                                   ),
@@ -296,7 +296,7 @@ class SettingsScreen extends StatelessWidget {
                                       showModalBottomSheet(
                                           isScrollControlled: true,
                                           context: context,
-                                          builder: (x) =>Form(
+                                          builder: (context) =>Form(
                                             key: bottomSheetFormKey,
                                             child: Container(
                                               height: 350,

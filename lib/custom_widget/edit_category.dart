@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/text_form_filed.dart';
+
+import '../cubit/admin_cubit/admin_cubit.dart';
 
 Widget editCategory({context, name, key, cubit, index}) => IconButton(
   onPressed: () {
@@ -48,7 +51,7 @@ Widget editCategory({context, name, key, cubit, index}) => IconButton(
                   TextButton(
                     onPressed: () {
                       if (key.currentState!.validate()){
-                        cubit.editeCategory(id:cubit.categoryList![index].id,newCategory: name.text);
+                        BlocProvider.of<AdminCubit>(context).editCategory(id:cubit.categoryList![index].id,newCategory: name.text);
                         Navigator.pop(context);
                       }
                     },

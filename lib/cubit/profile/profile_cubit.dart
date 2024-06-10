@@ -19,40 +19,47 @@ class ProfileCubit extends Cubit<ProfileStates> {
   TomatopiaServices tomatopiaServices;
   ProfileModel? profileModel;
 
-  getUserProfile() {
+  Future<void> getUserProfile() async {
     emit(ProfileLoadingState());
-    tomatopiaServices.getData(endPoint: profile,token: token).then((value){
-      debugPrint(value.data);
-      profileModel = ProfileModel.fromJson(value.data);
-      debugPrint('${profileModel!.image}');
-      if(profileModel!.image != null){
-        userImage = profileModel!.image!;
-      }
-
+    try {
+      final response = await tomatopiaServices.getData(
+        endPoint: profile,
+        token: token,
+      );
+      // Parse the response and update profileModel
+      profileModel = ProfileModel.fromJson(response.data);
+      nName = profileModel!.name;
       emit(ProfileSuccessState());
-    }).catchError((onError){
-      debugPrint("get user profile error : $onError");
+    } catch (error) {
+      debugPrint('getUserProfile error $error');
       emit(ProfileFailureState());
-    });
+    }
   }
 
-  String? newName ;
-  changeUserName({required String newName}) {
+
+  String? nName;
+
+  changeUserName({required String newName}) async {
     emit(ChangeNameLoadingState());
-    tomatopiaServices.update(
+    try {
+      var response = await tomatopiaServices.update(
         endPoint: changeName,
         token: token,
-        query: {"NewName": newName}).then((value) {
-          debugPrint(value.data);
-      profileModel = ProfileModel.fromJson(value.data);
-      userName = profileModel!.name;
-      newName = profileModel!.name;
+        query: {"NewName": newName},
+      );
+      getUserProfile();
+      profileModel = ProfileModel.fromJson(response.data);
+      if (profileModel != null) {
+        nName = profileModel!.name;
+      }
       emit(ChangeNameSuccessState());
-    }).catchError((onError) {
-      debugPrint('change name error $onError');
+    } catch (error) {
+      debugPrint('change name error $error');
       emit(ChangeNameFailureState());
-    });
+    }
   }
+
+
 
   File? imageFile;
   FormData? formData;
@@ -151,6 +158,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   suffixFunction() {
     isSecure = !isSecure;
+    print(isSecure);
     suffixIcon = isSecure
         ? Icons.visibility_off_outlined
         : Icons.remove_red_eye_outlined;

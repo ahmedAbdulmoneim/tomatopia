@@ -22,15 +22,12 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   int currentIndex = 0;
   int? likes;
-
   int? disLikes;
-  
 
   List<Widget> screens = [
     const HomeScreen(),
     const Community(),
     const Alerts(),
-
   ];
 
   TomatopiaServices tomatopiaServices;
@@ -38,9 +35,10 @@ class HomeCubit extends Cubit<HomePageStates> {
   List<dynamic> data = [];
   List<GetPostsModel> allPosts = [];
 
-  getAllPost() {
-    emit(GetAllPostsSuccessState());
-    tomatopiaServices.getData(endPoint: getPosts, token: token).then((value) {
+  getAllPost() async {
+    emit(GetAllPostsLoadingState());
+    try {
+      var value = await tomatopiaServices.getData(endPoint: getPosts, token: token);
       data = value.data;
       allPosts.clear();
       // save reversed data in list
@@ -48,10 +46,10 @@ class HomeCubit extends Cubit<HomePageStates> {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
       emit(GetAllPostsSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint("get all posts error : $onError");
       emit(GetAllPostsFailureState());
-    });
+    }
   }
 
   onSelectedItem({required value}) {
@@ -61,76 +59,76 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   AddReactModel? reactModel;
 
-
   addReactToPost({
     required int id,
     required bool like,
     required bool dislike,
-  }) {
+  }) async {
     emit(AddReactPostsLoadingState());
-    tomatopiaServices.postData(
-      endPoint: addPostReact,
-      data: {"objectId": id, "like": like, "dislike": dislike},
-      token: token,
-    ).then((value) {
+    try {
+      var value = await tomatopiaServices.postData(
+        endPoint: addPostReact,
+        data: {"objectId": id, "like": like, "dislike": dislike},
+        token: token,
+      );
       reactModel = AddReactModel.fromJson(value.data);
 
       // Find the post in allPosts and update its likes and dislikes
       var post = allPosts.firstWhere((element) => element.id == id);
-          post.likes = reactModel!.likes;
-          post.disLikes = reactModel!.disLikes;
+      post.likes = reactModel!.likes;
+      post.disLikes = reactModel!.disLikes;
       emit(AddReactPostsSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint("add react error : $onError");
       emit(AddReactPostsFailureState());
-    });
+    }
   }
 
- Comment? commentModel;
+  Comment? commentModel;
 
   List<dynamic> commentData = [];
   List<Comment> commentPostList = [];
-  getPostComments({required id}){
+
+  getPostComments({required id}) async {
     emit(GetAllPostCommentsLoadingState());
-    tomatopiaServices.getData(endPoint: getPostComment,query: {'postId' : id}).then((value) {
+    try {
+      var value = await tomatopiaServices.getData(endPoint: getPostComment, query: {'postId': id});
       commentData = value.data;
       commentPostList.clear();
       for (int i = 0; i < commentData.length; i++) {
         commentPostList.add(Comment.fromJson(commentData[i]));
       }
       emit(GetAllPostCommentsSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("get comments error : $onError");
       emit(GetAllPostCommentsFailureState());
-
-    });
+    }
   }
 
   AddReactCommentModel? commentReactModel;
-  addReactToComment(
-      {required int id, required bool like, required bool dislike}) {
-    emit(AddReactCommentLoadingState());
-    tomatopiaServices
-        .postData(
-      endPoint: addCommentReact,
-      data: {"objectId": id, "like": like, "dislike": dislike},
-      token: token,
-    )
-        .then((value) {
-          commentReactModel = AddReactCommentModel.fromJson(value.data);
 
-          for (var comment in commentPostList) {
-            if (comment.id == id) {
-              comment.likes = commentReactModel!.likes!;
-              comment.disLikes = commentReactModel!.disLikes!;
-              break;
-            }
-          }
+  addReactToComment({required int id, required bool like, required bool dislike}) async {
+    emit(AddReactCommentLoadingState());
+    try {
+      var value = await tomatopiaServices.postData(
+        endPoint: addCommentReact,
+        data: {"objectId": id, "like": like, "dislike": dislike},
+        token: token,
+      );
+      commentReactModel = AddReactCommentModel.fromJson(value.data);
+
+      for (var comment in commentPostList) {
+        if (comment.id == id) {
+          comment.likes = commentReactModel!.likes!;
+          comment.disLikes = commentReactModel!.disLikes!;
+          break;
+        }
+      }
       emit(AddReactCommentSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint("add react error : $onError");
       emit(AddReactCommentFailureState());
-    });
+    }
   }
 
   File? imageFile;
@@ -157,13 +155,11 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   addPost({required String content, File? imageFile}) async {
     emit(AddPostLoadingState());
-
     try {
       FormData formData = FormData.fromMap({
         'content': content,
         if (imageFile != null)
-          'Image': await MultipartFile.fromFile(imageFile.path,
-              filename: 'image.jpg'),
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
       });
 
       var response = await tomatopiaServices.postData(
@@ -186,61 +182,61 @@ class HomeCubit extends Cubit<HomePageStates> {
     emit(ClearPostImage());
   }
 
-  TipsModel? tipsModel ;
+  TipsModel? tipsModel;
   List<dynamic> tipsMap = [];
   List<TipsModel> allTips = [];
 
-  getAllTips(){
+  getAllTips() async {
     emit(GetAllTipsLoadingState());
-    tomatopiaServices.getData(endPoint: getTips,token: token).then((value) {
+    try {
+      var value = await tomatopiaServices.getData(endPoint: getTips, token: token);
       tipsMap = value.data;
       allTips.clear();
-      for(int i = 0; i< tipsMap.length;i++){
+      for (int i = 0; i < tipsMap.length; i++) {
         allTips.add(TipsModel.fromJson(tipsMap[i]));
       }
-
       emit(GetAllTipsSuccessState());
-    }).catchError((onError){
-      debugPrint('ger tips error : $onError');
+    } catch (onError) {
+      debugPrint('get tips error : $onError');
       emit(GetAllTipsFailureState());
-    });
+    }
   }
 
-  deletePost({required int id }){
+  deletePost({required int id}) async {
     emit(DeletePostLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deletePostEndpoint,query: {'id' : id}).then((value) {
+    try {
+      var value = await tomatopiaServices.deleteRequest(token: token, endpoint: deletePostEndpoint, query: {'id': id});
       emit(DeletePostSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete post error : $onError");
       emit(DeletePostFailureState());
-    });
+    }
   }
 
-  deleteComment({required int id }){
+  deleteComment({required int id}) async {
     emit(DeleteCommentLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentEndpoint,query: {'id' : id}).then((value) {
+    try {
+      var value = await tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentEndpoint, query: {'id': id});
       emit(DeleteCommentSuccessState());
-    }).catchError((onError){
-      debugPrint("delete post error : $onError");
+    } catch (onError) {
+      debugPrint("delete comment error : $onError");
       emit(DeleteCommentFailureState());
-    });
+    }
   }
 
-  editPost({required String content, File? imageFile,required id})async {
+  editPost({required String content, File? imageFile, required id}) async {
     emit(EditPostLoadingState());
-
     try {
       FormData formData = FormData.fromMap({
         'content': content,
         if (imageFile != null)
-          'Image': await MultipartFile.fromFile(imageFile.path,
-              filename: 'image.jpg'),
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
       });
 
       var response = await tomatopiaServices.update(
         endPoint: editPostEndpoint,
         data: formData,
-        query: { "id" : id },
+        query: {"id": id},
         token: token,
       );
 
@@ -251,32 +247,32 @@ class HomeCubit extends Cubit<HomePageStates> {
       emit(EditPostFailureState());
     }
   }
-  removePostImage({required id}){
+
+  removePostImage({required id}) async {
     emit(DeleteImageLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deletePostImage,query: {'postId': id }).then((value) {
+    try {
+      var value = await tomatopiaServices.deleteRequest(token: token, endpoint: deletePostImage, query: {'postId': id});
       debugPrint(value.data.toString());
       emit(DeleteImageSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete image error : $onError");
       emit(DeleteImageFailureState());
-    });
+    }
   }
 
-  editComment({required String content, File? imageFile,required id})async {
+  editComment({required String content, File? imageFile, required id}) async {
     emit(EditCommentLoadingState());
-
     try {
       FormData formData = FormData.fromMap({
         'content': content,
         if (imageFile != null)
-          'Image': await MultipartFile.fromFile(imageFile.path,
-              filename: 'image.jpg'),
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
       });
 
       var response = await tomatopiaServices.update(
         endPoint: editCommentEndPoint,
         data: formData,
-        query: { "id" : id },
+        query: {"id": id},
         token: token,
       );
 
@@ -287,25 +283,26 @@ class HomeCubit extends Cubit<HomePageStates> {
       emit(EditCommentFailureState());
     }
   }
-  removeCommentImage({required id}){
+
+  removeCommentImage({required id}) async {
     emit(DeleteCommentImageLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentImage,query: {'commentId': id }).then((value) {
+    try {
+      var value = await tomatopiaServices.deleteRequest(token: token, endpoint: deleteCommentImage, query: {'commentId': id});
       emit(DeleteCommentImageSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete image error : $onError");
       emit(DeleteCommentImageFailureState());
-    });
+    }
   }
 
-  addCommentToPost({File?imageFile,required postId,required content})async{
+  addCommentToPost({File? imageFile, required postId, required content}) async {
     emit(AddCommentLoadingState());
     try {
       FormData formData = FormData.fromMap({
-        'content' :content,
-        'postId' : postId,
+        'content': content,
+        'postId': postId,
         if (imageFile != null)
-          'Image': await MultipartFile.fromFile(imageFile.path,
-            filename: 'image.jpg'),
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
       });
 
       var response = await tomatopiaServices.postData(
@@ -321,6 +318,5 @@ class HomeCubit extends Cubit<HomePageStates> {
       debugPrint("add new Comment error : $error");
       emit(AddCommentFailureState());
     }
-
   }
 }

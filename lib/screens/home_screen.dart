@@ -18,6 +18,7 @@ import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
+import 'package:tomatopia/screens/profile_screen.dart';
 import 'package:tomatopia/screens/search_screen.dart';
 import 'package:tomatopia/screens/settings_screen.dart';
 import 'package:tomatopia/screens/tips.dart';
@@ -55,8 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text(context.profile),
                   onTap: () async {
-                    Navigator.pop(context);
+
                     await BlocProvider.of<ProfileCubit>(context).getUserProfile();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
 
                   },
                 ),
@@ -66,9 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title:  Text(context.settings),
                   onTap: () async{
-                    Navigator.pop(context);
                     await BlocProvider.of<ProfileCubit>(context).getUserProfile();
-                    await Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));
                   },
                 ),
                 ListTile(

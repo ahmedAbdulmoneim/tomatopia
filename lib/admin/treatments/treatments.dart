@@ -88,6 +88,7 @@ class Treatments extends StatelessWidget {
                               ),
                               Text(
                                 cubit.treatmentList[index].description,
+                                maxLines: 1,
                                 style: const TextStyle(
                                     color: Colors.black54,
                                     overflow: TextOverflow.ellipsis),

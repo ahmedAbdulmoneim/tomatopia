@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<LoginStates> {
   login({
     required String endPoint,
     required Map<String, dynamic> data,
-  }) {
+  }) async{
     emit(LoginLoadingState());
     tomatopiaServices.postData(endPoint: endPoint, data: data).then((value) {
       loginModel = LoginModel.fromJson(value.data);

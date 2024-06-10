@@ -39,6 +39,7 @@
   "delete_post_confirmation": "هل أنت متأكد أنك تريد حذف هذا المنشور؟",
   "ask_community": "اسأل المجتمع",
   "done": "تم!",
+  "post_edited_successfully": "تم تعديل المنشور بنجاح!",
   "post_deleted_successfully": "تم حذف المنشور بنجاح!",
   "loading": "جار التحميل...",
   "comment_edited_successfully": "تم تعديل التعليق بنجاح!",

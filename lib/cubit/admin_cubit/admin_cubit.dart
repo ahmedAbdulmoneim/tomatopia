@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -10,7 +9,6 @@ import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
-
 import '../../api_models/admin_models/category_model.dart';
 import '../../api_models/admin_models/disease_model.dart';
 import '../../api_models/admin_models/treatment_model.dart';
@@ -22,427 +20,451 @@ class AdminCubit extends Cubit<AdminStates> {
   TomatopiaServices tomatopiaServices;
   AllUserModel? userModel;
   DeleteModel? deleteModel;
+  int numberOfPages = 1;
 
- int numberOfPages = 1 ;
-  showAllUsers({
+  Future<void> showAllUsers({
     required dynamic pageSize,
     required dynamic pageNumber,
-  }) {
+  }) async {
     emit(GetAllUsersLoadingState());
-    tomatopiaServices.getData(endPoint: getAllUsers, token: token, query: {
-      'pageSize': pageSize,
-      'pageNumber': pageNumber,
-    }).then((value) {
+    try {
+      final value = await tomatopiaServices.getData(
+        endPoint: getAllUsers,
+        token: token,
+        query: {'pageSize': pageSize, 'pageNumber': pageNumber},
+      );
       userModel = AllUserModel.fromJson(value.data);
       numberOfPages = userModel!.usersNumber!;
       emit(GetAllUsersSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint('get all users error : $onError');
       emit(GetAllUsersFailuerState());
-    });
+    }
   }
 
-  deleteUser({required String email}) {
+  Future<void> deleteUser({required String email}) async {
     emit(DeleteUsersLoadingState());
-    tomatopiaServices
-        .deleteRequest(
-      token: token,
-      query: {'email': email},
-      endpoint: 'Account/DeleteUser',
-    )
-        .then((value) {
+    try {
+      final value = await tomatopiaServices.deleteRequest(
+        token: token,
+        query: {'email': email},
+        endpoint: 'Account/DeleteUser',
+      );
       deleteModel = DeleteModel.fromJson(value.data);
       emit(DeleteUsersSuccessState());
       emit(GetAllUsersSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint('delete user error : $onError');
       emit(DeleteUsersFailuerState());
-    });
+    }
   }
 
-  int currentPage = 0 ;
-  onPageChange(int index){
- currentPage = index;
- emit(OnPageChange());
+  int currentPage = 0;
+  void onPageChange(int index) {
+    currentPage = index;
+    emit(OnPageChange());
   }
 
-  // category
-  CategoryModel?categoryModel;
-
+  // Category
+  CategoryModel? categoryModel;
   List<dynamic> categories = [];
   List<CategoryModel> categoryList = [];
-  getAllCategories() {
+
+  Future<void> getAllCategories() async {
     emit(GetAllCategoryLoadingState());
-    tomatopiaServices.getData(endPoint: getAllCat, token: token).then((value) {
+    try {
+      final value = await tomatopiaServices.getData(endPoint: getAllCat, token: token);
       categories = value.data;
       categoryList.clear();
       for (int i = 0; i < categories.length; i++) {
         categoryList.add(CategoryModel.fromJson(categories[i]));
       }
       emit(GetAllCategorySuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       emit(GetAllCategoryFailureState());
-    });
+    }
   }
 
   DeleteModel? deleteCategoryModel;
-
-  deleteCategory({required int id}) {
+  Future<void> deleteCategory({required int id}) async {
     emit(DeleteCategoryLoadingState());
-    tomatopiaServices.deleteRequest(
-        token: token, endpoint: deleteCat, query: {'id': '$id'}).then((value) {
+    try {
+      final value = await tomatopiaServices.deleteRequest(
+        token: token,
+        endpoint: deleteCat,
+        query: {'id': '$id'},
+      );
       deleteCategoryModel = DeleteModel.fromJson(value.data);
       emit(DeleteCategorySuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       emit(DeleteCategoryFailureState());
-    });
+    }
   }
 
   DeleteModel? editModel;
-
-  editeCategory({required int id, required String newCategory}) {
+  Future<void> editCategory({required int id, required String newCategory}) async {
     emit(EditeCategoryLoadingState());
-    tomatopiaServices.update(
-      endPoint: 'Category/EditCategory',
-      token: token,
-      data: {"id": id, "name": newCategory},
-    ).then((value) {
+    try {
+      final value = await tomatopiaServices.update(
+        endPoint: 'Category/EditCategory',
+        token: token,
+        data: {"id": id, "name": newCategory},
+      );
       editModel = DeleteModel.fromJson(value.data);
       emit(EditeCategorySuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       emit(EditeCategoryFailureState());
-    });
+    }
   }
 
   DeleteModel? addModel;
-
-  addCategory({required String newCategory})
-  {
+  Future<void> addCategory({required String newCategory}) async {
     emit(AddCategoryLoadingState());
-    tomatopiaServices
-        .postData(endPoint: addCat, data: {"name": newCategory}, token: token)
-        .then((value) {
+    try {
+      final value = await tomatopiaServices.postData(
+        endPoint: addCat,
+        data: {"name": newCategory},
+        token: token,
+      );
       addModel = DeleteModel.fromJson(value.data);
       emit(AddCategorySuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint('add category error : $onError');
       emit(AddCategoryFailureState());
-    });
+    }
   }
 
-  // diseases
-
-  DiseaseModel? diseaseModel ;
+  // Diseases
+  DiseaseModel? diseaseModel;
   List<dynamic> data = [];
   List<DiseaseModel> allDisease = [];
-  getAllDisease(){
+
+  Future<void> getAllDisease() async {
     emit(GetAllDiseaseLoadingState());
-    tomatopiaServices.getData(endPoint: getAllDiseaseEndpoint,token: token).then((value){
-      data = value.data ;
-      debugPrint(data.toString());
+    try {
+      final response = await tomatopiaServices.getData(
+        endPoint: getAllDiseaseEndpoint,
+        token: token,
+      );
+      data = response.data;
       allDisease.clear();
       for (int i = 0; i < data.length; i++) {
         allDisease.add(DiseaseModel.fromJson(data[i]));
       }
       emit(GetAllDiseaseSuccessState());
-    }).catchError((onError){
-      debugPrint("get disease error her : $onError");
+    } catch (onError) {
+      debugPrint("get disease error here: $onError");
       emit(GetAllDiseaseFailureState());
-    });
+    }
   }
 
-  addDisease({
+  Future<void> addDisease({
     required String name,
     required String info,
     required String reasons,
     required int categoryId,
     required String symptoms,
-    required FormData data,
-    required List<int> treatments,
-  }) {
-    emit(AddDiseaseLoadingState());
-    tomatopiaServices.postData(
-      endPoint: addDiseaseEndpoint,
-      token: token,
-      data: data ,
-      parameters: {
-        "Treatments": treatments,
-        "CategoryId": categoryId,
-        "symptoms": symptoms,
-        "info": info,
-        "name": name,
-        "reasons": reasons,
-      },
-    ).then((value) {
-      debugPrint(value.data);
-      emit(AddDiseaseSuccessState());
-    }).catchError((onError) {
-      debugPrint('add disease error : $onError');
-      emit(AddDiseaseFailureState());
-    });
-  }
-
-  editDisease({
-    required String name,
-    required String info,
-    required String reasons,
-    required int categoryId,
-    required int id,
-    required String symptoms,
-    File? imageFile,
+    required File imageFile,
     required List<int> treatments,
   }) async {
-    emit(EditDiseaseLoadingState());
-    FormData formData = FormData.fromMap({
-      if (imageFile != null)
-        'Image': await MultipartFile.fromFile(imageFile.path,
-          filename: 'image.jpg'),
-    });
-    tomatopiaServices.update(
-      endPoint: editDiseaseEndPoint,
-      token: token,
-      data: formData ,
-      query: {
-        "id" : id,
-        "Treatments": treatments,
+    emit(AddDiseaseLoadingState());
+    try {
+      FormData formData = FormData.fromMap({
+        "Treatments": treatments.map((e) => e.toString()).toList(),
         "CategoryId": categoryId,
         "symptoms": symptoms,
         "info": info,
         "name": name,
         "reasons": reasons,
-      },
-    ).then((value) {
-      debugPrint(value.data);
+        'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
+      });
+
+      debugPrint('FormData: ${formData.fields}');
+
+      var response = await tomatopiaServices.postData(
+        endPoint: addDiseaseEndpoint,
+        token: token,
+        data: formData,
+      );
+      debugPrint(response.data.toString());
+      emit(AddDiseaseSuccessState());
+    } catch (onError) {
+      debugPrint('add disease error : $onError');
+      emit(AddDiseaseFailureState());
+    }
+  }
+
+  Future<void> editDisease({
+    required int id,
+    required String name,
+    required String info,
+    required String reasons,
+    required int categoryId,
+    required String symptoms,
+    required File imageFile,
+    required List<int> treatments,
+  }) async {
+    emit(AddDiseaseLoadingState());
+    try {
+      FormData formData = FormData.fromMap({
+        "Treatments": treatments.map((e) => e.toString()).toList(),
+        "id": id,
+        "CategoryId": categoryId,
+        "symptoms": symptoms,
+        "info": info,
+        "name": name,
+        "reasons": reasons,
+        'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
+      });
+
+      debugPrint('FormData: ${formData.fields}');
+
+      var response = await tomatopiaServices.update(
+        endPoint: editDiseaseEndPoint,
+        token: token,
+        data: formData,
+      );
+      debugPrint(response.data.toString());
       emit(EditDiseaseSuccessState());
-    }).catchError((onError) {
+    } catch (onError) {
       debugPrint('edit disease error : $onError');
       emit(EditDiseaseFailureState());
-    });
+    }
   }
 
   List<dynamic> searchData = [];
   List<DiseaseModel> searchedDisease = [];
-  getDiseaseByName(
-      {
-        required String name ,
-      }
-      ){
+
+  Future<void> getDiseaseByName({required String name}) async {
     emit(GetDiseaseByNameLoadingState());
-    tomatopiaServices.getData(endPoint: getDiseaseByNameEndpoint,token: token,query: {'name' : name}).then((value) {
-      searchData = value.data ;
+    try {
+      final value = await tomatopiaServices.getData(
+        endPoint: getDiseaseByNameEndpoint,
+        token: token,
+        query: {'name': name},
+      );
+      searchData = value.data;
       for (int i = 0; i < searchData.length; i++) {
         searchedDisease.add(DiseaseModel.fromJson(searchData[i]));
       }
       debugPrint('treatments : ${value.data[0]['category']}');
       emit(GetDiseaseByNameSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint('get disease by name error : $onError');
       emit(GetDiseaseByNameFailureState());
-    });
-
+    }
   }
 
-  clearSearchedDisease(){
+  void clearSearchedDisease() {
     searchedDisease.clear();
     emit(ClearSearchedDisease());
   }
 
-  deleteDiseases(
-      {
-        required int id ,
-      }
-      ){
+  Future<void> deleteDiseases({required int id}) async {
     emit(DeleteDiseaseLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deleteDisease,query: {
-      'id' : id
-    }).then((value) {
+    try {
+      final value = await tomatopiaServices.deleteRequest(
+        token: token,
+        endpoint: deleteDisease,
+        query: {'id': id},
+      );
       debugPrint("${value.data}");
       allDisease.clear();
       emit(DeleteDiseaseSuccessState());
       emit(GetAllDiseaseSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete disease error : $onError");
       emit(DeleteDiseaseFailureState());
-    });
-
+    }
   }
 
-  // treatment
-
- List<dynamic> treatments = [];
+  // Treatment
+  List<dynamic> treatments = [];
   List<TreatmentModel> treatmentList = [];
 
-  getAllTreatment(){
+  Future<void> getAllTreatment() async {
     emit(GetAlTreatmentLoadingState());
-    tomatopiaServices.getData(endPoint: getAllTreatmentEndPoint,token: token).then((value) {
+    try {
+      final value = await tomatopiaServices.getData(
+        endPoint: getAllTreatmentEndPoint,
+        token: token,
+      );
       treatments = value.data;
       treatmentList.clear();
       for (int i = 0; i < treatments.length; i++) {
         treatmentList.add(TreatmentModel.fromJson(treatments[i]));
       }
       emit(GetAllTreatmentSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint('get treatment error : $onError');
       emit(GetAllTreatmentFailureState());
-    });
+    }
   }
 
-  deleteTreatment({required id}){
+  Future<void> deleteTreatment({required id}) async {
     emit(DeleteTreatmentLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deleteTreatmentEndPoint,query: {"id" : id}).then((value){
+    try {
+      await tomatopiaServices.deleteRequest(
+        token: token,
+        endpoint: deleteTreatmentEndPoint,
+        query: {"id": id},
+      );
       emit(DeleteTreatmentSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete treatment error : $onError");
       emit(DeleteTreatmentFailureState());
-    });
+    }
   }
 
-  addTreatment({required name,required description}){
+  Future<void> addTreatment({required name, required description}) async {
     emit(AddTreatmentLoadingState());
-    tomatopiaServices.postData(
+    try {
+      await tomatopiaServices.postData(
         endPoint: addTreatmentEndPoint,
         data: {
           "name": name,
-          "description" : description,
+          "description": description,
         },
         token: token,
-    ).then((value){
+      );
       emit(AddTreatmentSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("add treatment error : $onError");
       emit(AddTreatmentFailureState());
-    });
-
+    }
   }
 
-  editTreatment({required id,required name,required description}){
+  Future<void> editTreatment({required id, required name, required description}) async {
     emit(EditTreatmentLoadingState());
-    tomatopiaServices.update(
-      endPoint: editTreatmentEndPoint,
-      data: {
-        "id" : id,
-        "name": name,
-        "description" : description,
-      },
-      token: token,
-    ).then((value){
+    try {
+      await tomatopiaServices.update(
+        endPoint: editTreatmentEndPoint,
+        data: {
+          "id": id,
+          "name": name,
+          "description": description,
+        },
+        token: token,
+      );
       emit(EditTreatmentSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("edit treatment error : $onError");
       emit(EditTreatmentFailureState());
-    });
-
+    }
   }
-
-
-
-
-
-
-
-
-
-
-
 
   File? imageFile;
   FormData? formData;
 
-  Future picImageFromGallery() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png', 'jpeg'],
-    );
-    if (result != null) {
-      imageFile = File(result.files.single.path!);
-      formData = FormData.fromMap({
-        'image': await MultipartFile.fromFile(
-          imageFile!.path,
-          filename: imageFile!.path.split('/').last,
-        ),
-      });
-      emit(LoadDiseaseImage());
-    } else {
-      debugPrint("didn't select an image ");
+  Future<void> picImageFromGallery() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'png', 'jpeg'],
+      );
+      if (result != null) {
+        imageFile = File(result.files.single.path!);
+        formData = FormData.fromMap({
+          'image': await MultipartFile.fromFile(
+            imageFile!.path,
+            filename: imageFile!.path.split('/').last,
+          ),
+        });
+        emit(LoadDiseaseImage());
+      } else {
+        debugPrint("didn't select an image");
+      }
+    } catch (e) {
+      debugPrint("Error selecting image: $e");
     }
   }
 
-  clearImage() {
+  void clearImage() {
     imageFile = null;
     emit(ClearDiseaseImage());
   }
 
   int? selectedCategoryId;
-  selectCategory(value){
+  void selectCategory(value) {
     selectedCategoryId = value;
     emit(SelectCategoryId());
   }
 
-
-  // tips
-
+  // Tips
   List<dynamic> tipsMap = [];
   List<TipsModel> allTips = [];
 
-  getAllTips(){
+  Future<void> getAllTips() async {
     emit(GetTipsLoadingState());
-    tomatopiaServices.getData(endPoint: getTips,token: token).then((value) {
+    try {
+      final value = await tomatopiaServices.getData(endPoint: getTips, token: token);
       tipsMap = value.data;
       allTips.clear();
-      for(int i = 0; i< tipsMap.length;i++){
+      for (int i = 0; i < tipsMap.length; i++) {
         allTips.add(TipsModel.fromJson(tipsMap[i]));
       }
       emit(GetTipsSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint('ger tips error : $onError');
       emit(GetTipsFailureState());
-    });
+    }
   }
 
-  deleteTip({required id}){
+  Future<void> deleteTip({required id}) async {
     emit(DeleteTipLoadingState());
-    tomatopiaServices.deleteRequest(token: token, endpoint: deleteTipEndPoint,query: {"id": id}).then((value){
+    try {
+      await tomatopiaServices.deleteRequest(
+        token: token,
+        endpoint: deleteTipEndPoint,
+        query: {"id": id},
+      );
       emit(DeleteTipSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("delete tip error : $onError");
-    });
+    }
   }
-  
-  addTip({required title,required description,required imageFile}) async {
+
+  Future<void> addTip({required title, required description, required imageFile}) async {
     emit(AddTipLoadingState());
-    FormData formData = FormData.fromMap({
-      if (imageFile != null)
-        'Image': await MultipartFile.fromFile(imageFile.path,
-          filename: 'image.jpg'),
-    });
-    tomatopiaServices.postData(token : token,endPoint: addTipEndPint, data: formData,parameters: {"Title" : title,"description": description}).then((value) {
+    try {
+      FormData formData = FormData.fromMap({
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
+      });
+      await tomatopiaServices.postData(
+        token: token,
+        endPoint: addTipEndPint,
+        data: formData,
+        parameters: {"Title": title, "description": description},
+      );
       emit(AddTipSuccessState());
-    }).catchError((onError){
+    } catch (onError) {
       debugPrint("add tip error : $onError");
       emit(AddTipFailureState());
-    });
+    }
   }
 
-  editTip({required id,required title,required description,required imageFile}) async {
+  Future<void> editTip({required id, required title, required description, required imageFile}) async {
     emit(EditTipLoadingState());
-    FormData formData = FormData.fromMap({
-      if (imageFile != null)
-        'Image': await MultipartFile.fromFile(imageFile.path,
-            filename: 'image.jpg'),
-    });
-    tomatopiaServices.update(token : token,
+    try {
+      FormData formData = FormData.fromMap({
+        if (imageFile != null)
+          'Image': await MultipartFile.fromFile(imageFile.path, filename: 'image.jpg'),
+      });
+      await tomatopiaServices.update(
+        token: token,
         endPoint: editTipEndPint,
         data: formData,
-        query:
-        {
-          "Title" : title,
+        query: {
+          "Title": title,
           "description": description,
-          "id" : id,
-        }).then((value) {
+          "id": id,
+        },
+      );
       emit(EditTipSuccessState());
-    }).catchError((onError){
-      debugPrint("add tip error : $onError");
+    } catch (onError) {
+      debugPrint("edit tip error : $onError");
       emit(EditTipFailureState());
-    });
+    }
   }
 }

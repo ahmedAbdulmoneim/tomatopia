@@ -91,40 +91,38 @@ class EditDisease extends StatelessWidget {
                     controller: nameController,
                   ),
                   const SizedBox(height: 20),
-                  textFormField(
-                    label: context.info,
-                    prefix: Icons.info,
+                  bigTextFormFiled(
+                    controller: infoController,
                     validate: (value) {
                       if (value.toString().isEmpty) {
                         return context.enterValidInformation;
                       }
                       return null;
                     },
-                    controller: infoController,
+                    hint: context.info,
                   ),
                   const SizedBox(height: 20),
-                  textFormField(
-                    label: context.symptoms,
-                    prefix: Icons.add,
+                  bigTextFormFiled(
+                    controller: symptomsController,
                     validate: (value) {
                       if (value.toString().isEmpty) {
                         return context.enterValidSymptoms;
                       }
                       return null;
                     },
-                    controller: symptomsController,
+                    hint: context.symptoms,
                   ),
+
                   const SizedBox(height: 20),
-                  textFormField(
-                    label: context.reasons,
+                  bigTextFormFiled(
+                    controller: reasonsController,
                     validate: (value) {
                       if (value.toString().isEmpty) {
                         return context.enterValidReasons;
                       }
                       return null;
                     },
-                    prefix: Icons.add,
-                    controller: reasonsController,
+                    hint: context.reasons,
                   ),
                   const SizedBox(height: 20),
                   DropdownButtonFormField2<int>(
@@ -250,7 +248,7 @@ class EditDisease extends StatelessWidget {
                               treatments: selectedTreatmentIds,
                               symptoms: symptomsController.text,
                               id: id,
-                              imageFile: cubit.imageFile,
+                              imageFile: cubit.imageFile!,
                             );
                             btnController.start();
                           } else {
