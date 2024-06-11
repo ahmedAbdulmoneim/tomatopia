@@ -190,5 +190,10 @@
   "delete_treatment_confirmation": "هل أنت متأكد أنك تريد حذف هذا العلاج",
   "edit_treatment": "تعديل العلاج",
   "treatment_edited_successfully": "تم تعديل العلاج بنجاح",
-  "failed_to_edit_treatment": "لم يتم تعديل العلاج"
+  "failed_to_edit_treatment": "لم يتم تعديل العلاج",
+  "add_admin" : "إضافة مشرف",
+  "add_admin_success" : "تم إضافة مشرف بنجاح",
+  "add_new_admin" : "إضافة مشرف جديد",
+  "pleas_enter_email_for_new_admin" : "الرجاء إدخال عنوان البريد الإلكتروني الذي تريد جعله مسؤولاً",
+  "enter_email" : "أدخل البريد الإلكتروني"
 }

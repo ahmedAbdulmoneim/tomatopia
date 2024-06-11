@@ -37,4 +37,5 @@ const String getPostComment = 'Comment/GetCommentByPostId';
 const String editCommentEndPoint = 'Comment/EditComment';
 const String deleteCommentImage = 'Comment/DeleteCommentImage';
 const String editDiseaseEndPoint = 'Disease/EditDisease';
+const String addAdminEndPoint = 'Role/AddAdmin';
 

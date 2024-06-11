@@ -467,4 +467,15 @@ class AdminCubit extends Cubit<AdminStates> {
       emit(EditTipFailureState());
     }
   }
+  
+  addAdmin({required email}) async {
+    emit(AddAdminLoadingState());
+    try{
+      await  tomatopiaServices.postData(endPoint: addAdminEndPoint, parameters: {"email" : email});
+     emit(AddAdminSuccessState());
+    }catch(error){
+      debugPrint("add admin error : $error");
+      emit(AddAdminFailureState());
+    }
+  }
 }

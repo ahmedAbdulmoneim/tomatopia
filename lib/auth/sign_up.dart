@@ -61,6 +61,12 @@ class RegisterPage extends StatelessWidget {
             ).then((value) {
               userId = BlocProvider.of<RegisterCubit>(context).registerModel!.userId!;
             });
+            SharedPreference.saveData(
+              key: 'isAdmin',
+              value: false,
+            ).then((value) {
+              isAdmin = false;
+            });
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

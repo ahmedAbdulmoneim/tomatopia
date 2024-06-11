@@ -317,5 +317,10 @@ extension Translate on BuildContext {
   String get treatmentEdited => tr("treatment_edited_successfully");
   String get editTreatment => tr("edit_treatment");
   String get failedToEditTreatment => tr("failed_to_edit_treatment");
+  String get addAdmin => tr("add_admin");
+  String get addAdminSuccess => tr("add_admin_success");
+  String get addNewAdmin => tr("add_new_admin");
+  String get enterEmailForNewAdmin => tr("pleas_enter_email_for_new_admin");
+  String get enterEmail => tr("enter_email");
 
 }

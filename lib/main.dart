@@ -30,6 +30,7 @@ void main() async {
   userName = await SharedPreference.getData(key: 'userName');
   userEmail = await SharedPreference.getData(key: 'userEmail');
   userId = await SharedPreference.getData(key: 'userId');
+  isAdmin = (await SharedPreference.getData(key: 'isAdmin'))?.toString().toLowerCase() == 'true' ?? false;
   userImage = await SharedPreference.getData(key: 'userImage') ?? "";
   if (onBoardingValue != "") {
     if (token != "") {
@@ -41,13 +42,12 @@ void main() async {
     widget = const SplachScreen();
   }
   runApp(
-     EasyLocalization(
-            supportedLocales: const [Locale('en'), Locale('ar')],
-            path: 'assets/translation', // <-- change the path of the translation files
-            fallbackLocale: const Locale('en'),
-            child: MyApp(startWidget: widget)
-        ),
-
+    EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        path: 'assets/translation', // <-- change the path of the translation files
+        fallbackLocale: const Locale('en'),
+        child: MyApp(startWidget: widget)
+    ),
   );
 }
 

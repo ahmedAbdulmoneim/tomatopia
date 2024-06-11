@@ -57,7 +57,33 @@ Widget communityCard(
                     ],
                   ),
                   const Spacer(),
-                  userId == userIdPost ?
+                  isAdmin == true && userId != userIdPost ?
+                  PopupMenuButton(
+                    icon: const Icon(Icons.more_horiz),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: customRow(width: 5, icon: Icons.delete, text: context.deletePost),
+                        onTap: (){
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.warning,
+                            btnOkOnPress: () async {
+                              await BlocProvider.of<HomeCubit>(context).deletePost(id: id);
+                            },
+                            btnCancelOnPress: () {},
+                            btnCancelText: context.cancel,
+                            btnOkText: context.delete,
+                            btnCancelColor: Colors.green,
+                            btnOkColor: Colors.red,
+                            title: context.deletePostConfirmation,
+                            animType: AnimType.leftSlide,
+                          ).show();
+                        },
+                      ),
+                    ],
+                  ):
+                  const SizedBox() ,
+                  userId == userIdPost || (isAdmin == true && userId == userIdPost) ?
                   PopupMenuButton(
                     icon: const Icon(Icons.more_horiz),
                     itemBuilder: (context) => [

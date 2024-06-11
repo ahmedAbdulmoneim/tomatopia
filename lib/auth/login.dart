@@ -67,9 +67,15 @@ class LoginPage extends StatelessWidget {
             });
             SharedPreference.saveData(
               key: 'userImage',
-              value: BlocProvider.of<LoginCubit>(context).loginModel!.image,
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.image ?? '',
             ).then((value) {
-              userImage = BlocProvider.of<LoginCubit>(context).loginModel!.image!;
+              userImage = BlocProvider.of<LoginCubit>(context).loginModel!.image ?? '';
+            });
+            SharedPreference.saveData(
+              key: 'isAdmin',
+              value: BlocProvider.of<LoginCubit>(context).loginModel!.isAdmin,
+            ).then((value) {
+              isAdmin = BlocProvider.of<LoginCubit>(context).loginModel!.isAdmin;
             });
             Navigator.pushReplacement(
               context,

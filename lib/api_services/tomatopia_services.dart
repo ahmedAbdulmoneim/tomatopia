@@ -9,7 +9,7 @@ class TomatopiaServices {
 
   Future<Response> postData({
     required String endPoint,
-    required dynamic data,
+    dynamic data,
     String? token,
     Map<String,dynamic>? parameters ,
   }) async {

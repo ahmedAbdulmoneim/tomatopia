@@ -23,6 +23,8 @@ class LoginCubit extends Cubit<LoginStates> {
         userImage = loginModel!.image!;
         userId = loginModel!.userId!;
       }
+      isAdmin = loginModel!.isAdmin;
+      print(isAdmin);
       emit(LoginSuccessState());
     }).catchError((onError) {
       debugPrint('catch error her : $onError');

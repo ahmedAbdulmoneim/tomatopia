@@ -4,8 +4,9 @@ class LoginModel {
   final String token;
   final String? image;
   final String? userId;
+  bool isAdmin;
 
-  LoginModel({this.userId,required this.name, required this.email, required this.token,required this.image});
+  LoginModel({this.userId,required this.name, required this.email,required this.isAdmin, required this.token,required this.image});
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(
@@ -14,6 +15,7 @@ class LoginModel {
       token: json['token'],
       image: json['image'],
       userId: json['userId'],
+      isAdmin: json['isAdmin']
     );
   }
 }

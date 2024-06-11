@@ -108,8 +108,7 @@ class Tips extends StatelessWidget {
                             ],
                           ),
                         ),
-                        userEmail == 'Admin@gamil.com' ||
-                            userEmail == 'admin@gamil.com'
+                        isAdmin == true
                             ? Row(
                           children: [
                             IconButton(

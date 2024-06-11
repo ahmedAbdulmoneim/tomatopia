@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                userEmail == 'Admin@gamil.com'
+                isAdmin == true
                     ? ListTile(
                   leading:  const Icon(
                     Icons.admin_panel_settings_sharp,
@@ -124,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => LoginPage(),
                           ));
+                    });
+                    SharedPreference.removeData(key: 'isAdmin').then((value) {
+                      isAdmin = false;
                     });
                   },
                 ),

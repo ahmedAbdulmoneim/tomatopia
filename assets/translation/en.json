@@ -196,5 +196,10 @@
   "delete_treatment_confirmation" : "Are you want to delete this treatment",
   "edit_treatment" : "Edit Treatment",
   "treatment_edited_successfully" : "Treatment Edited Successfully",
-  "failed_to_edit_treatment" : "Failed to edit treatment"
+  "failed_to_edit_treatment" : "Failed to edit treatment",
+  "add_admin" : "Add Admin",
+  "add_admin_success" : "Admin Added Successfully",
+  "add_new_admin" : "Add New Admin",
+  "pleas_enter_email_for_new_admin" : "please enter the email address that you want to make him admin",
+  "enter_email" : "Enter Email Address"
 }

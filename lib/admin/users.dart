@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:number_paginator/number_paginator.dart';
+import 'package:tomatopia/admin/add_admin.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/custom_widget/extensions.dart';
 import '../cubit/admin_cubit/admin_states.dart';
@@ -21,6 +22,18 @@ class Users extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:  Text(context.users),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddAdmin(),));
+          }, child: Text(
+            context.addAdmin,
+            style: TextStyle(
+                color: Colors.green,
+                fontSize: 18,
+            ),
+          ),
+          ),
+        ],
       ),
       body: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {

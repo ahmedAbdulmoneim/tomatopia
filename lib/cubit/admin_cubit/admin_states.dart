@@ -131,3 +131,9 @@ class AddTipLoadingState extends AdminStates {}
 class AddTipSuccessState extends AdminStates {}
 
 class AddTipFailureState extends AdminStates {}
+
+class AddAdminLoadingState extends AdminStates {}
+
+class AddAdminSuccessState extends AdminStates {}
+
+class AddAdminFailureState extends AdminStates {}
