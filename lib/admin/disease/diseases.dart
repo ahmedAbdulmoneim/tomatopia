@@ -11,7 +11,7 @@ import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
 
-import '../../custom_widget/custom_card.dart';
+import '../../custom_widget/custom_card_admin.dart';
 
 class AllDiseases extends StatelessWidget {
   const AllDiseases({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class AllDiseases extends StatelessWidget {
                   child: LoadingAnimationWidget.staggeredDotsWave(
                       color: Colors.blue, size: 50)),
             fallback: (context) => ListView.builder(
-              itemBuilder: (context, index) => customCard(
+              itemBuilder: (context, index) => customCardAdmin(
                   image: cubit.allDisease[index].image!,
                   index: index,
                   context: context,

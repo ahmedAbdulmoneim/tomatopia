@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
             create: (context) => ForgetPasswordCubit(TomatopiaServices(Dio())),
           ),
           BlocProvider<AiCubit>(
-            create: (context) => AiCubit(AIModelServices(Dio())),
+            create: (context) => AiCubit(AIModelServices(Dio()),TomatopiaServices(Dio())),
           ),
           BlocProvider<HomeCubit>(
             create: (context) => HomeCubit(TomatopiaServices(Dio())),

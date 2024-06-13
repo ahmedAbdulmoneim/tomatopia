@@ -1,17 +1,20 @@
 import 'dart:io';
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
-import 'package:tomatopia/custom_widget/custom_button.dart';
+import 'package:tomatopia/custom_widget/custom_card_user.dart';
+import 'package:tomatopia/screens/user_disease_details.dart';
 
-import '../constant/carousal_items.dart';
 import '../cubit/ai_cubit/ai_model_state.dart';
+import '../custom_widget/custom_card_admin.dart';
+import '../page_transitions/scale_transition.dart';
 
 class GetMedicine extends StatefulWidget {
-  GetMedicine({Key? key, required this.img}) : super(key: key);
-  File img;
+  const GetMedicine({Key? key, required this.img}) : super(key: key);
+  final File img;
 
 
   @override
@@ -28,60 +31,55 @@ class _GetMedicineState extends State<GetMedicine> {
 
         },
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ListView(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          widget.img,
-                          fit: BoxFit.cover,
-                          height: 250,
-                          width: double.infinity,
-                        )),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    const Text(
-                      // cubit.aiModel!.prediction == null? '' : 'Prediction :  ${cubit.aiModel!.prediction}',
-                      'prediction',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        customButton(
-                            width: 50,
-                            text: 'Load picture',
-                            onPressed: () async {
-
-                              await picImageFromGallery();
-                              widget.img = selectedImage!;
-                            }),
-                        const Spacer(),
-                        customButton(
-                            width: 50,
-                            text: 'Take picture',
-                            onPressed: () async {
-                              await picImageFromCamera();
-                              widget.img = selectedImage!;
-                            }),
-                        const Spacer()
-                      ],
-                    )
-                  ],
+          var cubit = BlocProvider.of<AiCubit>(context);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.file(
+                      widget.img,
+                      fit: BoxFit.cover,
+                      height: 250,
+                      width: double.infinity,
+                    )),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              ConditionalBuilder(
+                condition: state is GetDiseaseInfoLoadingState,
+                builder: (context) => Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.green,
+                    size: 50,
+                  ),
                 ),
-              ],
-            ),
+                  fallback: (context) => Expanded(
+                    child: ListView.builder(
+                      itemCount: cubit.diseaseInfo.length,
+                      itemBuilder: (context, index) => InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              ScaleTransition1(
+                                UserDiseaseDetails(index: index),
+                              ),
+                            );
+                          },
+                          child: customCard(
+                            image: cubit.diseaseInfo[index].image!,
+                            index: index,
+                            context: context,
+                            mainTitle: cubit.diseaseInfo[index].name!,
+                            subtitle: cubit.diseaseInfo[index].category!.name!,
+                          )),
+                    ),
+                  ),
+                ),
+            ],
           );
         },
 
@@ -89,27 +87,4 @@ class _GetMedicineState extends State<GetMedicine> {
     );
   }
 
-  Future picImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-    });
-  }
-
-  Future picImageFromCamera() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    setState(() {
-      selectedImage = File(returnedImage!.path);
-    });
-  }
-
-  void clearSelectedImage() {
-    setState(() {
-      selectedImage = null;
-    });
-  }
 }

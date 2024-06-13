@@ -6,7 +6,8 @@ import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
-import '../custom_widget/custom_card.dart';
+import '../custom_widget/custom_card_admin.dart';
+import '../custom_widget/custom_card_user.dart';
 import 'about_disease.dart';
 
 

@@ -258,15 +258,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 BlocConsumer<AiCubit, AiModelStates>(
                   listener: (context, state) {
+                    print(state);
                     if (state is AiModelSuccessState) {
+                      if(BlocProvider.of<AiCubit>(context).aiModel!.prediction != "bad"){
+                        if(BlocProvider.of<AiCubit>(context).aiModel!.prediction != "healthy"){
+                          BlocProvider.of<AiCubit>(context).getDiseaseInfo(name: BlocProvider.of<AiCubit>(context).diseaseNameArabic!);
+                          BlocProvider.of<AiCubit>(context).navigateToGetMedicineScreen(
+                              context: context,
+                              page: GetMedicine(img: BlocProvider.of<AiCubit>(context).imageFile!)
+                          );
+                        }
+                      }
+                      if(BlocProvider.of<AiCubit>(context).aiModel!.prediction == "healthy"){
+                        show(context, context.done, 'healthy plant',
+                            Colors.green);
+                      }
+                      else if (BlocProvider.of<AiCubit>(context).aiModel!.prediction == "bad"){
+                        show(context, context.error, context.errorImageNotRecognized,
+                            Colors.deepOrange);
+                      }
 
-                      BlocProvider.of<AiCubit>(context).navigateToGetMedicineScreen(
-                          context: context,
-                          page: GetMedicine(img: BlocProvider.of<AiCubit>(context).imageFile!)
-                      );
-                    } else if (state is AiModelFailureState) {
-                      show(context, context.error, context.errorImageNotRecognized,
-                          Colors.red);
+
+                    }
+                    else if (state is AiModelFailureState)
+                    {
+                      show(context, context.error, context.errorHappened, Colors.red);
+
                     }
                   },
                   builder: (context, state) {
@@ -350,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   },
                                   btnOkOnPress: () async {
-                                    await cubit.pickImageFromCamera();
+                                    await cubit.pickImageFromCamera(context);
                                     cubit.postData(imageFile: cubit.imageFile!);
                                   },
                                   isDense: true,

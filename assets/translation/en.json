@@ -201,5 +201,8 @@
   "add_admin_success" : "Admin Added Successfully",
   "add_new_admin" : "Add New Admin",
   "pleas_enter_email_for_new_admin" : "please enter the email address that you want to make him admin",
-  "enter_email" : "Enter Email Address"
+  "enter_email" : "Enter Email Address",
+  "please" : "Please",
+  "camera_advice" : "Avoid low light conditions and ensure the image is clear \n Focus on the disease in tomato leaves",
+  "ok" : "OK"
 }
