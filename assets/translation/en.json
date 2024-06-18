@@ -204,5 +204,13 @@
   "enter_email" : "Enter Email Address",
   "please" : "Please",
   "camera_advice" : "Avoid low light conditions and ensure the image is clear \n Focus on the disease in tomato leaves",
-  "ok" : "OK"
+  "ok" : "OK",
+  "notes": "Notes",
+  "no_nots": "No notes found",
+  "edit_note": "Edit Note",
+  "edit_your_note": "Edit your note",
+  "add_new_note": "Add New Note",
+  "write_task_to_do": "Write a task to do",
+  "choose_valid_date": "Choose a valid date"
+
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951421932351",
+    "project_id": "tomatiopianote",
+    "storage_bucket": "tomatiopianote.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951421932351:android:9d12e07e890ddd3bd2f98a",
+        "android_client_info": {
+          "package_name": "com.example.tomatopia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGS_tQtHp9TP5EJhxufdrwChK96pF4bds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

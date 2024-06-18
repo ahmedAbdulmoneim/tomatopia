@@ -15,6 +15,7 @@ import 'package:tomatopia/custom_widget/custom_button.dart';
 import 'package:tomatopia/custom_widget/daily_weather.dart';
 import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
+import 'package:tomatopia/notes/all_notes.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
@@ -167,86 +168,177 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   },
                   builder: (context, state) {
-                    return Row(
+                    return Column(
                       children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.push(context, SizeTransition1(Search()));
-                          },
-                          child: Container(
-                            height: 130,
-                            width: MediaQuery.of(context).size.width/2.2,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color : Colors.greenAccent[100]
-                            ),
-                            child:  Padding(
-                              padding:  const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    padding:  const EdgeInsets.all(5),
-                                    decoration:  const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white
-                                    ),
-                                    child:  const Icon(
-                                      Icons.search,
-                                    ),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, SizeTransition1(Search()));
+                              },
+                              child: Container(
+                                height: 130,
+                                width: MediaQuery.of(context).size.width/2.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color : Colors.greenAccent[100]
+                                ),
+                                child:  Padding(
+                                  padding:  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding:  const EdgeInsets.all(5),
+                                        decoration:  const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child:  const Icon(
+                                          Icons.search,
+                                        ),
+                                      ),
+                                       const SizedBox(height: 5,),
+                                       Text(
+                                         context.searchDisease,
+                                        style: const TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                   const SizedBox(height: 5,),
-                                   Text(
-                                     context.searchDisease,
-                                    style: const TextStyle(
-                                        fontSize: 16
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                             const Spacer(),
+                            InkWell(
+                              onTap: ()async{
+                                await BlocProvider.of<HomeCubit>(context).getAllTips();
+                              },
+                              child: Container(
+                                height: 130,
+                                width: MediaQuery.of(context).size.width/2.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color : Colors.greenAccent[100]
+                                ),
+                                child:  Padding(
+                                  padding:  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding:  const EdgeInsets.all(5),
+                                        decoration:  const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child:  const Icon(
+                                          Icons.tips_and_updates,
+                                        ),
+                                      ),
+                                       const SizedBox(height: 5,),
+                                       Text(
+                                         context.tipsForYou,
+                                        style: const TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                         const Spacer(),
-                        InkWell(
-                          onTap: ()async{
-                            await BlocProvider.of<HomeCubit>(context).getAllTips();
-                          },
-                          child: Container(
-                            height: 130,
-                            width: MediaQuery.of(context).size.width/2.2,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color : Colors.greenAccent[100]
-                            ),
-                            child:  Padding(
-                              padding:  const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    padding:  const EdgeInsets.all(5),
-                                    decoration:  const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white
-                                    ),
-                                    child:  const Icon(
-                                      Icons.tips_and_updates,
-                                    ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, SizeTransition1(Search()));
+                              },
+                              child: Container(
+                                height: 130,
+                                width: MediaQuery.of(context).size.width/2.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color : Colors.greenAccent[100]
+                                ),
+                                child:  Padding(
+                                  padding:  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding:  const EdgeInsets.all(5),
+                                        decoration:  const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child:  const Icon(
+                                          Icons.calculate,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5,),
+                                      Text(
+                                        context.searchDisease,
+                                        style: const TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                   const SizedBox(height: 5,),
-                                   Text(
-                                     context.tipsForYou,
-                                    style: const TextStyle(
-                                        fontSize: 16
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: ()async{
+                                await
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => NotesView(),));
+                              },
+                              child: Container(
+                                height: 130,
+                                width: MediaQuery.of(context).size.width/2.2,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color : Colors.greenAccent[100]
+                                ),
+                                child:  Padding(
+                                  padding:  const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding:  const EdgeInsets.all(5),
+                                        decoration:  const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child:  const Icon(
+                                          Icons.note_add_outlined,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5,),
+                                      Text(
+                                        context.notes,
+                                        style: const TextStyle(
+                                            fontSize: 16
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     );

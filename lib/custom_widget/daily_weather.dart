@@ -6,7 +6,7 @@ import 'package:tomatopia/cubit/weather/weather_cubit.dart';
 import '../cubit/weather/weather_states.dart';
 
 Widget dailyWeather() => Container(
-    padding: const EdgeInsets.only(left: 20, right: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 20),
     height: 100,
     decoration: BoxDecoration(
       color: Colors.grey[200],

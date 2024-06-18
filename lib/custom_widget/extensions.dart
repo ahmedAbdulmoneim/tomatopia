@@ -322,5 +322,13 @@ extension Translate on BuildContext {
   String get addNewAdmin => tr("add_new_admin");
   String get enterEmailForNewAdmin => tr("pleas_enter_email_for_new_admin");
   String get enterEmail => tr("enter_email");
+  String get chooseValidDate => tr("choose_valid_date");
+  String get writeTaskToDo => tr("write_task_to_do");
+  String get addNewNote => tr("add_new_note");
+  String get editYourNote => tr("edit_your_note");
+  String get editNote => tr("edit_note");
+  String get noNotes => tr("no_nots");
+  String get notes => tr("notes");
+
 
 }
