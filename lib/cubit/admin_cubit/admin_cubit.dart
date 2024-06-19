@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomatopia/api_models/admin_models/delete_model.dart';
 import 'package:tomatopia/api_models/admin_models/get_users_model.dart';
+import 'package:tomatopia/api_models/admin_models/review_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
@@ -476,6 +477,25 @@ class AdminCubit extends Cubit<AdminStates> {
     }catch(error){
       debugPrint("add admin error : $error");
       emit(AddAdminFailureState());
+    }
+  }
+
+  List<dynamic> reviews = [];
+  List<ReviewModel> allReviews = [];
+
+  Future<void> getAllReviews() async {
+    emit(GetAllReviewsLoadingState());
+    try {
+      final value = await tomatopiaServices.getData(endPoint: getAllRevEndpoint, token: token);
+      reviews = value.data;
+      allReviews.clear();
+      for (int i = 0; i < reviews.length; i++) {
+        allReviews.add(ReviewModel.fromJson(reviews[i]));
+      }
+      emit(GetAllReviewsSuccessState());
+    } catch (onError) {
+      debugPrint('ger tips error : $onError');
+      emit(GetAllReviewsFailureState());
     }
   }
 }

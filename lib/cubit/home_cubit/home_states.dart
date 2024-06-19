@@ -87,3 +87,9 @@ class DeleteCommentImageLoadingState extends HomePageStates {}
 class DeleteCommentImageSuccessState extends HomePageStates {}
 
 class DeleteCommentImageFailureState extends HomePageStates {}
+
+class AddReviewLoadingState extends HomePageStates {}
+
+class AddReviewSuccessState extends HomePageStates {}
+
+class AddReviewFailureState extends HomePageStates {}

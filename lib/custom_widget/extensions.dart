@@ -329,6 +329,12 @@ extension Translate on BuildContext {
   String get editNote => tr("edit_note");
   String get noNotes => tr("no_nots");
   String get notes => tr("notes");
+  String get addReview => tr("write_rev");
+  String get sendRev => tr("send_rev");
+  String get fertilisers => tr("fertilisers");
+  String get reviews => tr("reviews");
+  String get positive => tr("positive_rev");
+  String get negative => tr("negative_rev");
 
 
 }

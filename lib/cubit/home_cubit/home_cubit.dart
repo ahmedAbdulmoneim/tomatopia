@@ -319,4 +319,23 @@ class HomeCubit extends Cubit<HomePageStates> {
       emit(AddCommentFailureState());
     }
   }
+
+  addReview({required review}) async {
+    emit(AddReviewLoadingState());
+    try {
+      var response = await tomatopiaServices.postData(
+        endPoint: addRevEndPoint,
+        data: {
+          "reviews" : review,
+        },
+        token: token,
+      );
+
+      debugPrint(response.data.toString());
+      emit(AddReviewSuccessState());
+    } catch (error) {
+      debugPrint("add review error : $error");
+      emit(AddReviewFailureState());
+    }
+  }
 }

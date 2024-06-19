@@ -137,3 +137,9 @@ class AddAdminLoadingState extends AdminStates {}
 class AddAdminSuccessState extends AdminStates {}
 
 class AddAdminFailureState extends AdminStates {}
+
+class GetAllReviewsLoadingState extends AdminStates {}
+
+class GetAllReviewsSuccessState extends AdminStates {}
+
+class GetAllReviewsFailureState extends AdminStates {}

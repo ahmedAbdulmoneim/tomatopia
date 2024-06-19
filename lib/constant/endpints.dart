@@ -38,4 +38,6 @@ const String editCommentEndPoint = 'Comment/EditComment';
 const String deleteCommentImage = 'Comment/DeleteCommentImage';
 const String editDiseaseEndPoint = 'Disease/EditDisease';
 const String addAdminEndPoint = 'Role/AddAdmin';
+const String addRevEndPoint = 'Reviews/AddReview';
+const String getAllRevEndpoint = 'Reviews/GetAllReviwes';
 

@@ -17,6 +17,7 @@ import 'package:tomatopia/custom_widget/extensions.dart';
 import 'package:tomatopia/custom_widget/toasts.dart';
 import 'package:tomatopia/notes/all_notes.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
+import 'package:tomatopia/screens/add_review.dart';
 import 'package:tomatopia/screens/contact_us.dart';
 import 'package:tomatopia/screens/forecast_weather.dart';
 import 'package:tomatopia/screens/profile_screen.dart';
@@ -93,6 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text(context.aboutUs),
                   onTap: () {
                     Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading:  const Icon(
+                    Icons.rate_review_outlined,
+                  ),
+                  title: Text(context.addReview),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddReview(),));
                   },
                 ),
                 isAdmin == true
@@ -287,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       const SizedBox(height: 5,),
                                       Text(
-                                        context.searchDisease,
+                                        context.fertilisers,
                                         style: const TextStyle(
                                             fontSize: 16
                                         ),

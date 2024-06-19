@@ -205,5 +205,11 @@
   "edit_your_note": "عدل ملاحظتك",
   "add_new_note": "أضف ملاحظة جديدة",
   "write_task_to_do": "اكتب مهمة للقيام بها",
-  "choose_valid_date": "اختر تاريخًا صالحًا"
+  "choose_valid_date": "اختر تاريخًا صالحًا",
+  "write_rev" : "أكتب مراجعة",
+  "send_rev" : "أرسل المراجعة",
+  "reviews" : "المراجعات",
+  "positive_rev" : "مراجعات إيجابية",
+  "negative_rev" : " مراجعات سلبية",
+  "fertilisers" : "الاسمدة"
 }

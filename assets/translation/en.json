@@ -211,6 +211,12 @@
   "edit_your_note": "Edit your note",
   "add_new_note": "Add New Note",
   "write_task_to_do": "Write a task to do",
-  "choose_valid_date": "Choose a valid date"
+  "choose_valid_date": "Choose a valid date",
+  "write_rev" : " Write Review",
+  "reviews" : "Reviews",
+  "positive_rev" : "Positive Reviews",
+  "negative_rev" : "Negative Reviews",
+  "fertilisers" : "Fertilisers"
+
 
 }

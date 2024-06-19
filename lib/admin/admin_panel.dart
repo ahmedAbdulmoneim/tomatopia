@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tomatopia/admin/all_reviews.dart';
 import 'package:tomatopia/admin/category.dart';
 import 'package:tomatopia/admin/disease/diseases.dart';
 import 'package:tomatopia/admin/tips/tips.dart';
@@ -115,6 +116,17 @@ class AdminPanel extends StatelessWidget {
                     BlocProvider.of<AdminCubit>(context).getAllTreatment();
                   },
                   child: containerPanel(context.treatments),
+                ),
+                const SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  ShowAllReviews()),
+                    );
+                    BlocProvider.of<AdminCubit>(context).getAllReviews();
+                  },
+                  child: containerPanel(context.reviews),
                 ),
 
               ],
