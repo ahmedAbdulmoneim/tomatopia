@@ -13,16 +13,14 @@ class ShowAllReviews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
-          context.reviews
-        ),
+        title: Text(context.reviews),
         centerTitle: true,
       ),
       body: BlocConsumer<AdminCubit, AdminStates>(
         listener: (context, state) {
           if (state is GetAllReviewsFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to load reviews')),
+              const SnackBar(content: Text('Failed to load reviews')),
             );
           }
         },
@@ -31,27 +29,91 @@ class ShowAllReviews extends StatelessWidget {
           if (state is GetAllReviewsLoadingState) {
             return const Center(child: CircularProgressIndicator());
           }
-          return ListView.builder(
-            itemCount: reviewCubit.allReviews.length,
-            itemBuilder: (context, index) {
-              final review = reviewCubit.allReviews[index];
-              return ReviewCard(review: review);
-            },
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: ListTile(
+                        leading: const Icon(Icons.thumb_up,color: Colors.green,),
+                        title: Text(truncatePercentage(reviewCubit.allReviews!.positive!)),
+                        tileColor: Colors.green[50],
+                        subtitle: const Text(
+                          'Positive',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Card(
+                      margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: ListTile(
+                        leading: const Icon(Icons.thumb_down,color: Colors.red,),
+                        title: Text(truncatePercentage(reviewCubit.allReviews!.negative!)),
+                        tileColor: Colors.red[50],
+                        subtitle: const Text(
+                          'Negative',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: reviewCubit.allReviews!.reviews!.length,
+                  itemBuilder: (context, index) {
+                    final review = reviewCubit.allReviews;
+                    return ReviewCard(
+                      review: review!,
+                      index: index,
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
     );
   }
+
+  String truncatePercentage(String percentage) {
+    // Find the index of the decimal point
+    int decimalIndex = percentage.indexOf('.');
+
+    // Check if the decimal point is found and there are enough digits after it
+    if (decimalIndex != -1 && percentage.length > decimalIndex + 4) {
+      // Truncate the string after the fourth digit following the decimal point
+      return percentage.substring(0, decimalIndex + 5) + '%';
+    }
+
+    // Return the original string if it does not need truncation
+    return percentage;
+  }
 }
 
 class ReviewCard extends StatelessWidget {
   final ReviewModel review;
+  final int index;
 
-  const ReviewCard({required this.review});
+  const ReviewCard({required this.review, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    bool isPositive = review.type == 'Positive';
+    bool isPositive = review.reviews![index].type == 'Positive';
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: ListTile(
@@ -59,10 +121,10 @@ class ReviewCard extends StatelessWidget {
           isPositive ? Icons.thumb_up : Icons.thumb_down,
           color: isPositive ? Colors.green : Colors.red,
         ),
-        title: Text(review.reviews ?? ''),
+        title: Text(review.reviews![index].reviews ?? ''),
         tileColor: isPositive ? Colors.green[50] : Colors.red[50],
         subtitle: Text(
-          review.type ?? '',
+          review.reviews![index].type ?? '',
           style: TextStyle(
             color: isPositive ? Colors.green : Colors.red,
             fontWeight: FontWeight.bold,

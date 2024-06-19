@@ -480,21 +480,17 @@ class AdminCubit extends Cubit<AdminStates> {
     }
   }
 
-  List<dynamic> reviews = [];
-  List<ReviewModel> allReviews = [];
+
+  ReviewModel? allReviews;
 
   Future<void> getAllReviews() async {
     emit(GetAllReviewsLoadingState());
     try {
       final value = await tomatopiaServices.getData(endPoint: getAllRevEndpoint, token: token);
-      reviews = value.data;
-      allReviews.clear();
-      for (int i = 0; i < reviews.length; i++) {
-        allReviews.add(ReviewModel.fromJson(reviews[i]));
-      }
+      allReviews = ReviewModel.fromJson(value.data);
       emit(GetAllReviewsSuccessState());
     } catch (onError) {
-      debugPrint('ger tips error : $onError');
+      debugPrint('get reviews error : $onError');
       emit(GetAllReviewsFailureState());
     }
   }
