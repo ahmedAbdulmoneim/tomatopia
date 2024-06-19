@@ -27,6 +27,7 @@ import 'package:tomatopia/screens/tips.dart';
 import 'package:tomatopia/screens/treatment_screen.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../cubit/profile/profile_states.dart';
+import 'fertilisers.dart';
 
 class HomeScreen extends StatefulWidget {
    const HomeScreen({Key? key}) : super(key: key);
@@ -270,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             InkWell(
                               onTap: (){
-                                Navigator.push(context, SizeTransition1(Search()));
+                                Navigator.push(context, SizeTransition1(TomatoAgriculturePlanScreen()));
                               },
                               child: Container(
                                 height: 130,

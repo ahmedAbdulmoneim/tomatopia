@@ -211,5 +211,8 @@
   "reviews" : "المراجعات",
   "positive_rev" : "مراجعات إيجابية",
   "negative_rev" : " مراجعات سلبية",
-  "fertilisers" : "الاسمدة"
+  "fertilisers" : "الاسمدة",
+  "tomato_plane" : "خطة زراعة الطماطم",
+  "enter_n_of_units" : "أدخل عدد الوحدات (على سبيل المثال، فدان)",
+  "acre" : "فدان"
 }

@@ -216,7 +216,10 @@
   "reviews" : "Reviews",
   "positive_rev" : "Positive Reviews",
   "negative_rev" : "Negative Reviews",
-  "fertilisers" : "Fertilisers"
+  "fertilisers" : "Fertilisers",
+  "tomato_plane" : "Tomato Agriculture Plan",
+  "enter_n_of_units" : "Enter number of units (e.g., acres)",
+  "acre" : "Acre"
 
 
 }
