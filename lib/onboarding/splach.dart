@@ -13,20 +13,11 @@ class SplachScreen extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: Column(
         children: [
-          Image.asset('assets/tomato3.png'),
+          Image.asset('assets/splach_image.png'),
           TyperAnimatedTextKit(
-            // colors: const [
-            //   Colors.red,
-            //   Colors.red,
-            //   Colors.yellow,
-            //   Colors.lightGreenAccent,
-            //   Color(0xFF4a8d3d),
-            //   Color(0xFF4a8d3d),
-            //   Colors.green
-            // ],
             totalRepeatCount: 1,
             speed: const Duration(milliseconds: 80),
-            text: const ['WELCOME TO ', 'TOMATOPIA', 'TOMATOPIA'],
+            text: const ['WELCOME TO ', 'TOMATOPIA','TOMATOPIA'],
             textStyle: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,

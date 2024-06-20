@@ -86,6 +86,8 @@ dependencies:
   firebase_database:
   firebase_storage:
   firebase_messaging:
+  lottie: ^3.1.2
+  googleapis_auth:
 
 dev_dependencies:
   flutter_test:

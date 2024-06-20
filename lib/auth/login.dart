@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/validate_password.dart';
@@ -97,55 +98,98 @@ class LoginPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return SafeArea(
-            child: Form(
-              key: formKey,
-              child: Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListView(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            alignment: Alignment.bottomLeft,
-                            children: [
-                              Image.asset('assets/logo.png'),
-                              Row(
-                                children: [
-                                  Text(
-                                    tr('login'),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ],
+          return Form(
+            key: formKey,
+            child: Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomLeft,
+                          children: [
+                            Lottie.asset('assets/sign_up.json',height: 300,width: 300),
+
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text(
+                              tr('login'),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                                fontSize: 25,
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        textFormField(
+                          controller: emailController,
+                          label: tr('email_address'),
+                          keyboardType: TextInputType.emailAddress,
+                          prefix: Icons.alternate_email,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return tr('email_is_required');
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        textFormField(
+                          controller: passwordController,
+                          onSaved: (value) {
+                            if (formKey.currentState!.validate()) {
+                              BlocProvider.of<LoginCubit>(context).login(
+                                endPoint: loginEndpoint,
+                                data: {
+                                  'email': emailController.text,
+                                  'password': passwordController.text,
+                                },
+                              );
+                            }
+                          },
+                          label: tr('password'),
+                          obscureText: BlocProvider.of<LoginCubit>(context).isSecure,
+                          keyboardType: TextInputType.visiblePassword,
+                          prefix: Icons.password,
+                          suffix: BlocProvider.of<LoginCubit>(context).suffix,
+                          suffixFunc: BlocProvider.of<LoginCubit>(context).changePasswordVisibility,
+                          validate: (password) {
+                            if (password.toString().isEmpty) {
+                              return tr('password_cant_be_empty');
+                            }
+                            return validatePassword(password);
+                          },
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EmailChecking(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            tr('forget_password'),
+                            style: const TextStyle(color: Colors.green),
                           ),
-                          const SizedBox(height: 5),
-                          textFormField(
-                            controller: emailController,
-                            label: tr('email_address'),
-                            keyboardType: TextInputType.emailAddress,
-                            prefix: Icons.alternate_email,
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return tr('email_is_required');
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 15),
-                          textFormField(
-                            controller: passwordController,
-                            onSaved: (value) {
+                        ),
+                        const SizedBox(height: 20),
+                        ConditionalBuilder(
+                          condition: state is! LoginLoadingState,
+                          builder: (context) => customButton(
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                BlocProvider.of<LoginCubit>(context).login(
+                                await BlocProvider.of<LoginCubit>(context).login(
                                   endPoint: loginEndpoint,
                                   data: {
                                     'email': emailController.text,
@@ -154,75 +198,32 @@ class LoginPage extends StatelessWidget {
                                 );
                               }
                             },
-                            label: tr('password'),
-                            obscureText: BlocProvider.of<LoginCubit>(context).isSecure,
-                            keyboardType: TextInputType.visiblePassword,
-                            prefix: Icons.password,
-                            suffix: BlocProvider.of<LoginCubit>(context).suffix,
-                            suffixFunc: BlocProvider.of<LoginCubit>(context).changePasswordVisibility,
-                            validate: (password) {
-                              if (password.toString().isEmpty) {
-                                return tr('password_cant_be_empty');
-                              }
-                              return validatePassword(password);
-                            },
+                            text: tr('login_button'),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EmailChecking(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              tr('forget_password'),
-                              style: const TextStyle(color: Colors.green),
-                            ),
+                          fallback: (context) => const Center(
+                            child: CircularProgressIndicator(color: Colors.green),
                           ),
-                          const SizedBox(height: 20),
-                          ConditionalBuilder(
-                            condition: state is! LoginLoadingState,
-                            builder: (context) => customButton(
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  await BlocProvider.of<LoginCubit>(context).login(
-                                    endPoint: loginEndpoint,
-                                    data: {
-                                      'email': emailController.text,
-                                      'password': passwordController.text,
-                                    },
-                                  );
-                                }
+                        ),
+                        Row(
+                          children: [
+                            Text(tr('dont_have_an_account')),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                                );
                               },
-                              text: tr('login_button'),
-                            ),
-                            fallback: (context) => const Center(
-                              child: CircularProgressIndicator(color: Colors.green),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(tr('dont_have_an_account')),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                                  );
-                                },
-                                child: Text(
-                                  tr('sign_up_button'),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
+                              child: Text(
+                                tr('sign_up_button'),
+                                style: const TextStyle(color: Colors.green),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/validate_password.dart';
@@ -87,90 +88,116 @@ class RegisterPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return SafeArea(
-            child: Form(
-              key: formKey,
-              child: Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListView(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            alignment: Alignment.bottomLeft,
-                            children: [
-                              Image.asset('assets/logo.png'),
-                              Row(
-                                children: [
-                                  Text(
-                                    tr('sign_up'),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                      fontSize: 25,
-                                    ),
-                                  ),
-                                ],
+          return Form(
+            key: formKey,
+            child: Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomLeft,
+                          children: [
+                            Lottie.asset('assets/sign_up.json',height: 300,width: 300),
+
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text(
+                              tr('sign_up'),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                                fontSize: 25,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          textFormField(
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return tr('name_is_required');
-                              }
-                              return null;
-                            },
-                            controller: nameController,
-                            prefix: Icons.person,
-                            label: tr('full_name'),
-                            keyboardType: TextInputType.name,
-                            onSaved: (value) {},
-                          ),
-                          const SizedBox(height: 10),
-                          textFormField(
-                            controller: emailController,
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return tr('email_is_required');
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
-                            prefix: Icons.alternate_email_rounded,
-                            label: tr('email_address'),
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          const SizedBox(height: 10),
-                          textFormField(
-                            controller: passwordController,
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return tr('password_cant_be_empty');
-                              }
-                              return validatePassword(value);
-                            },
-                            onSaved: (value) {},
-                            prefix: Icons.password,
-                            suffix: BlocProvider.of<RegisterCubit>(context).suffix,
-                            label: tr('password'),
-                            obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
-                            suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
-                            keyboardType: TextInputType.visiblePassword,
-                          ),
-                          const SizedBox(height: 10),
-                          textFormField(
-                            controller: confirmPasswordController,
-                            validate: (value) {
-                              if (value.isEmpty) {
-                                return tr('password_cant_be_empty');
-                              }
-                              return validatePassword(value);
-                            },
-                            onSaved: (value) {
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        textFormField(
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return tr('name_is_required');
+                            }
+                            return null;
+                          },
+                          controller: nameController,
+                          prefix: Icons.person,
+                          label: tr('full_name'),
+                          keyboardType: TextInputType.name,
+                          onSaved: (value) {},
+                        ),
+                        const SizedBox(height: 10),
+                        textFormField(
+                          controller: emailController,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return tr('email_is_required');
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {},
+                          prefix: Icons.alternate_email_rounded,
+                          label: tr('email_address'),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 10),
+                        textFormField(
+                          controller: passwordController,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return tr('password_cant_be_empty');
+                            }
+                            return validatePassword(value);
+                          },
+                          onSaved: (value) {},
+                          prefix: Icons.password,
+                          suffix: BlocProvider.of<RegisterCubit>(context).suffix,
+                          label: tr('password'),
+                          obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
+                          suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+                        const SizedBox(height: 10),
+                        textFormField(
+                          controller: confirmPasswordController,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return tr('password_cant_be_empty');
+                            }
+                            return validatePassword(value);
+                          },
+                          onSaved: (value) {
+                            if (formKey.currentState!.validate()) {
+                              BlocProvider.of<RegisterCubit>(context).register(
+                                endPoint: registerEndpoint,
+                                data: {
+                                  'fullName': nameController.text,
+                                  'email': emailController.text,
+                                  'password': passwordController.text,
+                                  'confirmPassword': confirmPasswordController.text,
+                                },
+                              );
+                            }
+                          },
+                          prefix: Icons.password,
+                          suffix: BlocProvider.of<RegisterCubit>(context).suffix,
+                          label: tr('confirm_password'),
+                          obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
+                          suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+                        const SizedBox(height: 20),
+                        ConditionalBuilder(
+                          condition: state is! RegisterLoadingState,
+                          builder: (context) => customButton(
+                            text: tr('sign_up_button'),
+                            onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 BlocProvider.of<RegisterCubit>(context).register(
                                   endPoint: registerEndpoint,
@@ -183,57 +210,31 @@ class RegisterPage extends StatelessWidget {
                                 );
                               }
                             },
-                            prefix: Icons.password,
-                            suffix: BlocProvider.of<RegisterCubit>(context).suffix,
-                            label: tr('confirm_password'),
-                            obscureText: BlocProvider.of<RegisterCubit>(context).isSecure,
-                            suffixFunc: BlocProvider.of<RegisterCubit>(context).changePasswordVisibility,
-                            keyboardType: TextInputType.visiblePassword,
                           ),
-                          const SizedBox(height: 20),
-                          ConditionalBuilder(
-                            condition: state is! RegisterLoadingState,
-                            builder: (context) => customButton(
-                              text: tr('sign_up_button'),
+                          fallback: (context) => const Center(
+                            child: CircularProgressIndicator(color: Colors.green),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(tr('already_have_an_account')),
+                            TextButton(
                               onPressed: () {
-                                if (formKey.currentState!.validate()) {
-                                  BlocProvider.of<RegisterCubit>(context).register(
-                                    endPoint: registerEndpoint,
-                                    data: {
-                                      'fullName': nameController.text,
-                                      'email': emailController.text,
-                                      'password': passwordController.text,
-                                      'confirmPassword': confirmPasswordController.text,
-                                    },
-                                  );
-                                }
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                );
                               },
-                            ),
-                            fallback: (context) => const Center(
-                              child: CircularProgressIndicator(color: Colors.green),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(tr('already_have_an_account')),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => LoginPage()),
-                                  );
-                                },
-                                child: Text(
-                                  tr('login_button'),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
+                              child: Text(
+                                tr('login_button'),
+                                style: const TextStyle(color: Colors.green),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -335,6 +335,16 @@ extension Translate on BuildContext {
   String get reviews => tr("reviews");
   String get positive => tr("positive_rev");
   String get negative => tr("negative_rev");
+  String get takePhoto => tr("take_photo");
+  String get receiveInstantIdentificationsAndTreatmentSuggestions => tr("receive_instant_identifications_and_treatment_suggestions");
+  String get searchForDiseaseInYourPlant => tr("search_for_disease_in_your_plant");
+  String get predictProblems => tr("predict_problems");
+  String get receiveAlertsAndApplyPreventativeMeasures => tr("receive_alerts_and_apply_preventative_measures");
+  String get treatment => tr("treatment");
+  String get getTheBestTreatmentForYourPlant => tr("get_the_best_treatment_for_your_plant");
+  String get supportiveFarmingCommunity => tr("supportive_farming_community");
+  String get skip => tr("skip");
+  String get next => tr("next");
 
 
 }

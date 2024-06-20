@@ -219,7 +219,19 @@
   "fertilisers" : "Fertilisers",
   "tomato_plane" : "Tomato Agriculture Plan",
   "enter_n_of_units" : "Enter number of units (e.g., acres)",
-  "acre" : "Acre"
+  "acre" : "Acre",
+  "take_photo": "Take a photo",
+  "receive_instant_identifications_and_treatment_suggestions": "Receive instant identifications and treatment suggestions",
+  "search": "Search",
+  "search_for_disease_in_your_plant": "Search for disease in your plant",
+  "predict_problems": "Predict problems",
+  "receive_alerts_and_apply_preventative_measures": "Receive alerts and apply preventative measures",
+  "treatment": "Treatment",
+  "get_the_best_treatment_for_your_plant": "Get the best treatment for your plant",
+  "community": "Community",
+  "supportive_farming_community": "Supportive Farming Community",
+  "skip": "SKIP",
+  "next": "NEXT"
 
 
 }

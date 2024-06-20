@@ -214,5 +214,17 @@
   "fertilisers" : "الاسمدة",
   "tomato_plane" : "خطة زراعة الطماطم",
   "enter_n_of_units" : "أدخل عدد الوحدات (على سبيل المثال، فدان)",
-  "acre" : "فدان"
+  "acre" : "فدان",
+  "take_photo": "التقط صورة",
+  "receive_instant_identifications_and_treatment_suggestions": "تلقي تعريفات فورية واقتراحات العلاج",
+  "search": "بحث",
+  "search_for_disease_in_your_plant": "ابحث عن الأمراض في نباتك",
+  "predict_problems": "توقع المشاكل",
+  "receive_alerts_and_apply_preventative_measures": "تلقي تنبيهات وتطبيق التدابير الوقائية",
+  "treatment": "علاج",
+  "get_the_best_treatment_for_your_plant": "احصل على أفضل علاج لنباتك",
+  "community": "مجتمع",
+  "supportive_farming_community": "مجتمع الزراعة الداعم",
+  "skip": "تخطي",
+  "next": "التالي"
 }
