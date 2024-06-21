@@ -43,7 +43,7 @@ class _AlertsState extends State<Alerts> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
