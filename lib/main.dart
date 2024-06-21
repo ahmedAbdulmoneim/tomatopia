@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -12,7 +11,6 @@ import 'api_services/model_services.dart';
 import 'api_services/tomatopia_services.dart';
 import 'api_services/weather_services.dart';
 import 'auth/login.dart';
-import 'constant/constant.dart';
 import 'cubit/admin_cubit/admin_cubit.dart';
 import 'cubit/ai_cubit/ai_model_cubit.dart';
 import 'cubit/auth_cubit/forget_password/forget_password_cubit.dart';
@@ -20,27 +18,26 @@ import 'cubit/home_cubit/home_cubit.dart';
 import 'cubit/profile/profile_cubit.dart';
 import 'cubit/weather/weather_cubit.dart';
 import 'cubit/weather/weather_states.dart';
-
 import 'onboarding/splach.dart';
 import 'screens/home.dart';
 import 'shared_preferences/shared_preferences.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
     apiKey: 'AIzaSyDGS_tQtHp9TP5EJhxufdrwChK96pF4bds',
     appId: '1:951421932351:android:9d12e07e890ddd3bd2f98a',
     messagingSenderId: '951421932351',
     projectId: 'tomatiopianote',
     storageBucket: 'tomatiopianote.appspot.com',
   ));
+
+  fcmToken = await SharedPreference.getData(key: userId);
   await EasyLocalization.ensureInitialized();
   await SharedPreference.init();
   await Hive.initFlutter();
-
 
   // Determine the start widget
   Widget widget;

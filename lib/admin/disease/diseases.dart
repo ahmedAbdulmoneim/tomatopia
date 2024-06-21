@@ -20,7 +20,6 @@ class AllDiseases extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
-        print(state);
         if(state is DeleteDiseaseSuccessState){
           show(context, context.done, context.diseaseDeletedSuccessfully, Colors.green);
           BlocProvider.of<AdminCubit>(context).getAllDisease();

@@ -14,7 +14,7 @@ class EditNoteForm extends StatefulWidget {
   final String subtitle;
   final String noteId;
 
-  EditNoteForm({
+  const EditNoteForm({
     Key? key,
     required this.notification,
     required this.subtitle,

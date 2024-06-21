@@ -46,4 +46,23 @@ try{
         isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined;
     emit(ChangeRegisterPasswordVisibility());
   }
+
+  Future<void>addFcmToken({required userID,required fcmToken})async{
+    emit(AddFCMTokenLoading());
+    try{
+      final response = await tomatopiaServices.postData(endPoint: addUserFCMToken,token: token,
+          parameters: {
+            "userId" : userID,
+            "Token" : fcmToken
+          }
+      );
+
+      print(response.data);
+      emit(AddFCMTokenSuccess());
+    }catch(e){
+      debugPrint("add token error : $e");
+      emit(AddFCMTokenFailure());
+
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/api_models/ai_model.dart';
 import 'package:tomatopia/api_services/model_services.dart';
@@ -13,6 +14,7 @@ import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_state.dart';
 
 import '../../api_models/admin_models/disease_model.dart';
+import '../../api_models/fcm_model.dart';
 import '../../constant/variables.dart';
 
 class AiCubit extends Cubit<AiModelStates> {
@@ -40,7 +42,7 @@ class AiCubit extends Cubit<AiModelStates> {
 
       if(aiModel!.prediction != 'bad' ||aiModel!.prediction != 'healthy' ){
         if(aiModel!.prediction == "Mosaic Virus"){
-          diseaseNameArabic = "فيروس موازيك";
+          diseaseNameArabic = "فيروس موزايك";
         }else if(aiModel!.prediction == "Yellow Leaf Curl Virus"){
           diseaseNameArabic = "فيروس تجعد أوراق الطماطم الصفراء";
         }else if(aiModel!.prediction == "Target Spot"){
@@ -190,5 +192,90 @@ class AiCubit extends Cubit<AiModelStates> {
         ),
       );
     }
+  }
+
+  var userLocationLate = '';
+  var userLocationLong = '';
+
+  void getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        // Handle the case where the user denies location access
+        return;
+      }
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    userLocationLate = position.latitude.toString();
+    userLocationLong = position.longitude.toString();
+    emit(GetUserLocationSuccess());
+  }
+
+  setUserLocation({required late,required long})async{
+    emit(AddLocationLoadingState());
+    try{
+      final response = await tomatopiaServices.postData(endPoint: setLocationEndpoint,
+          token: token,
+          data: {
+            "Latitude" : late,
+            "Longitude" : long,
+          }
+      );
+      print(response.data);
+      emit(AddLocationSuccessState());
+
+    }catch(e){
+      debugPrint("add location error : $e");
+      emit(AddLocationFailureState());
+
+    }
+
+  }
+  final List<String> uniqueTokens = [];
+  getNearestUserLocation({required late,required long})async{
+    emit(GetNearestLocationLoadingState());
+    try{
+      final response = await tomatopiaServices.getData(endPoint: getNearestLocationEndpoint,
+          token: token,
+          query: {
+            "Latitude" : late,
+            "Longitude" : long,
+          }
+      );
+      print(response.data);
+
+      final List<UserToken> userTokens = UserToken.listFromJson(response.data);
+
+      // Use a set to track unique tokens
+      final Set<String> uniqueTokensSet = {};
+      final List<UserToken> uniqueUserTokens = [];
+      uniqueTokens.clear();
+
+
+      for (var userToken in userTokens) {
+        if (!uniqueTokensSet.contains(userToken.token) && userToken.token != null) {
+          uniqueTokensSet.add(userToken.token!);
+          uniqueUserTokens.add(userToken);
+          uniqueTokens.add(userToken.token!);
+        }
+      }
+
+      print(uniqueTokens.length);
+      print(uniqueUserTokens[0].token);
+      print(uniqueUserTokens[0].userId);
+      print(uniqueUserTokens.length);
+      emit(GetNearestLocationSuccessState());
+    }catch(e){
+      debugPrint("get nearest location error : $e");
+      emit(GetNearestLocationFailureState());
+
+    }
+
   }
 }

@@ -36,6 +36,7 @@ class SettingsScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is ProfileSuccessState) {
 
+
             SharedPreference.saveData(key: 'userImage', value: BlocProvider.of<ProfileCubit>(context).profileModel!.image ?? '').then((value) {
               userImage = BlocProvider.of<ProfileCubit>(context).profileModel!.image ?? '';
             });
@@ -60,6 +61,12 @@ class SettingsScreen extends StatelessWidget {
             show(context, context.error, context.passwordNotChanged, Colors.red);
           } else if (state is AddProfileImageSuccessState) {
             BlocProvider.of<ProfileCubit>(context).getUserProfile();
+          }else if(state is GetUserLocationSuccess){
+            print('hi');
+            BlocProvider.of<ProfileCubit>(context).getNearestUserLocation(late: BlocProvider.of<ProfileCubit>(context).userLocationLate, long: BlocProvider.of<ProfileCubit>(context).userLocationLong);
+            BlocProvider.of<ProfileCubit>(context).setUserLocation(late: BlocProvider.of<ProfileCubit>(context).userLocationLate, long: BlocProvider.of<ProfileCubit>(context).userLocationLong);
+            print(BlocProvider.of<ProfileCubit>(context).userLocationLate);
+            print(BlocProvider.of<ProfileCubit>(context).userLocationLong);
           }
         },
         builder: (context, state) {
@@ -449,7 +456,9 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   title: Text(context.changeLocation),
                                   trailing: const Icon(Icons.keyboard_arrow_right),
-                                  onTap: () {
+                                  onTap: (){
+                                    BlocProvider.of<ProfileCubit>(context).getLocation();
+
                                     //open change password
                                   },
                                 ),

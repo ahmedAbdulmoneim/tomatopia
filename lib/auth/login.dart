@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,6 +78,17 @@ class LoginPage extends StatelessWidget {
               value: BlocProvider.of<LoginCubit>(context).loginModel!.isAdmin,
             ).then((value) {
               isAdmin = BlocProvider.of<LoginCubit>(context).loginModel!.isAdmin;
+            });
+            var fbm = FirebaseMessaging.instance;
+            fbm.getToken().then((fcmToken) {
+              if (fcmToken != null) {
+                BlocProvider.of<LoginCubit>(context).addFcmToken(
+                  userID:  BlocProvider.of<LoginCubit>(context).loginModel!.userId!,
+                  fcmToken: fcmToken,
+                );
+              } else {
+                debugPrint('Failed to get FCM token');
+              }
             });
             Navigator.pushReplacement(
               context,
@@ -196,6 +208,14 @@ class LoginPage extends StatelessWidget {
                                     'password': passwordController.text,
                                   },
                                 );
+                                var fbm = FirebaseMessaging.instance;
+                                 fbm.getToken().then((value) => {
+                                  SharedPreference.saveData(
+                                    key: userId,
+                                    value: value,
+                                  ).then((value) {
+                                  })
+                                });
                               }
                             },
                             text: tr('login_button'),

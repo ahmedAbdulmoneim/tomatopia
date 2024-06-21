@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
 import 'package:tomatopia/cubit/profile/profile_states.dart';
@@ -163,5 +164,69 @@ class ProfileCubit extends Cubit<ProfileStates> {
         ? Icons.visibility_off_outlined
         : Icons.remove_red_eye_outlined;
     emit(SuffixIconVisibility());
+  }
+
+  var userLocationLate = '';
+  var userLocationLong = '';
+
+  void getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        // Handle the case where the user denies location access
+        return;
+      }
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    userLocationLate = position.latitude.toString();
+    userLocationLong = position.longitude.toString();
+    emit(GetUserLocationSuccess());
+  }
+
+  setUserLocation({required late,required long})async{
+    emit(AddLocationLoadingState());
+    try{
+      final response = await tomatopiaServices.postData(endPoint: setLocationEndpoint,
+        token: token,
+        data: {
+        "Latitude" : late,
+        "Longitude" : long,
+        }
+      );
+      print(response.data);
+      emit(AddLocationSuccessState());
+
+    }catch(e){
+      debugPrint("add location error : $e");
+      emit(AddLocationFailureState());
+
+    }
+
+  }
+
+  getNearestUserLocation({required late,required long})async{
+    emit(GetNearestLocationLoadingState());
+    try{
+      final response = await tomatopiaServices.getData(endPoint: getNearestLocationEndpoint,
+          token: token,
+          query: {
+            "Latitude" : late,
+            "Longitude" : long,
+          }
+      );
+      print(response.data);
+      emit(GetNearestLocationSuccessState());
+    }catch(e){
+      debugPrint("get location error : $e");
+      emit(GetNearestLocationFailureState());
+
+    }
+
   }
 }

@@ -23,3 +23,17 @@ class ClearImageState extends AiModelStates {}
 
 class ShowAdviceMessageState extends AiModelStates {}
 
+class GetUserLocationSuccess extends AiModelStates {}
+
+class AddLocationLoadingState extends AiModelStates {}
+
+class AddLocationSuccessState extends AiModelStates {}
+
+class AddLocationFailureState extends AiModelStates {}
+
+class GetNearestLocationLoadingState extends AiModelStates {}
+
+class GetNearestLocationSuccessState extends AiModelStates {}
+
+class GetNearestLocationFailureState extends AiModelStates {}
+

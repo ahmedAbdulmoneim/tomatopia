@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tomatopia/api_models/auth_models/login_model.dart';
 import 'package:tomatopia/api_services/tomatopia_services.dart';
+import 'package:tomatopia/constant/endpints.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/auth_cubit/login/login_states.dart';
 
@@ -41,5 +42,24 @@ class LoginCubit extends Cubit<LoginStates> {
     suffix =
         isSecure ? Icons.visibility_off_outlined : Icons.visibility_outlined;
     emit(ChangeLoginPasswordVisibilityState());
+  }
+
+  Future<void> addFcmToken({required userID,required fcmToken})async{
+    emit(AddFCMTokenLoading());
+    try{
+      final response = await tomatopiaServices.postData(endPoint: addUserFCMToken,token: token,
+        parameters: {
+        "userId" : userID,
+          "Token" : fcmToken
+        }
+      );
+
+      print(response.data);
+      emit(AddFCMTokenSuccess());
+    }catch(e){
+      debugPrint("add token error : $e");
+      emit(AddFCMTokenFailure());
+
+    }
   }
 }

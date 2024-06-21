@@ -18,11 +18,13 @@ class LoadProfileImageState extends ProfileStates {}
 
 class PicProfileImageState extends ProfileStates {}
 
-class DeleteUserImage extends ProfileStates{}
+class DeleteUserImage extends ProfileStates {}
 
-class AddProfileImageLoadingState extends ProfileStates{}
-class AddProfileImageSuccessState extends ProfileStates{}
-class AddProfileImageFailureState extends ProfileStates{}
+class AddProfileImageLoadingState extends ProfileStates {}
+
+class AddProfileImageSuccessState extends ProfileStates {}
+
+class AddProfileImageFailureState extends ProfileStates {}
 
 class ChangePasswordLoadingState extends ProfileStates {}
 
@@ -30,4 +32,18 @@ class ChangePasswordSuccessState extends ProfileStates {}
 
 class ChangePasswordFailuerState extends ProfileStates {}
 
-class SuffixIconVisibility extends ProfileStates{}
+class SuffixIconVisibility extends ProfileStates {}
+
+class GetUserLocationSuccess extends ProfileStates {}
+
+class AddLocationLoadingState extends ProfileStates {}
+
+class AddLocationSuccessState extends ProfileStates {}
+
+class AddLocationFailureState extends ProfileStates {}
+
+class GetNearestLocationLoadingState extends ProfileStates {}
+
+class GetNearestLocationSuccessState extends ProfileStates {}
+
+class GetNearestLocationFailureState extends ProfileStates {}

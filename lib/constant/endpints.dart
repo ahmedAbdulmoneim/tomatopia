@@ -40,4 +40,7 @@ const String editDiseaseEndPoint = 'Disease/EditDisease';
 const String addAdminEndPoint = 'Role/AddAdmin';
 const String addRevEndPoint = 'Reviews/AddReview';
 const String getAllRevEndpoint = 'Reviews/GetAllReviwes';
+const String setLocationEndpoint = 'Location/AddUserLocation';
+const String getNearestLocationEndpoint = 'Location/GetNearestUsers';
+const String addUserFCMToken = 'Location/AddUserToken';
 

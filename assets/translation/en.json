@@ -231,7 +231,9 @@
   "community": "Community",
   "supportive_farming_community": "Supportive Farming Community",
   "skip": "SKIP",
-  "next": "NEXT"
+  "next": "NEXT",
+  "be_careful" : "Be careful, there are infections in some fields near you",
+  "warning" : "Warning ⚠️"
 
 
 }
