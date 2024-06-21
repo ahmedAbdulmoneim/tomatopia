@@ -111,7 +111,7 @@ class Profile extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     ListTile(
-                      leading: const Icon(Icons.email, color: Colors.teal),
+                      leading: const Icon(Icons.email, color: Colors.green),
                       title: Text(context.email),
                       subtitle: Text(userEmail),
                     ),
@@ -119,7 +119,7 @@ class Profile extends StatelessWidget {
                     ListTile(
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      leading: const Icon(Icons.my_location, color: Colors.teal),
+                      leading: const Icon(Icons.my_location, color: Colors.green),
                       title: Text(context.location),
                       subtitle: const Text("Beni Suef"),
                     ),

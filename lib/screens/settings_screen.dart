@@ -76,7 +76,7 @@ class SettingsScreen extends StatelessWidget {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding:  const EdgeInsets.all(16.0),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -84,12 +84,12 @@ class SettingsScreen extends StatelessWidget {
                           elevation: 8.0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
-                          color: const Color(0xFF039687),
+                          color:  Colors.green,
                           child: SizedBox(
                             height: 200,
                             width: double.infinity,
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  const EdgeInsets.all(5.0),
                               child: Row(
                                 children: [
                                   Stack(
@@ -113,7 +113,7 @@ class SettingsScreen extends StatelessWidget {
                                                 height: 100,
                                                 child: Row(
                                                   children: [
-                                                    const Spacer(),
+                                                     const Spacer(),
                                                     Column(
                                                       children: [
                                                         IconButton(
@@ -126,7 +126,7 @@ class SettingsScreen extends StatelessWidget {
                                                             } else {
                                                             }
                                                           },
-                                                          icon: const Icon(
+                                                          icon:  const Icon(
                                                             Icons.camera_alt_outlined,
                                                             color: Colors.blue,
                                                           ),
@@ -134,7 +134,7 @@ class SettingsScreen extends StatelessWidget {
                                                         Text(context.camera)
                                                       ],
                                                     ),
-                                                    const Spacer(),
+                                                     const Spacer(),
                                                     Column(
                                                       children: [
                                                         IconButton(
@@ -144,7 +144,7 @@ class SettingsScreen extends StatelessWidget {
                                                             profileCubit.addUserImage(
                                                                 imageFile: profileCubit.imageFile!);
                                                           },
-                                                          icon: const Icon(
+                                                          icon:  const Icon(
                                                             Icons.image,
                                                             color: Colors.blue,
                                                           ),
@@ -152,19 +152,19 @@ class SettingsScreen extends StatelessWidget {
                                                         Text(context.gallery)
                                                       ],
                                                     ),
-                                                    const Spacer(),
+                                                     const Spacer(),
                                                   ],
                                                 ),
                                               ),
                                             ),
                                           );
                                         },
-                                        icon: const Icon(Icons.add_a_photo_sharp),
+                                        icon:  const Icon(Icons.add_a_photo_sharp),
                                         color: Colors.black,
                                       )
                                     ],
                                   ),
-                                  const SizedBox(
+                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Flexible(
@@ -175,7 +175,7 @@ class SettingsScreen extends StatelessWidget {
                                           profileCubit.nName ?? userName,
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
+                                          style:  const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -184,7 +184,7 @@ class SettingsScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  const Spacer(),
+                                   const Spacer(),
                                   InkWell(
                                     onTap: () {
                                       showModalBottomSheet(
@@ -214,7 +214,7 @@ class SettingsScreen extends StatelessWidget {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    const Spacer(),
+                                                     const Spacer(),
                                                     TextButton(
                                                         onPressed: () {
                                                           nameController.text = '';
@@ -222,7 +222,7 @@ class SettingsScreen extends StatelessWidget {
                                                         },
                                                         child: Text(
                                                           context.cancel,
-                                                          style: const TextStyle(
+                                                          style:  const TextStyle(
                                                             color: Colors.black54,
                                                           ),
                                                         )),
@@ -234,7 +234,7 @@ class SettingsScreen extends StatelessWidget {
                                                       },
                                                       child: Text(
                                                         context.save,
-                                                        style: const TextStyle(
+                                                        style:  const TextStyle(
                                                           color: Colors.green,
                                                           decoration: TextDecoration.underline,
                                                           decorationStyle: TextDecorationStyle.solid,
@@ -252,7 +252,7 @@ class SettingsScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    child: const Icon(
+                                    child:  const Icon(
                                       Icons.edit,
                                       color: Colors.white,
                                     ),
@@ -262,43 +262,43 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         const SizedBox(
                           height: 10,
                         ),
                         Text(
                           context.notificationSettings,
-                          style: const TextStyle(
+                          style:  const TextStyle(
                               fontSize: 20,
                               color: Color(0xFF87c8c1),
                               fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
+                         const SizedBox(
                           height: 20,
                         ),
                         SwitchListTile(
                             value: true,
-                            activeColor: const Color(0xFF039687),
+                            activeColor:  Colors.green,
                             title: Text(context.receivedNotification),
                             onChanged: (value) {
                             }),
-                        const SizedBox(
+                         const SizedBox(
                           height: 10,
                         ),
                         Card(
                             elevation: 4.0,
                             color: Colors.white,
-                            margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                            margin:  const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: Column(
                               children: [
                                 ListTile(
-                                    leading: const Icon(
+                                    leading:  const Icon(
                                       Icons.lock_outline,
-                                      color: Color(0xFF039687),
+                                      color: Colors.green,
                                     ),
                                     title: Text(context.changePassword),
-                                    trailing: const Icon(Icons.keyboard_arrow_right),
+                                    trailing:  const Icon(Icons.keyboard_arrow_right),
                                     onTap: () {
                                       showModalBottomSheet(
                                           isScrollControlled: true,
@@ -329,7 +329,7 @@ class SettingsScreen extends StatelessWidget {
                                                     label: context.enterOldPassword,
                                                     controller: oldPasswordController,
                                                   ),
-                                                  const SizedBox(height: 15),
+                                                   const SizedBox(height: 15),
                                                   textFormField(
                                                     validate: (value) {
                                                       if (value.toString().isEmpty) {
@@ -343,7 +343,7 @@ class SettingsScreen extends StatelessWidget {
                                                     label: context.enterNewPassword,
                                                     controller: newPasswordController,
                                                   ),
-                                                  const SizedBox(height: 15),
+                                                   const SizedBox(height: 15),
                                                   textFormField(
                                                     validate: (value) {
                                                       if (value.toString().isEmpty) {
@@ -360,7 +360,7 @@ class SettingsScreen extends StatelessWidget {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      const Spacer(),
+                                                       const Spacer(),
                                                       TextButton(
                                                           onPressed: () {
                                                             oldPasswordController.text = '';
@@ -370,7 +370,7 @@ class SettingsScreen extends StatelessWidget {
                                                           },
                                                           child: Text(
                                                             context.cancel,
-                                                            style: const TextStyle(
+                                                            style:  const TextStyle(
                                                               color: Colors.black54,
                                                             ),
                                                           )),
@@ -386,7 +386,7 @@ class SettingsScreen extends StatelessWidget {
                                                         },
                                                         child: Text(
                                                           context.save,
-                                                          style: const TextStyle(
+                                                          style:  const TextStyle(
                                                             color: Colors.green,
                                                             decoration: TextDecoration.underline,
                                                             decorationStyle: TextDecorationStyle.solid,
@@ -403,17 +403,17 @@ class SettingsScreen extends StatelessWidget {
                                             ),
                                           ));
                                     }),
-                                const Divider(
+                                 const Divider(
                                   endIndent: 8,
                                   indent: 8,
                                 ),
                                 ListTile(
-                                  leading: const Icon(
+                                  leading:  const Icon(
                                     FontAwesomeIcons.earthAfrica,
-                                    color: Color(0xFF039687),
+                                    color: Colors.green,
                                   ),
                                   title: Text(context.changeLanguage),
-                                  trailing: const Icon(Icons.keyboard_arrow_right),
+                                  trailing:  const Icon(Icons.keyboard_arrow_right),
                                   onTap: () {
                                     showModalBottomSheet(
                                       context: context,
@@ -422,20 +422,20 @@ class SettingsScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             ListTile(
-                                              title: const Text('English'),
+                                              title:  const Text('English'),
                                               onTap: () async{
                                                 Navigator.pop(context);
-                                                await context.setLocale(const Locale('en'));
-                                                Get.updateLocale(const Locale('en'));
+                                                await context.setLocale( const Locale('en'));
+                                                Get.updateLocale( const Locale('en'));
 
                                               },
                                             ),
                                             ListTile(
-                                              title: const Text('العربية'),
+                                              title:  const Text('العربية'),
                                               onTap: () async{
                                                 Navigator.pop(context);
-                                                 await context.setLocale(const Locale('ar'));
-                                                 Get.updateLocale(const Locale('ar'));
+                                                 await context.setLocale( const Locale('ar'));
+                                                 Get.updateLocale( const Locale('ar'));
 
                                               },
                                             ),
@@ -445,17 +445,17 @@ class SettingsScreen extends StatelessWidget {
                                     );
                                   },
                                 ),
-                                const Divider(
+                                 const Divider(
                                   endIndent: 8,
                                   indent: 8,
                                 ),
                                 ListTile(
-                                  leading: const Icon(
+                                  leading:  const Icon(
                                     Icons.location_on,
-                                    color: Color(0xFF039687),
+                                    color: Colors.green,
                                   ),
                                   title: Text(context.changeLocation),
-                                  trailing: const Icon(Icons.keyboard_arrow_right),
+                                  trailing:  const Icon(Icons.keyboard_arrow_right),
                                   onTap: (){
                                     BlocProvider.of<ProfileCubit>(context).getLocation();
 

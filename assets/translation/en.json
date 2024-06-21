@@ -233,7 +233,32 @@
   "skip": "SKIP",
   "next": "NEXT",
   "be_careful" : "Be careful, there are infections in some fields near you",
-  "warning" : "Warning ⚠️"
+  "warning" : "Warning ⚠️",
+  "notification_message": "You will get notifications if there is an infection around you.",
+  "prevention_tip": "Prevention Tip",
+  "field_monitoring": "Field Monitoring",
+  "catch_early": "Catch early and prevent the build-up of fatal pests in your field.",
+  "learn_more": "Learn More",
+  "pests" : "Pests and Disease Alert",
+  "field_monitoring_description": "Field monitoring is the most effective practice to detect plant diseases at an early stage. Detecting diseases earlier will give you enough time to prevent them from spreading and further harming your crops.",
+  "why_monitoring_important": "Why is monitoring important?",
+  "monitoring_helps": "Monitoring your field regularly helps you:",
+  "save_money": "Save money on expensive treatments",
+  "minimize_yield_loss": "Minimize yield loss",
+  "higher_yields": "Farmers who regularly monitor their field achieve up to 50% higher yields",
+  "how_to_monitor": "How to monitor your field:",
+  "visit_field": "Visit your field",
+  "visit_recommendation": "We recommend doing this at least two times per week.",
+  "check_several_spots": "Check several spots",
+  "check_spots_description": "Make sure to check at least 5 different parts of your field, as the illustration shows below.",
+  "unusual_patterns": "Look for unusual patterns and activities in each of these spots",
+  "patterns_description": "Pay attention to discolouration, deformation, feeding damages, and other insect activities.",
+  "examine_crop": "Carefully examine the entire crop",
+  "examine_description": "Don’t forget to check the leaves and stems for any signs of pests or diseases.",
+  "take_action": "Take action if you spot something",
+  "action_description": "When you find signs of an infestation, make sure to use our crop diagnosis feature to identify the disease and treat it efficiently.",
+  "support": "For additional support, reach out to the Tomatopia Community or consult your trusted local advisor."
+
 
 
 }
