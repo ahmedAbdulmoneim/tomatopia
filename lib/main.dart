@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:tomatopia/constant/variables.dart';
+import 'package:tomatopia/screens/search_screen.dart';
 
 import 'api_services/model_services.dart';
 import 'api_services/tomatopia_services.dart';
@@ -21,6 +24,7 @@ import 'cubit/weather/weather_states.dart';
 import 'onboarding/splach.dart';
 import 'screens/home.dart';
 import 'shared_preferences/shared_preferences.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +42,30 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await SharedPreference.init();
   await Hive.initFlutter();
+ String? disease ;
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      disease = message.notification!.body;
+      Fluttertoast.showToast(
+        msg: '${message.notification!.title} : ${message.notification!.body}',
+        toastLength: Toast.LENGTH_LONG,
+        backgroundColor: Colors.green,
+        timeInSecForIosWeb: 5,
+        textColor: Colors.white,
+        fontSize: 16.5,
+        gravity: ToastGravity.CENTER,
+
+      );
+    }
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => Search(diseaseName: disease),
+      ),
+    );
+  });
 
   // Determine the start widget
   Widget widget;

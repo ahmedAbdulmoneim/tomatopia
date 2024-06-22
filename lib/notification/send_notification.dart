@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'access_firebase_token.dart';
 
-void sendMessage(List<String> tokens) async {
+void sendMessage(List<String> tokens,body) async {
   AccessTokenFirebase accessTokenGetter = AccessTokenFirebase();
   String accessToken = await accessTokenGetter.getAccessToken();
-  print(accessToken);
+  debugPrint(accessToken);
   var headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $accessToken'
@@ -18,7 +19,7 @@ void sendMessage(List<String> tokens) async {
     var data = json.encode({
       "message": {
         "token": token,
-        "notification": {"body": "be_careful".tr(), "title": "warning".tr()}
+        "notification": {"body": body, "title": "be_careful".tr()}
       }
     });
 
@@ -33,9 +34,9 @@ void sendMessage(List<String> tokens) async {
     );
 
     if (response.statusCode == 200) {
-      print('Notification sent successfully to $token');
+      debugPrint('Notification sent successfully to $token');
     } else {
-      print('Failed to send notification to $token: ${response.statusMessage}');
+      debugPrint('Failed to send notification to $token: ${response.statusMessage}');
     }
   }
 }

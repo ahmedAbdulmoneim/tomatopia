@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:get/get.dart';
 import 'package:tomatopia/constant/variables.dart';
@@ -62,11 +63,17 @@ class SettingsScreen extends StatelessWidget {
           } else if (state is AddProfileImageSuccessState) {
             BlocProvider.of<ProfileCubit>(context).getUserProfile();
           }else if(state is GetUserLocationSuccess){
-            print('hi');
             BlocProvider.of<ProfileCubit>(context).getNearestUserLocation(late: BlocProvider.of<ProfileCubit>(context).userLocationLate, long: BlocProvider.of<ProfileCubit>(context).userLocationLong);
             BlocProvider.of<ProfileCubit>(context).setUserLocation(late: BlocProvider.of<ProfileCubit>(context).userLocationLate, long: BlocProvider.of<ProfileCubit>(context).userLocationLong);
-            print(BlocProvider.of<ProfileCubit>(context).userLocationLate);
-            print(BlocProvider.of<ProfileCubit>(context).userLocationLong);
+            Fluttertoast.showToast(
+              msg: 'Location changed successfully',
+              toastLength: Toast.LENGTH_LONG,
+              backgroundColor: Colors.green,
+              timeInSecForIosWeb: 5,
+              textColor: Colors.white,
+              fontSize: 16.5,
+              gravity: ToastGravity.CENTER,
+            );
           }
         },
         builder: (context, state) {

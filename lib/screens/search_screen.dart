@@ -6,13 +6,13 @@ import 'package:tomatopia/cubit/admin_cubit/admin_cubit.dart';
 import 'package:tomatopia/cubit/admin_cubit/admin_states.dart';
 import 'package:tomatopia/page_transitions/scale_transition.dart';
 
-import '../custom_widget/custom_card_admin.dart';
 import '../custom_widget/custom_card_user.dart';
 import 'about_disease.dart';
 
 
 class Search extends StatelessWidget {
-  Search({Key? key}) : super(key: key);
+  Search({Key? key,this.diseaseName}) : super(key: key);
+  String? diseaseName;
   final TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
 
@@ -22,6 +22,9 @@ class Search extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = BlocProvider.of<AdminCubit>(context);
+        if(diseaseName != null){
+          searchController.text = diseaseName!;
+        }
         return Scaffold(
           appBar: AppBar(
             title: Form(

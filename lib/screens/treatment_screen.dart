@@ -8,7 +8,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tomatopia/cubit/ai_cubit/ai_model_cubit.dart';
 import 'package:tomatopia/custom_widget/custom_card_user.dart';
-import 'package:tomatopia/screens/alerts_screen.dart';
 import 'package:tomatopia/screens/user_disease_details.dart';
 
 import '../cubit/ai_cubit/ai_model_state.dart';
@@ -51,8 +50,7 @@ class _GetMedicineState extends State<GetMedicine> {
                 long: BlocProvider.of<AiCubit>(context).userLocationLong);
           }
           if (state is GetNearestLocationSuccessState) {
-            sendMessage(BlocProvider.of<AiCubit>(context).uniqueTokens);
-            print(BlocProvider.of<AiCubit>(context).uniqueTokens.length);
+            sendMessage(BlocProvider.of<AiCubit>(context).uniqueTokens,BlocProvider.of<AiCubit>(context).diseaseInfo[0].name);
           }
         },
         builder: (context, state) {
