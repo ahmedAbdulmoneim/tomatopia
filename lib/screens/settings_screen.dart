@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomatopia/constant/variables.dart';
 import 'package:tomatopia/cubit/profile/profile_cubit.dart';
 import 'package:tomatopia/cubit/profile/profile_states.dart';
@@ -14,16 +16,64 @@ import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 import '../constant/validate_password.dart';
 import '../custom_widget/text_form_filed.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   SettingsScreen({super.key});
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController nameController = TextEditingController();
+
   final GlobalKey<FormState> bottomSheetFormKey = GlobalKey();
+
   final TextEditingController oldPasswordController = TextEditingController();
+
   final TextEditingController newPasswordController = TextEditingController();
+
   final TextEditingController confirmPasswordController = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey();
+
   final GlobalKey<FormState> changImageFormKey = GlobalKey();
+
+  bool _notificationsEnabled = true;
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationPreference();
+  }
+
+  void _loadNotificationPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
+    });
+  }
+
+  void _updateNotificationPreference(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notificationsEnabled', value);
+    setState(() {
+      _notificationsEnabled = value;
+    });
+
+    if (value) {
+      await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else {
+      await FirebaseMessaging.instance.requestPermission(
+        alert: false,
+        badge: false,
+        sound: false,
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -283,11 +333,13 @@ class SettingsScreen extends StatelessWidget {
                           height: 20,
                         ),
                         SwitchListTile(
-                            value: true,
-                            activeColor:  Colors.green,
-                            title: Text(context.receivedNotification),
-                            onChanged: (value) {
-                            }),
+                          value: _notificationsEnabled,
+                          activeColor: Colors.green,
+                          title: Text(context.receivedNotification),
+                          onChanged: (value) {
+                            _updateNotificationPreference(value);
+                          },
+                        ),
                          const SizedBox(
                           height: 10,
                         ),

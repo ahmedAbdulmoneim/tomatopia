@@ -1,12 +1,55 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:tomatopia/cubit/home_cubit/home_cubit.dart';
 import 'package:tomatopia/custom_widget/extensions.dart';
 import '../cubit/home_cubit/home_states.dart';
+import '../screens/search_screen.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    _initFirebaseMessaging();
+  }
+
+  void _initFirebaseMessaging() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings;
+
+    if (notificationsEnabled) {
+      settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else {
+      settings = await messaging.requestPermission(
+        alert: false,
+        badge: false,
+        sound: false,
+      );
+    }
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
