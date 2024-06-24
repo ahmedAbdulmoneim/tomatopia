@@ -10,6 +10,8 @@ class GetPostsModel {
   final int comments;
   final String userId;
   final String userName;
+  bool isDisLike;
+  bool isLike;
 
   GetPostsModel({
     required this.id,
@@ -22,6 +24,8 @@ class GetPostsModel {
     required this.userName,
     this.userImage,
     required this.userId,
+    required this.isDisLike,
+    required this.isLike
   });
 
   factory GetPostsModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +40,8 @@ class GetPostsModel {
       userName: json['userName'],
       userImage: json['userImage'],
       userId: json['userId'],
+      isLike: json['isLike'],
+      isDisLike: json['isDisLike'],
     );
   }
 

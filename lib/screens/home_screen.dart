@@ -29,6 +29,7 @@ import 'package:tomatopia/screens/treatment_screen.dart';
 import 'package:tomatopia/shared_preferences/shared_preferences.dart';
 
 import '../cubit/profile/profile_states.dart';
+import 'about_us.dart';
 import 'fertilisers.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -124,15 +125,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ));
                   },
                 ),
-                ListTile(
-                  leading: const Icon(
-                    FontAwesomeIcons.circleInfo,
-                  ),
-                  title: Text(context.aboutUs),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(
+                //     FontAwesomeIcons.circleInfo,
+                //   ),
+                //   title: Text(context.aboutUs),
+                //   onTap: () {
+                //     Navigator.push(context,MaterialPageRoute(builder: (context) => AboutUs(),));
+                //
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(
                     Icons.rate_review_outlined,

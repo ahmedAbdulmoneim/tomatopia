@@ -10,6 +10,7 @@ import 'package:tomatopia/api_models/tips_model.dart';
 import 'package:tomatopia/cubit/home_cubit/home_states.dart';
 
 import '../../api_models/get_all_posts_model.dart';
+import '../../api_models/post_reaction.dart';
 import '../../api_services/tomatopia_services.dart';
 import '../../constant/endpints.dart';
 import '../../constant/variables.dart';
@@ -34,17 +35,28 @@ class HomeCubit extends Cubit<HomePageStates> {
 
   List<dynamic> data = [];
   List<GetPostsModel> allPosts = [];
+  List<PostReaction> postReactions = [];
+
+  // Add a method to initialize the reactions list
+  void initializeReactions() {
+    postReactions = allPosts.map((post) => PostReaction(
+      postId: post.id,
+      isLike: post.isLike,
+      isDislike: post.isDisLike,
+    )).toList();
+  }
 
   getAllPost() async {
     emit(GetAllPostsLoadingState());
     try {
-      var value = await tomatopiaServices.getData(endPoint: getPosts, token: token);
+      var value = await tomatopiaServices.getData(endPoint: getPosts, token: token,query: {"userId" : userId});
       data = value.data;
       allPosts.clear();
       // save reversed data in list
       for (int i = 0; i < data.length; i++) {
         allPosts.insert(0, GetPostsModel.fromJson(data[i]));
       }
+      initializeReactions();
       emit(GetAllPostsSuccessState());
     } catch (onError) {
       debugPrint("get all posts error : $onError");
@@ -77,6 +89,14 @@ class HomeCubit extends Cubit<HomePageStates> {
       var post = allPosts.firstWhere((element) => element.id == id);
       post.likes = reactModel!.likes;
       post.disLikes = reactModel!.disLikes;
+
+      // Update the reactions list
+      var reaction = postReactions.firstWhere((reaction) => reaction.postId == id);
+      reaction.isLike = reactModel!.isLike;
+      reaction.isDislike = reactModel!.isDislike;
+
+
+      // Emit the updated state
       emit(AddReactPostsSuccessState());
     } catch (onError) {
       debugPrint("add react error : $onError");
